@@ -1,0 +1,71 @@
+body {
+    height: 100vh;
+}
+.estrutura {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.avaliacao {
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.avaliacao .pergunta {
+    margin: 50px;
+}
+
+.avaliacao_nota button {
+    height: 50px;
+    width: 50px;
+    color: white;
+    border: 0px;
+    border-radius: 5px;
+}
+
+textarea {
+    height: 150px;
+    width: 100%;
+}
+
+.div-botao_enviar {
+    text-align: right;
+}
+.div-botao_enviar button{
+    margin-top: 20px;
+    margin-right: 10px;
+}
+
+/* Cores de cada botão das notas*/
+.avaliacao_nota #nota1 {
+    background-color: #FF0000;
+}
+.avaliacao_nota #nota2 {
+    background-color: #FF4500;
+} 
+.avaliacao_nota #nota3 {
+    background-color: #FF7F00;
+} 
+.avaliacao_nota #nota4 {
+    background-color: #FFA500;
+} 
+.avaliacao_nota #nota5 {
+    background-color: #FFD700;
+} 
+.avaliacao_nota #nota6 {
+    background-color: #ADFF2F;
+} 
+.avaliacao_nota #nota7 {
+    background-color: #7FFF00;
+} 
+.avaliacao_nota #nota8 {
+    background-color: #32CD32;
+} 
+.avaliacao_nota #nota9 {
+    background-color: #228B22;
+}  
+.avaliacao_nota #nota10 {
+    background-color: #008000;
+} 
