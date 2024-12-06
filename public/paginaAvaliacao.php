@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/paginaAvaliacaostyles.css">
-    <title>Avaliação Hospital Regional Alto vale</title>
-
+    <title>Avaliação do Hospital Regional do Alto vale</title>
 </head>
 <body>
-    
     <div class="estrutura">
-        <form class="avaliacao" action="../src/controller.php" method="post">
+        <form class="avaliacao" action="../src/controller_registro_avaliacao.php" method="post">
             <h1>Avaliação do Hospital Regional do Alto Vale</h1>
-            <p class="pergunta">Qualquer Pergunta aleatoria</p>
+            <?php
+                require_once('../src/escreverPergunta.php');
+                escreverPergunta();
+            ?>
             <p style="margin-bottom: 0%;">Feedback(opcional)</p>
             <textarea name="feedback" placeholder="Achei bom porque..."></textarea>
             <div class="paremetro_nota">
@@ -52,11 +53,10 @@
             const notaSelecionadaInput = document.getElementById('nota_selecionada');
             notaSelecionadaInput.value = botaoClicado.getAttribute('data-value');
 
-            // Habilita o botao enviar
+            // Habilita o botão de enviar
             const botaoEnviar = document.querySelector('.button_enviar');
             botaoEnviar.disabled = false;
         }
     </script>
-    
 </body>
 </html>
