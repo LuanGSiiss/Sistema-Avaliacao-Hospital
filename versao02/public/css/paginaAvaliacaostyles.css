@@ -1,0 +1,124 @@
+* {
+    box-sizing: border-box;
+    margin: 0px;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    background-color: #a2dfa2;
+    font-family: sans-serif;
+}
+
+button {
+    cursor: pointer;
+}
+
+textarea {
+    height: 100px;
+    width: 99%;
+}
+
+/* Classes */
+
+.estrutura {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.avaliacao {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 50px;
+    background-color: white;
+    border-radius: 10px;
+    width: 800px;
+}
+
+.avaliacao h1 {
+    text-align: center;
+    color: #FF0000;
+}
+
+.avaliacao .pergunta {
+    margin: 15px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.avaliacao_nota{
+    display: flex;
+    gap: 6px; 
+}
+
+.avaliacao .paremetro_nota {
+    display: flex;
+    margin-top: 20px;
+    justify-content: space-between;
+}
+
+.avaliacao .aviso {
+    padding: 15px 0px;
+    color: #4e4d4d;
+}
+
+.button_enviar {
+    width: 100%;
+    height: 30px;
+    margin-top: 15px;
+    background-color: green;
+    color: white;
+    font-size: 20px;
+    border-radius: 5px;
+    border-width: 1px;
+}
+
+.button_normal {
+    flex: 1; 
+    padding: 10px; 
+    aspect-ratio: 1; /* Garante que cada botão seja quadrado */
+    text-align: center; 
+    color: white; 
+    border: none; 
+    border-radius: 5px;
+}
+
+.button_selected {
+    border: 2px solid black;
+    padding: 8px;
+}
+
+
+/* Cores de cada botão das notas*/
+.avaliacao_nota #nota1 {
+    background-color: #FF0000;
+}
+.avaliacao_nota #nota2 {
+    background-color: #FF4500;
+} 
+.avaliacao_nota #nota3 {
+    background-color: #FF7F00;
+} 
+.avaliacao_nota #nota4 {
+    background-color: #FFA500;
+} 
+.avaliacao_nota #nota5 {
+    background-color: #FFD700;
+} 
+.avaliacao_nota #nota6 {
+    background-color: #ADFF2F;
+} 
+.avaliacao_nota #nota7 {
+    background-color: #7FFF00;
+} 
+.avaliacao_nota #nota8 {
+    background-color: #32CD32;
+} 
+.avaliacao_nota #nota9 {
+    background-color: #228B22;
+}  
+.avaliacao_nota #nota10 {
+    background-color: #008000;
+} 
