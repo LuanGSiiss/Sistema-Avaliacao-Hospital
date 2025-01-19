@@ -47,5 +47,22 @@
             echo $e->getMessage();
         }
     }
+
+    function consultaPerguntas() {
+        try {
+            $dbconn = pg_connect(getStringConn());
+            if($dbconn) {
+            
+                $query = "SELECT * FROM avaliacoes ORDER BY id_avaliacao;";
+                $result = pg_query($dbconn, $query);
+            
+                return $result;
+            }
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    
+        pg_close($dbconn);
+    }
     
 ?>
