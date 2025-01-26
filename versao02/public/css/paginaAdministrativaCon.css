@@ -1,17 +1,28 @@
-/* menu */
-body {
+/* ----TAGS---- */
+* {
     margin: 0;
-    font-family: sans-serif;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2rem;
+    background-color: rgb(243,244,246);
+}
+
+/* ----CLASSES---- */
+
+/* Menu */
 .menu {
-    position: fixed;
-    top: 0;
     width: 100%;
     background-color: #333;
     color: white;
-    z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.2);
 }
 
 .menu-list {
@@ -24,7 +35,7 @@ body {
 }
 
 .menu-list li {
-    padding: 15px 20px;
+    padding: 1.5rem 2rem;
 }
 
 .menu-list a {
@@ -38,31 +49,81 @@ body {
     color: #ff9800;
 }
 
-/*Consulta em si*/
-
-.consulta {
-    margin: 60px 0px 15px 15px;
+/* main-conteudo */
+.estrura-conteudo {
+    max-width: 95%;
+    margin: 0 auto;
+    padding: 1rem;
 }
 
-.consulta button {
-    height: 50px; 
-    width: 100px; 
-    background-color: rgb(122, 122, 231);
+/* Cabeçalho da consulta */
+
+.cabecalho-consulta {
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem;
 }
 
-/*Consulta em si*/
+.cabecalho-consulta h1 {
+    color: #292828;
+}
 
-table {
+.cabecalho-consulta button {
+    padding: 1rem 1.5rem;
+    font-size: 1.6rem;
+    color: rgb(240, 240, 240);
+    background-color: rgb(59,130,246);
+    border-style: none;
+    border-radius: 0.8rem;
+}
+
+/* consulta */
+
+.consulta table {
     width: 100%;
     border-collapse: collapse;
 }
 
-th, td {
-    padding: 10px;
+.consulta th, td {
+    height: 6rem;
+    padding: 0.5rem 1rem;
     text-align: left;
-    border: 1px solid #ddd;
+    border-left: 0.1rem solid rgb(220,252,231);
+    border-right: 0.1rem solid rgb(220,252,231);
 }
 
-th {
-    background-color: #f4f4f4;
+.consulta th {
+    color: rgb(21,128,64);
+    background-color: rgb(220,252,231);
 }
+
+.consulta td {
+    word-wrap: break-word; /* Quebra palavras grandes */
+    word-break: break-word; /* Para compatibilidade com navegadores antigos */
+    white-space: normal; /* Permite a quebra de linhas */
+    background-color: rgb(255, 255, 255);
+    border-bottom: 0.2rem solid rgb(220,252,231);
+}
+
+.consulta .td-codigo {
+    width: 5%;
+}
+.consulta .td-setor {
+    width: 5%;
+}
+.consulta .td-pergunta {
+    width: 5%;
+}
+.consulta .td-dispositivo {
+    width: 5%;
+}
+.consulta .td-nota {
+    width: 5%;
+}
+.consulta .td-feedback {
+    width: 65%;
+}
+.consulta .td-horario {
+    width: 10%;
+}
+

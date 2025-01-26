@@ -10,7 +10,7 @@
     <header class="menu">
         <nav>
             <ul class="menu-list">
-                <li><a href="administrativoConsulta.php">Avaliações</a></li>
+            <li><a href="administrativoConsulta.html">Avaliações</a></li>
                 <li><a href="administrativoPergunta.php">Cadastro de Pergunta</a></li>
             </ul>
         </nav>
