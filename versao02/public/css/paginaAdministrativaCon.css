@@ -77,11 +77,20 @@ body {
     border-radius: 0.8rem;
 }
 
+.cabecalho-consulta button:hover {
+    background-color: rgb(37, 99, 235);
+    cursor: pointer;
+}
+
 /* consulta */
 
 .consulta table {
     width: 100%;
     border-collapse: collapse;
+}
+
+.consulta .efeitoCarragamento{
+    text-align: center;
 }
 
 .consulta th, td {
@@ -103,27 +112,5 @@ body {
     white-space: normal; /* Permite a quebra de linhas */
     background-color: rgb(255, 255, 255);
     border-bottom: 0.2rem solid rgb(220,252,231);
-}
-
-.consulta .td-codigo {
-    width: 5%;
-}
-.consulta .td-setor {
-    width: 5%;
-}
-.consulta .td-pergunta {
-    width: 5%;
-}
-.consulta .td-dispositivo {
-    width: 5%;
-}
-.consulta .td-nota {
-    width: 5%;
-}
-.consulta .td-feedback {
-    width: 65%;
-}
-.consulta .td-horario {
-    width: 10%;
 }
 

@@ -6,20 +6,31 @@ function adicionarLinha(tabela, valores) {
     });
 };
 
+function efeitoCarragamentoTabela(tabela) {
+    const tbody = tabela.querySelector('tbody');
+    tbody.innerHTML = `
+        <tr>
+            <td colspan="7" style="text-align: center;">Carregando...</td>
+        </tr>
+    `;
+}
+
 function limparCorpoTabela(tabela) {
     const tbody = tabela.querySelector('tbody');
     tbody.innerHTML = "";
 }
 
+// Chamada Principal
 document.getElementById("butaoConsulta").addEventListener("click", function () {
+    const tabela = document.getElementById("resultadoConsulta");
+    efeitoCarragamentoTabela(tabela);
+
     const func_assinc = new XMLHttpRequest();
     func_assinc.open("GET", "../src/controller_consulta.php", true);
-    
     func_assinc.onload = function () {
         if (func_assinc.status === 200) {
             try {
                 const stringJSON = func_assinc.responseText;
-                const tabela = document.getElementById("resultadoConsulta");
                 const tbody = tabela.querySelector('tbody');
                 limparCorpoTabela(tabela);
 
