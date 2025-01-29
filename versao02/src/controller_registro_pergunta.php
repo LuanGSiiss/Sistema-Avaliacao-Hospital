@@ -6,8 +6,6 @@
     $texto_pergunta = $_POST['texto_pergunta'] ?? NULL;
 
     if($texto_pergunta) {
-
-    } else if ($texto_pergunta = '') {
         registraPergunta($texto_pergunta);
         
         echo json_encode([

@@ -1,21 +1,27 @@
-/* styles.css */
-body {
+/* ----TAGS---- */
+* {
     margin: 0;
-    font-family: sans-serif;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-textarea {
-    min-height: 100px;
-    min-width: 300px;
+html {
+    font-size: 62.5%;
 }
 
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2rem;
+    background-color: rgb(243,244,246);
+}
+
+/* ----CLASSES---- */
+
+/* Menu */
 .menu {
-    position: fixed;
-    top: 0;
     width: 100%;
     background-color: #333;
     color: white;
-    z-index: 1000;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -43,7 +49,39 @@ textarea {
     color: #ff9800;
 }
 
-.conteudo {
-    margin: 70px 0px 15px 15px;
+
+/* main-conteudo */
+.estrutura {
+    max-width: 95%;
+    height: 90vh;
+    margin: 0 auto;
+    padding: 1rem;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+}
+
+/* formulario */
+
+.formulario-Pergunta {
+    width: 50rem;
+    height: 50rem;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+    background-color: #D32F2F;
+    border-radius: 3rem;
+    color:rgb(243,244,246)
+}
+
+.formulario-Pergunta label {
+    width: 100%;
+}
+
+textarea {
+    min-height: 100px;
+    min-width: 300px;
 }
 
