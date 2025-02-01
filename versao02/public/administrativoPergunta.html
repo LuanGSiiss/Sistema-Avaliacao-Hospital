@@ -18,9 +18,12 @@
     <section class="estrutura">
         <div>
             <form class="formulario-Pergunta" id="formularioPergunta">
-                <label for="texto_pergunta" >Informe o texto da pergunta</label>
-                <textarea name="texto_pergunta" id="texto_pergunta" placeholder="Achei bom porque..."></textarea><br>
-                <button type="submit">Enviar</button>
+                <div class="inputs">
+                    <label for="texto_pergunta" >Texto da Pergunta</label>
+                    <textarea name="texto_pergunta" id="texto_pergunta" maxlength="350" rows="5" oninput="contagemCaracteres()" placeholder="Achei bom porque..."></textarea>
+                    <p class="contadorChar" id="contadorChar">0/350 caracteres</p>
+                </div>
+                <button id="enviar" type="submit">Enviar</button>
             </form>
             <p class="mensagem" id="mensagem"></p>
         </div>

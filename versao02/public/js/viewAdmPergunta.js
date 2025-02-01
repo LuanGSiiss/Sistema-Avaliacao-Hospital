@@ -1,4 +1,30 @@
-// Chamada Principal
+// Ajuste do textarea
+const textarea = document.getElementById("texto_pergunta");
+const butaoEnviar = document.getElementById("enviar");
+
+textarea.addEventListener("input", function () {
+    this.style.height = "auto"; // Reseta a altura para evitar crescimento infinito
+    this.style.height = this.scrollHeight + "px"; // Define a nova altura com base no conteúdo
+    
+    if (textarea.value.trim() !== '') {
+        butaoEnviar.disabled = false;
+    } else {
+        butaoEnviar.disabled = true;
+    }
+});
+
+function contagemCaracteres() {
+    let count = document.getElementById("contadorChar");
+    count.textContent = `${textarea.value.length}/350 caracteres`;
+    if (textarea.value.length == 350) {
+        count.style.color = "red";
+    } else {
+        count.style.color = "black";
+    }
+}
+
+
+// Chamada Principal do formulario
 document.getElementById("formularioPergunta").addEventListener("submit", function (event) {
     event.preventDefault();
 
@@ -10,10 +36,12 @@ document.getElementById("formularioPergunta").addEventListener("submit", functio
     p.textContent = "Enviando...";
 
     func_assinc.onload = function () {
+        const retornoMensagem = JSON.parse(func_assinc.responseText);
+
         if (func_assinc.status === 200) {
-            p.textContent = "Pergunta cadastrada com Sucesso...";
+            p.textContent = retornoMensagem.mensagem;
         } else {
-            p.textContent = "Erro ao cadastrar pergunta...";
+            p.textContent = retornoMensagem.mensagem;
         }
     };
     
