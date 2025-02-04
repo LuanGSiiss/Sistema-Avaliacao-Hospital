@@ -8,10 +8,10 @@
 </head>
 <body>
     <div class="estrutura">
-        <form class="avaliacao" action="../src/controller_registro_avaliacao.php" method="post">
+        <form class="avaliacao" action="../controller/controller_registro_avaliacao.php" method="post">
             <h1>Avaliação do Hospital Regional do Alto Vale</h1>
             <?php
-                require_once('../src/escreverPergunta.php');
+                require_once('../controller/escreverPergunta.php');
                 escreverPergunta();
             ?>
             <p style="margin-bottom: 0%;">Feedback(opcional)</p>

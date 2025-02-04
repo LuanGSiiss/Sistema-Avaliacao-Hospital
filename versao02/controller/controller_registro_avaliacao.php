@@ -1,6 +1,6 @@
 <?php
 
-    require_once('model.php');
+    require_once('../model/model.php');
 
     // setor = 1
     // id_disposito = 1
@@ -12,6 +12,6 @@
 
     registraAvalicao(1, $id_pergunta, 1, $nota, $feedback, $datahora);
 
-    header('Location: ../public/agradecimento.html');
+    header('Location: ../view/agradecimento.html');
     exit;
 ?>
