@@ -1,5 +1,5 @@
 <?php
-    require_once('../model/model.php');
+    require_once('../model/model_adm_pergunta.php');
 
     header('Content-Type: application/json');
 

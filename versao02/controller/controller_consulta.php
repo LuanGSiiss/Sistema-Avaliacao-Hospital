@@ -1,25 +1,23 @@
 <?php
-    require_once('../model/model.php');
+    require_once('../model/model_adm_consulta.php');
 
     $resultado = consultaPerguntas();
 
-    if (pg_num_rows($resultado) > 0) {
+    if (sizeof($resultado) > 0) {
         $arrayPerguntas = ["perguntas"=>[]];
-        while ($row = pg_fetch_assoc($resultado)) {
+        foreach ($resultado as $registro) {
             $pergunta = [
-                "id_avaliacao"=>$row['id_avaliacao'], 
-                "id_setor"=>$row['id_setor'], 
-                "id_pergunta"=>$row['id_pergunta'], 
-                "id_dispositivo"=>$row['id_dispositivo'], 
-                "resposta"=>$row['resposta'], 
-                "feedback_textual"=>$row['feedback_textual'], 
-                "horario"=>$row['horario'] ];
-            array_push($arrayPerguntas['perguntas'], $pergunta);    
-            }
+                "id_avaliacao"=>$registro['id_avaliacao'], 
+                "id_setor"=>$registro['id_setor'], 
+                "id_pergunta"=>$registro['id_pergunta'], 
+                "id_dispositivo"=>$registro['id_dispositivo'], 
+                "resposta"=>$registro['resposta'], 
+                "feedback_textual"=>$registro['feedback_textual'], 
+                "horario"=>$registro['horario'] ];
+            array_push($arrayPerguntas['perguntas'], $pergunta);
+        }
         $jsonstring = json_encode($arrayPerguntas);
-
         echo $jsonstring;
-
     } else {
         echo "{}";
     }

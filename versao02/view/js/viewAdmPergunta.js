@@ -30,7 +30,7 @@ document.getElementById("formularioPergunta").addEventListener("submit", functio
 
     const dadosFormulario = new FormData(this);
     const func_assinc = new XMLHttpRequest();
-    func_assinc.open("POST", "../src/controller_registro_pergunta.php", true);
+    func_assinc.open("POST", "../controller/controller_registro_pergunta.php", true);
     
     const p = document.getElementById('mensagem');
     p.textContent = "Enviando...";
