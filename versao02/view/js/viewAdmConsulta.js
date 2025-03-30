@@ -26,7 +26,7 @@ document.getElementById("butaoConsulta").addEventListener("click", function () {
     efeitoCarragamentoTabela(tabela);
 
     const func_assinc = new XMLHttpRequest();
-    func_assinc.open("GET", "../controller/controller_consulta.php", true);
+    func_assinc.open("GET", "../routes/routes.php?action=consulta_avaliacoes", true);
     func_assinc.onload = function () {
         if (func_assinc.status === 200) {
             try {

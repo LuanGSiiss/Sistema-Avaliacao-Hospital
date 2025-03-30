@@ -3,7 +3,7 @@
 
     function registraAvalicao($setor, $id_pergunta, $id_dispositivo, $nota, $feedback, $datahora) {
         try {
-            $dbconn = pg_connect("host=$db_HOST dbname=$db_NAME user=$db_USER password=$db_PASSWORD");
+            $dbconn = pg_connect("host=" . db_HOST . " dbname=" . db_NAME . " user=" . db_USER . " password=" . db_PASSWORD);
             if($dbconn) {
                 
                 $query = "INSERT INTO avaliacoes(id_setor, id_pergunta, id_dispositivo, resposta, feedback_textual, horario) 
@@ -18,10 +18,12 @@
 
     function buscarPergunta() {
         try {
-            $dbconn = pg_connect(getStringConn());
+            $dbconn = pg_connect("host=" . db_HOST . " dbname=" . db_NAME . " user=" . db_USER . " password=" . db_PASSWORD);
             if($dbconn) {
                 
-                $query = "SELECT * FROM perguntas WHERE status = true ORDER BY RANDOM() LIMIT 1;";
+                $query = "SELECT perguntas.texto_pergunta, perguntas.id_pergunta FROM perguntas 
+                            JOIN pergunta_setor USING(id_pergunta)
+                            WHERE status = true AND pergunta_setor.id_setor = 2  ORDER BY RANDOM() LIMIT 1;";
 
                 $result = pg_query($dbconn, $query);
 

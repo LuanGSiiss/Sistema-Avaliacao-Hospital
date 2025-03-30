@@ -46,4 +46,13 @@ CREATE TABLE usuarios (
 	CONSTRAINT pk_usuario PRIMARY KEY (id_usuario)
 );
 
+CREATE TABLE pergunta_setor (
+	id_pergunta INTEGER NOT NULL,
+	id_setor INTEGER NOT NULL,
+	CONSTRAINT pk_pergunta_setor PRIMARY KEY (id_pergunta, id_setor),
+	CONSTRAINT fk_setor FOREIGN KEY (id_setor) 
+		REFERENCES setor(id_setor),
+	CONSTRAINT fk_pergunta FOREIGN KEY (id_pergunta) 
+		REFERENCES perguntas(id_pergunta)
+)
 COMMIT;

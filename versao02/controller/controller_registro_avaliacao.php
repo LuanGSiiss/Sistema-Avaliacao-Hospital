@@ -1,6 +1,6 @@
 <?php
 
-    require_once('../model/model.php');
+    require_once('../model/model_avaliacoes.php');
 
     // setor = 1
     // id_disposito = 1
