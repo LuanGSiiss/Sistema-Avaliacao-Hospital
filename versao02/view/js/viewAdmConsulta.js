@@ -1,25 +1,3 @@
-function adicionarLinha(tabela, valores) {
-    const novaLinha = tabela.insertRow();
-    valores.forEach(valor => {
-        const celula = novaLinha.insertCell();
-        celula.innerHTML = valor;
-    });
-};
-
-function efeitoCarragamentoTabela(tabela) {
-    const tbody = tabela.querySelector('tbody');
-    tbody.innerHTML = `
-        <tr>
-            <td colspan="7" style="text-align: center;">Carregando...</td>
-        </tr>
-    `;
-}
-
-function limparCorpoTabela(tabela) {
-    const tbody = tabela.querySelector('tbody');
-    tbody.innerHTML = "";
-}
-
 // Chamada Principal
 document.getElementById("butaoConsulta").addEventListener("click", function () {
     const tabela = document.getElementById("resultadoConsulta");
@@ -63,3 +41,28 @@ document.getElementById("butaoConsulta").addEventListener("click", function () {
     
     func_assinc.send();
 });
+
+
+function adicionarLinha(tabela, valores) {
+    const novaLinha = tabela.insertRow();
+    valores.forEach(valor => {
+        const celula = novaLinha.insertCell();
+        celula.innerHTML = valor;
+    });
+};
+
+function efeitoCarragamentoTabela(tabela) {
+    const tbody = tabela.querySelector('tbody');
+    tbody.innerHTML = `
+        <tr>
+            <td colspan="7" style="text-align: center;">Carregando...</td>
+        </tr>
+    `;
+}
+
+function limparCorpoTabela(tabela) {
+    const tbody = tabela.querySelector('tbody');
+    tbody.innerHTML = "";
+}
+
+

@@ -1,7 +1,7 @@
 <?php
 
     require_once('../model/model_avaliacoes.php');
-    
+
     function escreverPergunta() {
         $pergunta = buscarPergunta();
 
