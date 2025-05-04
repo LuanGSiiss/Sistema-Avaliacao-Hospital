@@ -1,5 +1,5 @@
 <?php
-    require "../controller/validaSessao.php";
+    // require "../controller/validaSessao.php";
 ?>
 
 <!DOCTYPE html>
@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administrativo</title>
-    <link rel="stylesheet" href="css/paginaAdministrativaCon.css">
+    <link rel="stylesheet" href="../public/css/paginaAdministrativaCon.css">
 </head>
 <body>
     <header class="menu">
@@ -55,5 +55,5 @@
     </section>
     
 </body>
-<script src="js/viewAdmConsulta.js"></script>
+<script src="../public/viewAdmConsulta.js"></script>
 </html>
