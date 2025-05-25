@@ -11,7 +11,7 @@ class Exemplo extends Database
 
     public function fetch()
     {
-        $sql = "SELECT * FROM avaliacoes ORDER BY id_avaliacao;";
+        $sql = "SELECT * FROM perguntas ORDER BY id_pergunta;";
         $stm = $this->pdo->query($sql);
         $resultado = $stm->fetchAll();
 
