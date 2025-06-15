@@ -8,13 +8,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administrativo</title>
-    <link rel="stylesheet" href="../public/css/paginaAdministrativaCon.css">
+    <link rel="stylesheet" href="public/css/consulta-avaliacoes-styles.css">
 </head>
 <body>
     <header class="menu">
         <nav>
-            <ul class="menu-list">
-                <li><a href="administrativoConsulta.php">Avaliações</a></li>
+            <ul class="menu-lista">
+                <li><a href="./">Avaliações</a></li>
                 <li><a href="administrativoPergunta.php">Cadastro de Pergunta</a></li>
             </ul>
         </nav>
@@ -43,7 +43,7 @@
                         <th class="td-dispositivo">Código Dispositivo</th>
                         <th class="td-nota">Nota</th>
                         <th class="td-feedback">Feedback Textual</th>
-                        <th class="td-horario">Horário</th>
+                        <th class="td-horario">Data/Hora do Cadastro</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,5 +55,5 @@
     </section>
     
 </body>
-<script src="../public/viewAdmConsulta.js"></script>
+<script src="public/js/comportamento_consultaAvaliacoes.js"></script>
 </html>

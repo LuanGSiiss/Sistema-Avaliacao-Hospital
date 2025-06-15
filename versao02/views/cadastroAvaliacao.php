@@ -1,23 +1,21 @@
-<?php
-    require "../controller/validaSessao.php";
-?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/paginaAvaliacaostyles.css">
+    <link rel="stylesheet" href="public/css/cadastro-avaliacao-styles.css">
     <title>Avaliação do Hospital Regional do Alto vale</title>
 </head>
 <body>
     <div class="estrutura">
-        <form class="avaliacao" action="../controller/controller_registro_avaliacao.php" method="post">
+        <form class="avaliacao" action="/cadastroAvaliacao" method="post">
             <h1>Avaliação do Hospital Regional do Alto Vale</h1>
-            <?php
-                require_once('../controller/escreverPergunta.php');
-                escreverPergunta();
-            ?>
+            <?php if ($pergunta): ?>
+                <p class="pergunta"> <?= htmlspecialchars($pergunta['texto_pergunta']) ?> </p>
+                <input type="hidden" value="<?= htmlspecialchars($pergunta['id_pergunta']) ?>" name="id_pergunta">
+            <?php else: ?>
+                <p class="pergunta">Nenhuma pergunta disponível no momento.</p>
+            <?php endif; ?>
             <p style="margin-bottom: 0%;">Feedback(opcional)</p>
             <textarea name="feedback" placeholder="Achei bom porque..."></textarea>
             <div class="paremetro_nota">
@@ -38,29 +36,12 @@
             </div>
             <input type="hidden" name="nota" id="nota_selecionada">
             
-            <button class="button_enviar" type="submit" disabled>Enviar</button>
+            <button class="button_enviar" type="submit" disabled title="Selecione uma nota para habilitar">Enviar</button>
             
-            <p class="aviso">Sua avaliação espontânea é  anônima, nenhuma informação pessoal é solicitada ou armazenada.</p>
+            <p class="aviso">Sua avaliação espontânea é anônima, nenhuma informação pessoal é solicitada ou armazenada.</p>
         </form>
     </div>
     
-    <script>
-        function selecionarNota(botaoClicado) {
-            // Remove a classe 'button_selected' de todos os botões
-            const botoes = document.querySelectorAll('.avaliacao_nota button');
-            botoes.forEach(botao => botao.classList.remove('button_selected'));
-            
-            // Adiciona a classe 'button_selected' ao botão clicado
-            botaoClicado.classList.add('button_selected');
-            
-            // Atualiza o valor no input oculto
-            const notaSelecionadaInput = document.getElementById('nota_selecionada');
-            notaSelecionadaInput.value = botaoClicado.getAttribute('data-value');
-
-            // Habilita o botão de enviar
-            const botaoEnviar = document.querySelector('.button_enviar');
-            botaoEnviar.disabled = false;
-        }
-    </script>
+    <script src="public/js/comportamento_cadastroAvaliacao.js"></script>
 </body>
 </html>

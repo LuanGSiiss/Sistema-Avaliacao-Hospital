@@ -3,7 +3,9 @@ $request = $_GET['action'] ?? ''; // Obtém a ação da URL
 
 $routes = [
     '/' => 'HomeController@index',
-    '/consultarAvaliacoes' => 'controller_consulta'
+    '/consultaAvaliacoes' => 'ConsultaAvaliacoesController@Index',
+    '/consultaAvaliacoes/buscar' => 'ConsultaAvaliacoesController@BuscarAvaliacoes',
+    '/cadastroAvaliacao' => 'CadastroAvaliacaoController@Index'
 ];
 
 
