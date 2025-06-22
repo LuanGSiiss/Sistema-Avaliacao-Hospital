@@ -13,7 +13,7 @@
             contador.textContent = countdown;
 
             if (countdown === 0) {
-                window.location.href = 'paginaAvaliacao.php';
+                window.location.href = '/cadastroAvaliacao';
             } else {
                 countdown--;
                 setTimeout(updateCountdown, 1000);

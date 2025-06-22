@@ -28,7 +28,7 @@ CREATE TABLE avaliacoes (
 	id_setor INTEGER NOT NULL,
 	id_pergunta INTEGER NOT NULL,
 	id_dispositivo INTEGER NOT NULL,
-	resposta INTEGER NOT NULL,
+	nota INTEGER NOT NULL,
 	feedback_textual VARCHAR(350) NOT NULL,
 	datahora_cadastro TIMESTAMP NOT NULL,
 	CONSTRAINT pk_avaliacao PRIMARY KEY (id_avaliacao),

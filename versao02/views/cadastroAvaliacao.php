@@ -12,12 +12,20 @@
             <h1>Avaliação do Hospital Regional do Alto Vale</h1>
             <?php if ($pergunta): ?>
                 <p class="pergunta"> <?= htmlspecialchars($pergunta['texto_pergunta']) ?> </p>
-                <input type="hidden" value="<?= htmlspecialchars($pergunta['id_pergunta']) ?>" name="id_pergunta">
+                <input type="hidden" value="<?= $pergunta['id_pergunta'] ?>" name="id_pergunta">
+            <?php elseif ($erroPergunta): ?>
+                <p class="pergunta"> Erro ao buscar pergunta</p>
+                <script>
+                    console.error("Erro ao buscar pergunta: <?= addslashes($erroPergunta) ?>");
+                </script>
             <?php else: ?>
                 <p class="pergunta">Nenhuma pergunta disponível no momento.</p>
             <?php endif; ?>
-            <p style="margin-bottom: 0%;">Feedback(opcional)</p>
-            <textarea name="feedback" placeholder="Achei bom porque..."></textarea>
+            <label style="margin-bottom: 0%;">
+                Feedback(opcional)
+                <textarea name="feedback" placeholder="Achei bom porque..."></textarea>
+            </label>
+            
             <div class="paremetro_nota">
                 <p style="margin-bottom: 0%;">Improvável</p>
                 <p style="margin-bottom: 0%;">Muito Provável</p>
@@ -41,7 +49,11 @@
             <p class="aviso">Sua avaliação espontânea é anônima, nenhuma informação pessoal é solicitada ou armazenada.</p>
         </form>
     </div>
-    
     <script src="public/js/comportamento_cadastroAvaliacao.js"></script>
 </body>
 </html>
+<?php if ($ErroRegistroAvaliacao): ?>
+    <script>
+        console.error("Erro ao registrar a Avaliação: <?= addslashes($ErroRegistroAvaliacao) ?>");
+    </script>
+<?php endif; ?>
