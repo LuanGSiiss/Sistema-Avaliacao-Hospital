@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="estrutura">
-        <form class="avaliacao" action="/cadastroAvaliacao" method="post">
+        <form class="avaliacao" action="cadastroAvaliacao" method="POST">
             <h1>Avaliação do Hospital Regional do Alto Vale</h1>
             <?php if ($pergunta): ?>
                 <p class="pergunta"> <?= htmlspecialchars($pergunta['texto_pergunta']) ?> </p>

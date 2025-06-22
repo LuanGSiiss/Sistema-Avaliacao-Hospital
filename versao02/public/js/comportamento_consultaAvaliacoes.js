@@ -26,7 +26,7 @@ document.getElementById("butaoConsulta").addEventListener("click", function () {
                                 avaliacao.id_setor,
                                 avaliacao.id_pergunta,
                                 avaliacao.id_dispositivo,
-                                avaliacao.resposta,
+                                avaliacao.nota,
                                 avaliacao.feedback_textual,
                                 avaliacao.datahora_cadastro
                             ]);

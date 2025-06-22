@@ -5,25 +5,26 @@ class Core
     public function run($routes) 
     {
         $url = '/';
+        $method = $_SERVER['REQUEST_METHOD'];
 
-        isset($_GET['url']) ? $url .= $_GET['url'] : '';
+        $url .= isset($_GET['url']) ? $_GET['url'] : '';
+        $url = rtrim($url, '/');
 
-        ($url != '/') ? $url = rtrim($url, '/') : $url;
         $routerFound = false;
 
-        foreach($routes as $path => $controller) {
-            $pattern = '#^'.$path.'$#';
-            if (preg_match($pattern , $url,$matches)){
-                //array_shift($matches);
+        if (isset($routes[$method])) {
+            foreach ($routes[$method] as $path => $controller) {
+                $pattern = '#^' . $path . '$#';
+                if (preg_match($pattern, $url)) {
+                    $routerFound = true;
 
-                $routerFound = true;
+                    [$currentController, $action] = explode('@', $controller);
+                    require_once __DIR__ . "/../controllers/$currentController.php";
 
-                [$currentController, $action] = explode('@', $controller);
-
-                require_once __DIR__."/../controllers/$currentController.php";
-
-                $newController = new $currentController();
-                $newController->$action();
+                    $newController = new $currentController();
+                    $newController->$action();
+                    return;
+                }
             }
         }
 

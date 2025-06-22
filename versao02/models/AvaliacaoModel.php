@@ -16,7 +16,7 @@ class AvaliacaoModel extends Database
         }
         
         try {
-            $sql = "SELECT id_avaliacao, id_setor, id_pergunta, id_dispositivo, resposta, feedback_textual, datahora_cadastro 
+            $sql = "SELECT id_avaliacao, id_setor, id_pergunta, id_dispositivo, nota, feedback_textual, datahora_cadastro 
                         FROM avaliacoes 
                         ORDER BY id_avaliacao;";
             $stmt = $this->pdo->query($sql);
@@ -42,7 +42,7 @@ class AvaliacaoModel extends Database
             
             $sucesso = $stmt->execute([
                 'id_setor'          => $avaliacao->id_setor,
-                'id_pergunta'       => $$avaliacao->id_pergunta,
+                'id_pergunta'       => $avaliacao->id_pergunta,
                 'id_dispositivo'    => $avaliacao->id_dispositivo,
                 'nota'              => $avaliacao->nota,
                 'feedback_textual'  => $avaliacao->feedback_textual,

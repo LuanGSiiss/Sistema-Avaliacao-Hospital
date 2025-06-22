@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/paginaAvaliacaostyles.css">
+    <link rel="stylesheet" href="public/css/cadastro-avaliacao.css">
     <title>Agradecimento</title>
     <script>
         let countdown = 5;
@@ -13,7 +13,7 @@
             contador.textContent = countdown;
 
             if (countdown === 0) {
-                window.location.href = '/cadastroAvaliacao';
+                window.location.href = 'cadastroAvaliacao';
             } else {
                 countdown--;
                 setTimeout(updateCountdown, 1000);

@@ -20,7 +20,7 @@ class ConsultaAvaliacoesController extends RenderView
                     'id_setor'          => $registro['id_setor'], 
                     'id_pergunta'       => $registro['id_pergunta'], 
                     'id_dispositivo'    => $registro['id_dispositivo'], 
-                    'resposta'          => $registro['resposta'], 
+                    'nota'          => $registro['nota'], 
                     'feedback_textual'  => $registro['feedback_textual'], 
                     'datahora_cadastro' => date('d/m/Y H:i:s', strtotime($registro['datahora_cadastro']))
                 ];
