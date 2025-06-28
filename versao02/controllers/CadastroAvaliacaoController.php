@@ -48,7 +48,7 @@ class CadastroAvaliacaoController extends RenderView
             $mensagemErroRegistroAvaliacao = $e->getMessage();
 
             $this->loadView('cadastroAvaliacao', [
-                'ErroRegistroAvaliacao' => $mensagemErroRegistroAvaliacao
+                'erroRegistroAvaliacao' => $mensagemErroRegistroAvaliacao
             ]); 
         }
     }

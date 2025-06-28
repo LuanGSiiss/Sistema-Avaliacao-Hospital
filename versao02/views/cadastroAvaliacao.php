@@ -10,10 +10,10 @@
     <div class="estrutura">
         <form class="avaliacao" action="cadastroAvaliacao" method="POST">
             <h1>Avaliação do Hospital Regional do Alto Vale</h1>
-            <?php if ($pergunta): ?>
+            <?php if (isset($pergunta)): ?>
                 <p class="pergunta"> <?= htmlspecialchars($pergunta['texto_pergunta']) ?> </p>
                 <input type="hidden" value="<?= $pergunta['id_pergunta'] ?>" name="id_pergunta">
-            <?php elseif ($erroPergunta): ?>
+            <?php elseif (isset($erroPergunta)): ?>
                 <p class="pergunta"> Erro ao buscar pergunta</p>
                 <script>
                     console.error("Erro ao buscar pergunta: <?= addslashes($erroPergunta) ?>");
@@ -52,8 +52,8 @@
     <script src="public/js/comportamento_cadastroAvaliacao.js"></script>
 </body>
 </html>
-<?php if ($ErroRegistroAvaliacao): ?>
+<?php if (isset($erroRegistroAvaliacao)): ?>
     <script>
-        console.error("Erro ao registrar a Avaliação: <?= addslashes($ErroRegistroAvaliacao) ?>");
+        console.error("Erro ao registrar a Avaliação: <?= addslashes($erroRegistroAvaliacao) ?>");
     </script>
 <?php endif; ?>

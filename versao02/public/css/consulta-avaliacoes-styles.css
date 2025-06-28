@@ -1,8 +1,7 @@
-/* ----TAGS---- */
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
 html {
@@ -10,107 +9,157 @@ html {
 }
 
 body {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 2rem;
-    background-color: rgb(243,244,246);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.6rem;
+    background-color: #f3f4f6;
+    color: #333;
 }
-
-/* ----CLASSES---- */
 
 /* Menu */
 .menu {
     width: 100%;
-    background-color: #333;
+    background-color: #1f2937; /* cinza escuro */
     color: white;
-    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .menu-lista {
-    list-style: none;
-    margin: 0;
-    padding: 0;
     display: flex;
+    list-style: none;
     justify-content: space-around;
     align-items: center;
+    padding: 1.5rem 0;
 }
 
-.menu-lista li {
-    padding: 1.5rem 2rem;
-}
-
-.menu-lista a {
+.menu-lista li a {
     text-decoration: none;
     color: white;
     font-weight: bold;
+    font-size: 1.6rem;
     transition: color 0.3s;
 }
 
-.menu-lista a:hover {
-    color: #ff9800;
+.menu-lista li a:hover {
+    color: #fbbf24;
 }
 
-/* main-conteudo */
-.estrura-conteudo {
-    max-width: 95%;
-    margin: 0 auto;
-    padding: 1rem;
+.estrutura {
+    max-width: 1600px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
 }
-
-/* Cabeçalho da consulta */
 
 .cabecalho-consulta {
     display: flex;
     justify-content: space-between;
-    padding: 2rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
 }
 
 .cabecalho-consulta h1 {
-    color: #292828;
+    color: #d32f2f; /* vermelho profissional */
+    font-size: 2.4rem;
 }
 
 .cabecalho-consulta button {
-    padding: 1rem 1.5rem;
+    padding: 1rem 2rem;
     font-size: 1.6rem;
-    color: rgb(240, 240, 240);
-    background-color: rgb(59,130,246);
-    border-style: none;
-    border-radius: 0.8rem;
+    background-color: #3b82f6;
+    color: #fff;
+    border: none;
+    border-radius: 0.6rem;
+    transition: background-color 0.2s;
 }
 
 .cabecalho-consulta button:hover {
-    background-color: rgb(37, 99, 235);
+    background-color: #2563eb;
     cursor: pointer;
 }
 
 /* consulta */
 
+.consulta {
+    overflow-x: auto;
+}
+
 .consulta table {
     width: 100%;
     border-collapse: collapse;
+    border-radius: 0.6rem;
+    overflow: hidden;
+}
+
+.consulta th, 
+.consulta td {
+    padding: 1.2rem;
+    text-align: left;
+    border-left: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 1.4rem;
+}
+
+.consulta td:last-child,
+.consulta th:last-child {
+    border-right: none;
+}
+
+.consulta td:first-child,
+.consulta th:first-child {
+    border-left: none;
+}
+
+.consulta th {
+    background-color: #e6f4ea;
+    color: #166534;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.consulta td {
+    background-color: #ffffff;
+    color: #333;
+    word-break: break-word;
 }
 
 .consulta .efeitoCarragamento{
     text-align: center;
+    font-style: italic;
+    color: #6b7280;
+    padding: 2rem 0;
 }
 
-.consulta th, td {
-    height: 6rem;
-    padding: 0.5rem 1rem;
-    text-align: left;
-    border-left: 0.1rem solid rgb(220,252,231);
-    border-right: 0.1rem solid rgb(220,252,231);
+@media (max-width: 768px) {
+    .cabecalho-consulta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .cabecalho-consulta h1 {
+        font-size: 2rem;
+    }
+
+    .cabecalho-consulta button {
+        width: 100%;
+    }
+
+    .consulta th,
+    .consulta td {
+        font-size: 1.2rem;
+        padding: 0.8rem;
+    }
 }
 
-.consulta th {
-    color: rgb(21,128,64);
-    background-color: rgb(220,252,231);
-}
 
-.consulta td {
-    word-wrap: break-word; /* Quebra palavras grandes */
-    word-break: break-word; /* Para compatibilidade com navegadores antigos */
-    white-space: normal; /* Permite a quebra de linhas */
-    background-color: rgb(255, 255, 255);
-    border-bottom: 0.2rem solid rgb(220,252,231);
-}
+
+
+
+
 

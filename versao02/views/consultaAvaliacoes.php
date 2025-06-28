@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administrativo</title>
+    <title>Consulta de Avaliações</title>
     <link rel="stylesheet" href="public/css/consulta-avaliacoes-styles.css">
 </head>
 <body>
@@ -19,7 +19,7 @@
             </ul>
         </nav>
     </header>
-    <section class="estrura-conteudo">
+    <section class="estrutura">
         <div class="cabecalho-consulta">
             <h1>Consulta de Avaliações</h1>
             <button id="butaoConsulta">Consultar</button>

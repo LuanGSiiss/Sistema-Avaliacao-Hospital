@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="public/css/cadastro-avaliacao.css">
+    <link rel="stylesheet" href="public/css/agradecimento-styles.css">
     <title>Agradecimento</title>
     <script>
         let countdown = 5;
@@ -25,9 +25,11 @@
 </head>
 <body>
     <div class="estrutura">
-        <div class="avaliacao">
-            <h1>Obrigado pela sua Avaliação!</h1>
-            <p>Você será redirecionado para a página inicial em <span id="contador">5</span> segundos.</p>
+        <div class="agradecimento">
+            <div class="texto">
+                <h1>Obrigado pela sua Avaliação!</h1>
+                <p>Você será redirecionado para a página de avaliação em <span id="contador">5</span> segundos.</p>
+            </div>
         </div>
     </div>
 </body>
