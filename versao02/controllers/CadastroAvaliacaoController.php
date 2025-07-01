@@ -11,13 +11,13 @@ class CadastroAvaliacaoController extends RenderView
             $idSetor = 1; //Por enquanto não foi implementado a seleção de setor
             $pergunta = $model->buscarPerguntaAleatoriaPorSetor($idSetor);
     
-            $this->loadView('cadastroAvaliacao', [
+            $this->loadView('avaliacao.cadastroAvaliacao', [
                 'pergunta' => $pergunta
             ]); 
         } catch(Exception $e) {
             $mensagemErroPergunta = $e->getMessage();
 
-            $this->loadView('cadastroAvaliacao', [
+            $this->loadView('avaliacao.cadastroAvaliacao', [
                 'ErroPergunta' => $mensagemErroPergunta
             ]); 
         }
@@ -41,13 +41,13 @@ class CadastroAvaliacaoController extends RenderView
             $sucesso = $model->registrar($avaliacao);
             
             if($sucesso) {
-                $this->loadView('agradecimento', []); 
+                $this->loadView('avaliacao.agradecimento', []); 
             }
             
         } catch(Exception $e) {
             $mensagemErroRegistroAvaliacao = $e->getMessage();
 
-            $this->loadView('cadastroAvaliacao', [
+            $this->loadView('avaliacao.cadastroAvaliacao', [
                 'erroRegistroAvaliacao' => $mensagemErroRegistroAvaliacao
             ]); 
         }

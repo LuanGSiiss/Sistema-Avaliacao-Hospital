@@ -2,8 +2,12 @@
 
 class NotFoundController
 {
-    public function index()
+    public function index($mensagemErro)
     {
-        echo "Not Found";
+        if ($mensagemErro) {
+            echo $mensagemErro;
+        } else {
+            echo "Not Found";
+        }
     }
 }
