@@ -35,4 +35,70 @@ class PerguntaModel extends Database
             throw new Exception("Erro na consulta: " . $e->getMessage());
         }
     }
+
+    public function BuscarTodas()
+    {
+        if (!$this->pdo) {
+            throw new Exception("Erro ao conectar com o banco de dados.");
+        }
+        
+        try {
+            $sql = "SELECT id_pergunta, texto_pergunta, todos_setores, status 
+                        FROM perguntas 
+                        ORDER BY id_pergunta;";
+            $stmt = $this->pdo->query($sql);
+            return $stmt->fetchAll();
+            
+        } catch (PDOException $e) {
+            throw new Exception("Erro na consulta: " . $e->getMessage());
+        }
+    }
+
+    public function registrar(Pergunta $pergunta, $setores)
+    {
+        if (!$this->pdo) {
+            throw new Exception("Erro ao conectar com o banco de dados.");
+        }
+        
+        try {
+
+            $sql = "INSERT INTO perguntas(texto_pergunta, todos_setores, status)
+                        VALUES(:texto_pergunta, :todos_setores, :status);";
+
+            $stmt = $this->pdo->prepare($sql);
+            
+            $stmt->bindValue(':texto_pergunta', $pergunta->texto_pergunta, PDO::PARAM_STR);
+            $stmt->bindValue(':todos_setores', $pergunta->todos_setores, PDO::PARAM_BOOL);
+            $stmt->bindValue(':status', $pergunta->status, PDO::PARAM_INT);
+            
+            $sucesso = $stmt->execute();
+
+            if(!$sucesso) {
+                $erro = $stmt->errorInfo()[2] ?? 'Erro desconhecido.';
+                throw new Exception("Falha ao registrar Pergunta: " . $erro);
+            }
+
+            $idPerguntaRegistrada = $this->pdo->lastInsertId();
+
+            // Cadastra a relação de Setor e Pergunta
+            if(!$pergunta->todos_setores) {
+                foreach ($setores as $setor) {
+                    $sql = "INSERT INTO pergunta_setor(id_pergunta, id_setor)
+                        VALUES(:id_pergunta, :id_setor);";
+
+                    $stmt = $this->pdo->prepare($sql);
+            
+                    $sucesso = $stmt->execute([
+                        'id_pergunta' => $idPerguntaRegistrada,
+                        'id_setor'  => $setor
+                    ]);
+                }
+            }
+            
+            return true;
+            
+        } catch (PDOException $e) {
+            throw new Exception("Erro na query: " . $e->getMessage());
+        }
+    }
 }

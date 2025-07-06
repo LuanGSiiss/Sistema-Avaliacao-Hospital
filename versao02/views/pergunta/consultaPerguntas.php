@@ -7,8 +7,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consulta de Avaliações</title>
-    <link rel="stylesheet" href="public/css/consulta-avaliacoes-styles.css">
+    <title>Consulta Perguntas</title>
+    <link rel="stylesheet" href="public/css/pergunta/consulta-perguntas-styles.css">
 </head>
 <body>
     <header class="menu">
@@ -21,39 +21,33 @@
     </header>
     <section class="estrutura">
         <div class="cabecalho-consulta">
-            <h1>Consulta de Avaliações</h1>
+            <h1>Consulta de Perguntas</h1>
             <button id="butaoConsulta">Consultar</button>
         </div>
+        <a href="./pergunta/incluir">Incluir</a>
         <div class="consulta" >
             <table id="resultadoConsulta">
                 <colgroup>
                     <col style="width: 5%;">
-                    <col style="width: 5%;">
-                    <col style="width: 5%;">
-                    <col style="width: 5%;">
-                    <col style="width: 5%;">
-                    <col style="width: 65%;">
+                    <col style="width: 80%;">
                     <col style="width: 10%;">
+                    <col style="width: 5%;">
                 </colgroup>
                 <thead>
                     <tr>
                         <th>Código</th>
-                        <th>Setor</th>
-                        <th>Código Pergunta</th>
-                        <th>Código Dispositivo</th>
-                        <th>Nota</th>
-                        <th>Feedback Textual</th>
-                        <th>Data/Hora do Cadastro</th>
+                        <th>Descrição</th>
+                        <th>Todos os Setores</th>
+                        <th>Situação</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <td colspan="7" class="efeitoCarragamento">Clique em "Consultar" para exibir os dados.</td>
+                    <td colspan="4" class="efeitoCarragamento">Clique em "Consultar" para exibir os dados.</td>
                     <!--Conteudo da busca-->
                 </tbody>
             </table>
         </div>
     </section>
-    
 </body>
-<script src="public/js/comportamento_consultaAvaliacoes.js"></script>
+<script src="public/js/comportamento_consultaPerguntas.js"></script>
 </html>

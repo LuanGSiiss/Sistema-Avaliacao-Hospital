@@ -2,7 +2,7 @@
 
 class ConsultaAvaliacoesController extends RenderView
 {
-    public function Index()
+    public function exibirConsulta()
     {
         $this->loadView('avaliacao.consultaAvaliacoes', []); 
     }
