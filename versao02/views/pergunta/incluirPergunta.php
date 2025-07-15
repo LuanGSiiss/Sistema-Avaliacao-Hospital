@@ -1,5 +1,6 @@
 <?php
     // require "../controller/validaSessao.php";
+    require_once __DIR__ . '/../../utils/config.php';
 ?>
 
 <!DOCTYPE html>
@@ -8,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Incluir Pergunta</title>
-    <link rel="stylesheet" href="../public/css/pergunta/incluir-pergunta-styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/pergunta/incluir-pergunta-styles.css">
 
     <!-- CSS do Select2 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css" />
@@ -16,18 +17,13 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 <body>
-    <header class="menu">
-        <nav>
-            <ul class="menu-lista">
-                <li><a href="../consultaAvaliacoes">Avaliações</a></li>
-                <li><a href="../consultaPerguntas">Perguntas</a></li>
-            </ul>
-        </nav>
-    </header>
+    <!-- Menu -->
+    <?php require_once __DIR__ .  '/../layout/menu.php'; ?>
+
     <div class="estrutura">
         <div>
-            <a href="../consultaPerguntas">Voltar</a>
-            <form class="formulario-pergunta" method="post" action="../pergunta/incluir">
+            <a href="<?= BASE_URL ?>consultaPerguntas">Voltar</a>
+            <form class="formulario-pergunta" method="post" action="<?= BASE_URL ?>pergunta/incluir">
                 <div class="inputs">
                     <div>
                         <label for="todos_setores">Todos os Setores?</label>
@@ -59,7 +55,7 @@
         </div>
     </div>
 </body>
-<script src="../public/js/comportamento_incluirPergunta.js"></script>
+<script src="<?= BASE_URL ?>public/js/comportamento_incluirPergunta.js"></script>
 <script>
     $(document).ready(function() {
         $('#setores').select2({

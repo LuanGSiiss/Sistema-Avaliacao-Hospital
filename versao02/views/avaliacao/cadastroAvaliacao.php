@@ -1,14 +1,18 @@
+<?php
+    require_once __DIR__ . '/../../utils/config.php';
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="public/css/cadastro-avaliacao-styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/avaliacao/cadastro-avaliacao-styles.css">
     <title>Avaliação do Hospital Regional do Alto vale</title>
 </head>
 <body>
     <div class="estrutura">
-        <form class="avaliacao" action="cadastroAvaliacao" method="POST">
+        <form class="avaliacao" action="<?= BASE_URL ?>cadastroAvaliacao" method="POST">
             <h1>Avaliação do Hospital Regional do Alto Vale</h1>
             <?php if (isset($pergunta)): ?>
                 <p class="pergunta"> <?= htmlspecialchars($pergunta['texto_pergunta']) ?> </p>
@@ -49,7 +53,7 @@
             <p class="aviso">Sua avaliação espontânea é anônima, nenhuma informação pessoal é solicitada ou armazenada.</p>
         </form>
     </div>
-    <script src="public/js/comportamento_cadastroAvaliacao.js"></script>
+    <script src="<?= BASE_URL ?>public/js/comportamento_cadastroAvaliacao.js"></script>
 </body>
 </html>
 <?php if (isset($erroRegistroAvaliacao)): ?>

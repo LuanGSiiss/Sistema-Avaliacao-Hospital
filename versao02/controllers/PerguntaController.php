@@ -9,10 +9,10 @@ class PerguntaController extends RenderView
 
     public function buscarPerguntas()
     {
-        $model = new PerguntaModel();
+        $perguntaModel = new PerguntaModel();
         
         try {
-            $perguntasBase = $model->BuscarTodas();
+            $perguntasBase = $perguntaModel->BuscarTodas();
             
             $arrayPerguntas = array_map(function ($registro) {
                 return [
@@ -39,8 +39,8 @@ class PerguntaController extends RenderView
 
         public function formularioIncluir()
     {
-        $model = new SetorModel();
-        $setoresAtivos = $model->BuscarTodosAtivos();
+        $setorModel = new SetorModel();
+        $setoresAtivos = $setorModel->BuscarTodosAtivos();
 
         $this->loadView('pergunta.incluirPergunta', [
             'setoresAtivos' => $setoresAtivos
@@ -49,41 +49,40 @@ class PerguntaController extends RenderView
 
     public function registrarPergunta()
     {
-        $model = new SetorModel();
-        $setoresAtivos = $model->BuscarTodosAtivos();
+        $setorModel = new SetorModel();
+        $setoresAtivos = $setorModel->BuscarTodosAtivos();
 
         try {
+            
             $textoPergunta = $_POST['texto_pergunta'] ?? null;
             $todosSetores = !empty($_POST['todos-setores']);
             $setores = $_POST['setores'] ?? null;
 
-            if($textoPergunta && ($todosSetores || (is_array($setores) && count($setores) > 0))) {
-                $pergunta = new Pergunta(null, $textoPergunta, $todosSetores, 1);
-                $model = new PerguntaModel();
+            //Validador do tipo
+            if(!is_string($textoPergunta)){
+                throw new Exception("O texto da pergunta deve ser do tipo string.");
+            } elseif(!is_bool($todosSetores)){
+                throw new Exception("A flag Todos Setores deve ser do tipo boolean.");
+            } elseif(!$todosSetores && !is_array($setores)) {
+                throw new Exception("Os setores deve ser do tipo array.");
+            }
 
-                $sucesso = $model->registrar($pergunta, $setores);
+            $pergunta = new Pergunta(null, $textoPergunta, $todosSetores);
+            $perguntaModel = new PerguntaModel();
 
-                if($sucesso) {
-                    $this->loadView('pergunta.incluirPergunta', [
-                        'sucessoMensagem' => "Pergunta cadastrada com Sucesso",
-                        'setores' => $setoresAtivos 
-                    ]); 
-                }
+            $sucesso = $perguntaModel->registrar($pergunta, $setores);
 
-            } else {
-                $mensagemErroRegistroPergunta = "Nem todos os campos foram preenchidos";
-
+            if($sucesso) {
                 $this->loadView('pergunta.incluirPergunta', [
-                    'erroRegistroPergunta' => $mensagemErroRegistroPergunta,
-                    'setores' => $setoresAtivos
-                ]);
+                    'sucessoMensagem' => "Pergunta cadastrada com Sucesso",
+                    'setores' => $setoresAtivos 
+                ]); 
             }
 
         } catch(Exception $e) {
-            $mensagemErroRegistroPergunta = $e->getMessage();
-
             $this->loadView('pergunta.incluirPergunta', [
-                'erroRegistroPergunta' => $mensagemErroRegistroPergunta
+                'erroRegistroPergunta' => $e->getMessage(),
+                'setores' => $setoresAtivos
             ]); 
         }
     }

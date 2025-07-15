@@ -1,5 +1,6 @@
 <?php
     // require "../controller/validaSessao.php";
+    require_once __DIR__ . '/../../utils/config.php';
 ?>
 
 <!DOCTYPE html>
@@ -8,17 +9,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consulta de Avaliações</title>
-    <link rel="stylesheet" href="public/css/consulta-avaliacoes-styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/avaliacao/consulta-avaliacoes-styles.css">
 </head>
 <body>
-    <header class="menu">
-        <nav>
-            <ul class="menu-lista">
-                <li><a href="./consultaAvaliacoes">Avaliações</a></li>
-                <li><a href="./consultaPerguntas">Perguntas</a></li>
-            </ul>
-        </nav>
-    </header>
+    <!-- Menu -->
+    <?php require_once __DIR__ .  '/../layout/menu.php'; ?>
+
     <section class="estrutura">
         <div class="cabecalho-consulta">
             <h1>Consulta de Avaliações</h1>
@@ -55,5 +51,5 @@
     </section>
     
 </body>
-<script src="public/js/comportamento_consultaAvaliacoes.js"></script>
+<script src="<?= BASE_URL ?>public/js/comportamento_consultaAvaliacoes.js"></script>
 </html>

@@ -8,6 +8,8 @@ spl_autoload_register(function($file) {
         require_once __DIR__."/utils/$file.php";
     } else if (file_exists(__DIR__."/models/$file.php")) {
         require_once __DIR__."/models/$file.php";
+    } else if (file_exists(__DIR__."/models/entidades/$file.php")) {
+        require_once __DIR__."/models/entidades/$file.php";
     }
 });
 

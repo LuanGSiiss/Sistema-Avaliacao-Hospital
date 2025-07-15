@@ -59,7 +59,7 @@ class PerguntaModel extends Database
         if (!$this->pdo) {
             throw new Exception("Erro ao conectar com o banco de dados.");
         }
-        
+
         try {
 
             $sql = "INSERT INTO perguntas(texto_pergunta, todos_setores, status)
