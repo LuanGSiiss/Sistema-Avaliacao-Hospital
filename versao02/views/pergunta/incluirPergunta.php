@@ -27,7 +27,7 @@
                 <div class="inputs">
                     <div>
                         <label for="todos_setores">Todos os Setores?</label>
-                        <input type="checkbox" value="1" name="todos-setores" id="todos_setores">
+                        <input type="checkbox" value="1" name="todos_setores" id="todos_setores">
                     </div>
                     <p>
                         <label for="setores">Setores</label>

@@ -61,6 +61,7 @@ class PerguntaModel extends Database
         }
 
         try {
+            $this->pdo->beginTransaction();
 
             $sql = "INSERT INTO perguntas(texto_pergunta, todos_setores, status)
                         VALUES(:texto_pergunta, :todos_setores, :status);";
@@ -70,34 +71,34 @@ class PerguntaModel extends Database
             $stmt->bindValue(':texto_pergunta', $pergunta->texto_pergunta, PDO::PARAM_STR);
             $stmt->bindValue(':todos_setores', $pergunta->todos_setores, PDO::PARAM_BOOL);
             $stmt->bindValue(':status', $pergunta->status, PDO::PARAM_INT);
-            
-            $sucesso = $stmt->execute();
-
-            if(!$sucesso) {
-                $erro = $stmt->errorInfo()[2] ?? 'Erro desconhecido.';
-                throw new Exception("Falha ao registrar Pergunta: " . $erro);
-            }
+            $stmt->execute();
 
             $idPerguntaRegistrada = $this->pdo->lastInsertId();
 
-            // Cadastra a relação de Setor e Pergunta
+            // Cadastrar a relação de Setor e Pergunta
             if(!$pergunta->todos_setores) {
+                if (empty($setores)) {
+                    throw new Exception("Setores não informados.");
+                }
+
                 foreach ($setores as $setor) {
                     $sql = "INSERT INTO pergunta_setor(id_pergunta, id_setor)
                         VALUES(:id_pergunta, :id_setor);";
 
                     $stmt = $this->pdo->prepare($sql);
             
-                    $sucesso = $stmt->execute([
+                    $stmt->execute([
                         'id_pergunta' => $idPerguntaRegistrada,
                         'id_setor'  => $setor
                     ]);
                 }
             }
-            
+
+            $this->pdo->commit();
             return true;
             
         } catch (PDOException $e) {
+            $this->pdo->rollBack();
             throw new Exception("Erro na query: " . $e->getMessage());
         }
     }

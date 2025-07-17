@@ -53,16 +53,18 @@ class PerguntaController extends RenderView
         $setoresAtivos = $setorModel->BuscarTodosAtivos();
 
         try {
-            
-            $textoPergunta = $_POST['texto_pergunta'] ?? null;
-            $todosSetores = !empty($_POST['todos-setores']);
-            $setores = $_POST['setores'] ?? null;
+            //valida se os campos estão preechidos
+            if( (!isset($_POST['texto_pergunta']) || trim($_POST['texto_pergunta']) == "") || (!isset($_POST['todos_setores']) && (!isset($_POST['setores']) || !is_array($_POST['setores']) || $_POST['setores'] == [] )) ) {
+                throw new Exception("Nem todos os campos obrigatórios foram informados.");
+            }
 
+            $textoPergunta = trim($_POST['texto_pergunta']);
+            $todosSetores = !empty($_POST['todos_setores']);
+            $setores = $_POST['setores'] ?? [];
+            
             //Validador do tipo
             if(!is_string($textoPergunta)){
                 throw new Exception("O texto da pergunta deve ser do tipo string.");
-            } elseif(!is_bool($todosSetores)){
-                throw new Exception("A flag Todos Setores deve ser do tipo boolean.");
             } elseif(!$todosSetores && !is_array($setores)) {
                 throw new Exception("Os setores deve ser do tipo array.");
             }
@@ -75,14 +77,14 @@ class PerguntaController extends RenderView
             if($sucesso) {
                 $this->loadView('pergunta.incluirPergunta', [
                     'sucessoMensagem' => "Pergunta cadastrada com Sucesso",
-                    'setores' => $setoresAtivos 
+                    'setoresAtivos' => $setoresAtivos 
                 ]); 
             }
 
         } catch(Exception $e) {
             $this->loadView('pergunta.incluirPergunta', [
                 'erroRegistroPergunta' => $e->getMessage(),
-                'setores' => $setoresAtivos
+                'setoresAtivos' => $setoresAtivos
             ]); 
         }
     }
