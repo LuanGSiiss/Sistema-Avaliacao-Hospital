@@ -23,12 +23,17 @@ document.getElementById("butaoConsulta").addEventListener("click", function () {
                         conteudo.perguntas.forEach( pergunta => {
                             let todos_setores = pergunta.todos_setores ? "Sim" : "Não";
                             let situacao = pergunta.status ? "Ativo" : "Inativo";
+                            let acoes = `
+                            <a href="./pergunta/alterar/${pergunta.id_pergunta}">Alterar</a>
+                            <a href="./pergunta/visualizar/${pergunta.id_pergunta}">Visualizar</a>
+                            `
 
                             adicionarLinha(tbody, [
                                 pergunta.id_pergunta,
                                 pergunta.texto_pergunta,
                                 todos_setores,
                                 situacao,
+                                acoes,
                             ]);
                         });
                     }

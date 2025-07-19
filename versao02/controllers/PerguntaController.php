@@ -37,7 +37,7 @@ class PerguntaController extends RenderView
         }
     }
 
-        public function formularioIncluir()
+    public function formularioIncluir()
     {
         $setorModel = new SetorModel();
         $setoresAtivos = $setorModel->BuscarTodosAtivos();
@@ -87,5 +87,82 @@ class PerguntaController extends RenderView
                 'setoresAtivos' => $setoresAtivos
             ]); 
         }
+    }
+
+    public function formularioAlterar($idPergunta, $mensagens = [])
+    {
+        $setorModel = new SetorModel();
+        $setoresAtivos = $setorModel->BuscarTodosAtivos();
+
+        $perguntaModel = new PerguntaModel();
+        $pergunta = $perguntaModel->buscarPeguntaPorId($idPergunta);
+
+        $perguntaSetores = $perguntaModel->buscarSetoresPorPergunta($idPergunta);
+        $perguntaSetoresArray = array_map(function ($registro) {
+            return $registro['id_setor'];
+        }, $perguntaSetores);
+
+        $this->loadView('pergunta.alterarPergunta', [
+            'setoresAtivos' => $setoresAtivos,
+            'pergunta' => $pergunta,
+            'perguntaSetores' => $perguntaSetoresArray,
+            'mensagens' => $mensagens
+        ]);
+    }
+
+    public function alterarPergunta($idPergunta)
+    {
+        $setorModel = new SetorModel();
+        $setoresAtivos = $setorModel->BuscarTodosAtivos();
+        
+        try {
+            //valida se os campos estão preechidos
+            if( (!isset($_POST['texto_pergunta']) || trim($_POST['texto_pergunta']) == "") || (!isset($_POST['todos_setores']) && (!isset($_POST['setores']) || !is_array($_POST['setores']) || $_POST['setores'] == [] )) ) {
+                throw new Exception("Nem todos os campos obrigatórios foram informados.");
+            }
+
+            $textoPergunta = trim($_POST['texto_pergunta']);
+            $todosSetores = !empty($_POST['todos_setores']);
+            $setores = $_POST['setores'] ?? [];
+            
+            //Validador do tipo
+            if(!is_string($textoPergunta)){
+                throw new Exception("O texto da pergunta deve ser do tipo string.");
+            } elseif(!$todosSetores && !is_array($setores)) {
+                throw new Exception("Os setores deve ser do tipo array.");
+            }
+
+            $pergunta = new Pergunta($idPergunta, $textoPergunta, $todosSetores);
+            $perguntaModel = new PerguntaModel();
+
+            $sucesso = $perguntaModel->alterar($pergunta, $setores);
+
+            if($sucesso) {
+                $this->formularioAlterar($idPergunta, ['sucessoMensagem' => "Pergunta cadastrada com Sucesso"]); 
+            }
+
+        } catch(Exception $e) {
+            $this->formularioAlterar($idPergunta, ['erroRegistroPergunta' => $e->getMessage()]);
+        }
+    }
+
+    public function visualizarPergunta($idPergunta)
+    {
+        $setorModel = new SetorModel();
+        $setoresAtivos = $setorModel->BuscarTodosAtivos();
+
+        $perguntaModel = new PerguntaModel();
+        $pergunta = $perguntaModel->buscarPeguntaPorId($idPergunta);
+
+        $perguntaSetores = $perguntaModel->buscarSetoresPorPergunta($idPergunta);
+        $perguntaSetoresArray = array_map(function ($registro) {
+            return $registro['id_setor'];
+        }, $perguntaSetores);
+
+        $this->loadView('pergunta.visualizarPergunta', [
+            'setoresAtivos' => $setoresAtivos,
+            'pergunta' => $pergunta,
+            'perguntaSetores' => $perguntaSetoresArray
+        ]);
     }
 }

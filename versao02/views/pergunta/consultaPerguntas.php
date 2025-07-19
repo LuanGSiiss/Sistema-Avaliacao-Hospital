@@ -25,9 +25,10 @@
             <table id="resultadoConsulta">
                 <colgroup>
                     <col style="width: 5%;">
-                    <col style="width: 80%;">
+                    <col style="width: 68%;">
                     <col style="width: 10%;">
                     <col style="width: 5%;">
+                    <col style="width: 12%;">
                 </colgroup>
                 <thead>
                     <tr>
@@ -35,6 +36,7 @@
                         <th>Descrição</th>
                         <th>Todos os Setores</th>
                         <th>Situação</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>

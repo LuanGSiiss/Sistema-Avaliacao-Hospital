@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Incluir Pergunta</title>
+    <title>Alterar Pergunta</title>
     <link rel="stylesheet" href="<?= BASE_URL ?>public/css/pergunta/manutencao-pergunta-styles.css">
 
     <!-- CSS do Select2 -->
@@ -23,23 +23,23 @@
     <div class="estrutura">
         <div>
             <a href="<?= BASE_URL ?>consultaPerguntas">Voltar</a>
-            <form class="formulario-pergunta" method="post" action="<?= BASE_URL ?>pergunta/incluir">
+            <form class="formulario-pergunta" method="post" action="<?= BASE_URL ?>pergunta/alterar/<?= $pergunta['id_pergunta'] ?>">
                 <div class="inputs">
                     <div>
                         <label for="todos_setores">Todos os Setores?</label>
-                        <input type="checkbox" value="1" name="todos_setores" id="todos_setores">
+                        <input type="checkbox" value="1" name="todos_setores" id="todos_setores" <?= ($pergunta['todos_setores']) ? 'checked' : '' ?>>
                     </div>
                     <p>
                         <label for="setores">Setores</label>
                         <select name="setores[]" name="setores" id="setores" multiple required>
                             <?php foreach ($setoresAtivos as $setor): ?>
-                                <option value="<?= $setor['id_setor'] ?>"><?= htmlspecialchars($setor['descricao']) ?></option>
+                                <option value="<?= $setor['id_setor'] ?>" <?= in_array($setor['id_setor'], $perguntaSetores) ? 'selected' : '' ?>><?= htmlspecialchars($setor['descricao']) ?></option>
                             <?php endforeach; ?>
                         </select>
                     </p>
                     <p>
                         <label for="texto_pergunta" >Texto da Pergunta</label>
-                        <textarea name="texto_pergunta" id="texto_pergunta" maxlength="350" rows="5" oninput="contagemCaracteres()" placeholder="Achei bom porque..." required></textarea>
+                        <textarea name="texto_pergunta" id="texto_pergunta" maxlength="350" rows="5" oninput="contagemCaracteres()" placeholder="Achei bom porque..." required><?= $pergunta['texto_pergunta'] ?></textarea>
                         <p class="contador-char" id="contadorChar">0/350 caracteres</p>
                     </p>
                 </div>
@@ -47,10 +47,10 @@
                 <button id="limpar" type="reset">Limpar</button>
             </form>
             <!-- mensagem -->
-            <?php if (isset($erroRegistroPergunta)): ?>
-                <p class="mensagem erro"><?= htmlspecialchars($erroRegistroPergunta) ?></p>
-            <?php elseif (isset($sucessoMensagem)): ?>
-                <p class="mensagem sucesso"><?= htmlspecialchars($sucessoMensagem) ?></p>
+            <?php if (isset($mensagens['erroRegistroPergunta'])): ?>
+                <p class="mensagem erro"><?= htmlspecialchars($mensagens['erroRegistroPergunta']) ?></p>
+            <?php elseif (isset($mensagens['sucessoMensagem'])): ?>
+                <p class="mensagem sucesso"><?= htmlspecialchars($mensagens['sucessoMensagem']) ?></p>
             <?php endif; ?>
         </div>
     </div>
@@ -66,8 +66,8 @@
     });
 </script>
 </html>
-<?php if (isset($erroRegistroPergunta)): ?>
+<?php if (isset($mensagens['erroRegistroPergunta'])): ?>
     <script>
-        console.error("Erro ao registrar a Pergunta: <?= addslashes($erroRegistroPergunta) ?>");
+        console.error("Erro ao registrar a Pergunta: <?= addslashes($mensagens['erroRegistroPergunta']) ?>");
     </script>
 <?php endif; ?>
