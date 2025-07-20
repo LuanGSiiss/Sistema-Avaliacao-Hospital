@@ -15,6 +15,13 @@ textarea.addEventListener("input", function () {
     }
 });
 
+// Para vir desabilitado ou habilitado na alteração
+if (todosSetores.checked) {
+        selectSetores.disabled = true;
+    } else {
+        selectSetores.disabled = false;
+    }
+
 todosSetores.addEventListener("change", function () {
     if (todosSetores.checked) {
         selectSetores.disabled = true;

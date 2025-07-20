@@ -16,5 +16,8 @@ $routes = [
         '/cadastroAvaliacao' => 'CadastroAvaliacaoController@registrarAvaliacao',
         '/pergunta/incluir' => 'PerguntaController@registrarPergunta',
         '/pergunta/alterar/{id}' => 'PerguntaController@alterarPergunta'
+    ],
+    'DELETE' => [
+        '/pergunta/excluir/{id}' => 'PerguntaController@excluirPergunta'
     ]
 ];

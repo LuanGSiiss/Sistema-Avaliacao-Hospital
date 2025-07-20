@@ -209,4 +209,55 @@ class PerguntaModel extends Database
             throw new Exception("Erro na query: " . $e->getMessage());
         }
     }
+
+    public function excluir($idPergunta)
+    {
+        if (!$this->pdo) {
+            throw new Exception("Erro ao conectar com o banco de dados.");
+        }
+
+        try {
+            $sqlPerguntaEmAvaliacoes = 
+                "SELECT count(*) as total
+                    FROM avaliacoes
+                    WHERE id_pergunta = :idPergunta;";
+            $stmt = $this->pdo->prepare($sqlPerguntaEmAvaliacoes);
+            $stmt->execute(['idPergunta' => $idPergunta]);
+            
+            $resultado = $stmt->fetch();
+
+            if($resultado['total'] > 0) {
+                throw new Exception("A pergunta possui relacionamento com avaliações, não será possível realizar a exclusão.");
+            }
+
+            $this->pdo->beginTransaction();
+
+            //Deletar os relacionamentos de Pergunta e Setor
+            $sqlDeletePerguntaSetor = 
+                "DELETE FROM pergunta_setor
+                    WHERE id_pergunta = :idPergunta;";
+
+            $stmt = $this->pdo->prepare($sqlDeletePerguntaSetor);
+            $stmt->execute([
+                'idPergunta' => $idPergunta,
+            ]);
+
+            //Deletar Pergunta
+            $sqlDeletePergunta = 
+                "DELETE FROM perguntas
+                    WHERE id_pergunta = :idPergunta;";
+
+            $stmt = $this->pdo->prepare($sqlDeletePergunta);
+            $stmt->execute([
+                'idPergunta' => $idPergunta,
+            ]);
+
+            $this->pdo->commit();
+            return true;
+            
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            throw new Exception("Erro na query: " . $e->getMessage());
+        }
+    }
 }

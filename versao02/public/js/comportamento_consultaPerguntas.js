@@ -26,6 +26,7 @@ document.getElementById("butaoConsulta").addEventListener("click", function () {
                             let acoes = `
                             <a href="./pergunta/alterar/${pergunta.id_pergunta}">Alterar</a>
                             <a href="./pergunta/visualizar/${pergunta.id_pergunta}">Visualizar</a>
+                            <span onclick="mensagemExcluir(${pergunta.id_pergunta})">Excluir</span>
                             `
 
                             adicionarLinha(tbody, [
@@ -75,4 +76,80 @@ function limparCorpoTabela(tabela) {
     tbody.innerHTML = "";
 }
 
+//Exclusão
+function mensagemExcluir(idPergunta) {
+    const divMensagem = document.createElement('div');
+    divMensagem.className = 'divExcluir';
+    divMensagem.id = 'divExcluir';
+
+    const popMensagem = document.createElement('div');
+    popMensagem.className = 'popExcluir';
+    popMensagem.innerHTML = `
+        <p>Tem certeza que deseja excluir o registro?</p>
+        <button id="buttonSim" onclick="excluirPergunta(${idPergunta})">Sim</button>
+        <button id="buttonNao" onclick="fecharMensagemExcluir()">Não</button>
+    `;
+
+    divMensagem.appendChild(popMensagem);
+    document.body.appendChild(divMensagem);
+
+}
+
+function excluirPergunta(idPergunta) {
+    const divMensagem = document.getElementById("divExcluir");
+    efeitoCarragamentoExcluir(divMensagem);
+
+    const func_assinc = new XMLHttpRequest();
+    func_assinc.open("DELETE", `./pergunta/excluir/${idPergunta}`, true);
+    func_assinc.onload = function () {
+        if (func_assinc.status === 200) {
+            fecharMensagemExcluir();
+
+            try {
+                const dadosResposta = JSON.parse(func_assinc.responseText);
+                
+                if (dadosResposta.status = 'sucesso') {
+                    document.getElementById("butaoConsulta").click();
+                    exibirMensagemRetornoExclusão('Pergunta Excluída com Sucesso', 1);
+                } else {
+                    exibirMensagemRetornoExclusão(dadosResposta.message, 0);
+                    console.log(dadosResposta.message);
+                }
+            } catch (erro) {
+                console.error("Erro ao parsear JSON:", erro.message);
+            }
+        } else {
+            fecharMensagemExcluir();
+            alert("requisição invalida");
+        }
+    };
+    
+    func_assinc.send();
+}
+
+function efeitoCarragamentoExcluir(divMensagem) {
+    divMensagem.innerHTML = `
+        <div class="mensagemExcluir">Aguarde...</div>
+    `;
+}
+
+function fecharMensagemExcluir() {
+    const divMensagem = document.getElementById("divExcluir");
+    divMensagem.remove();
+}
+
+function exibirMensagemRetornoExclusão(mensagem, situacao) {
+    const mensagemStatus = document.createElement('div');
+    // 1 = sucesso, 0 = erro
+    if (situacao == 1) {
+        mensagemStatus.innerHTML = `<p class="mensagem sucesso">${mensagem}</p>`;
+    } else {
+        mensagemStatus.innerHTML = `<p class="mensagem erro">${mensagem}</p>`;
+    }
+    document.body.appendChild(mensagemStatus);
+
+    setTimeout(() => {
+        mensagemStatus.remove();
+    }, 5000);
+}
 

@@ -55,7 +55,6 @@
         </div>
     </div>
 </body>
-<script src="<?= BASE_URL ?>public/js/comportamento_incluirPergunta.js"></script>
 <script>
     $(document).ready(function() {
         $('#setores').select2({
@@ -65,7 +64,9 @@
         });
     });
 </script>
+<script src="<?= BASE_URL ?>public/js/comportamento_manutencaoPergunta.js"></script>
 </html>
+<!-- Exibir erro no console -->
 <?php if (isset($mensagens['erroRegistroPergunta'])): ?>
     <script>
         console.error("Erro ao registrar a Pergunta: <?= addslashes($mensagens['erroRegistroPergunta']) ?>");

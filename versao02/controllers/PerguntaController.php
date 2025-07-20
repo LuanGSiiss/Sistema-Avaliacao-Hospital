@@ -165,4 +165,29 @@ class PerguntaController extends RenderView
             'perguntaSetores' => $perguntaSetoresArray
         ]);
     }
+
+    public function excluirPergunta($idPerguntaParametro)
+    {
+        $perguntaModel = new PerguntaModel();
+        
+        try {
+            $idPergunta = (int) $idPerguntaParametro;
+
+            $perguntaModel->excluir($idPergunta);
+            $mensagemSucesso = 'Pergunta com id ' . $idPergunta. ' excluída com sucesso';
+
+            echo json_encode([
+                'status' => 'sucesso',
+                'data' => [
+                    'message' => $mensagemSucesso
+                ] 
+            ]);
+        } catch (Exception $e) {
+            echo json_encode([
+                'status' => 'erro',
+                'message' => $e->getMessage() 
+            ]);
+        }
+    }
 }
+
