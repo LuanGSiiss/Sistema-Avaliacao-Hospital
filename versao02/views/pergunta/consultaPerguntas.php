@@ -25,10 +25,10 @@
             <table id="resultadoConsulta">
                 <colgroup>
                     <col style="width: 5%;">
-                    <col style="width: 68%;">
+                    <col style="width: 65%;">
                     <col style="width: 10%;">
                     <col style="width: 5%;">
-                    <col style="width: 12%;">
+                    <col style="width: 15%;">
                 </colgroup>
                 <thead>
                     <tr>

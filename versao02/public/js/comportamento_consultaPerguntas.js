@@ -24,9 +24,9 @@ document.getElementById("butaoConsulta").addEventListener("click", function () {
                             let todos_setores = pergunta.todos_setores ? "Sim" : "Não";
                             let situacao = pergunta.status ? "Ativo" : "Inativo";
                             let acoes = `
-                            <a href="./pergunta/alterar/${pergunta.id_pergunta}">Alterar</a>
-                            <a href="./pergunta/visualizar/${pergunta.id_pergunta}">Visualizar</a>
-                            <span onclick="mensagemExcluir(${pergunta.id_pergunta})">Excluir</span>
+                            <a href="./pergunta/alterar/${pergunta.id_pergunta}" class="botaoAcao alterar">Alterar</a>
+                            <a href="./pergunta/visualizar/${pergunta.id_pergunta}" class="botaoAcao visualizar">Visualizar</a>
+                            <span onclick="mensagemExcluir(${pergunta.id_pergunta})" class="botaoAcao excluir">Excluir</span>
                             `
 
                             adicionarLinha(tbody, [
@@ -56,9 +56,13 @@ document.getElementById("butaoConsulta").addEventListener("click", function () {
 
 function adicionarLinha(tabela, valores) {
     const novaLinha = tabela.insertRow();
-    valores.forEach(valor => {
+    valores.forEach((valor, index ) => {
         const celula = novaLinha.insertCell();
         celula.innerHTML = valor;
+
+        if (index === valores.length - 1) {
+            celula.classList.add("colunaAcoes");
+        }
     });
 };
 
@@ -85,9 +89,12 @@ function mensagemExcluir(idPergunta) {
     const popMensagem = document.createElement('div');
     popMensagem.className = 'popExcluir';
     popMensagem.innerHTML = `
+        <h2>Confirmação</h3>
         <p>Tem certeza que deseja excluir o registro?</p>
-        <button id="buttonSim" onclick="excluirPergunta(${idPergunta})">Sim</button>
-        <button id="buttonNao" onclick="fecharMensagemExcluir()">Não</button>
+        <div class="botoesConfirmacao">
+            <button class="buttonSim" onclick="excluirPergunta(${idPergunta})">Sim</button>
+            <button id="buttonNao" onclick="fecharMensagemExcluir()">Não</button>
+        </div>
     `;
 
     divMensagem.appendChild(popMensagem);

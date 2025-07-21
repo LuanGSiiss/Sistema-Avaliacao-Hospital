@@ -125,27 +125,128 @@ body {
     padding: 2rem 0;
 }
 
+/* Butoes de acoes nos registros da consulta */
+.colunaAcoes {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 2px 0;
+}
+
+.botaoAcao {
+    font-size: 13px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-decoration: none;
+    color: white;
+    transition: background-color 0.3s ease, transform 0.2s;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.botaoAcao.alterar {
+    background-color: #3b82f6;
+}
+
+.botaoAcao.alterar:hover {
+    background-color: #2563eb;
+    transform: scale(1.05);
+}
+
+.botaoAcao.visualizar {
+    background-color: #10b981;
+}
+
+.botaoAcao.visualizar:hover {
+    background-color: #059669;
+    transform: scale(1.05);
+}
+
+.botaoAcao.excluir {
+    background-color: #ef4444; 
+}
+
+.botaoAcao.excluir:hover {
+    background-color: #dc2626;
+    transform: scale(1.05);
+}
+
+/* Mensagem de exclusão */
 .divExcluir {
     position: fixed;
     z-index: 1000;
     display: flex;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    top: 0; right: 0; bottom: 0; left: 0;
+    display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(0,0,0,0.10);
+    background: rgba(0,0,0,0.5);
 }
 
 .popExcluir {
     display: flex;
     flex-direction: column;
-    padding: 20px;
-    background-color: white;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    gap: 16px;
+    padding: 24px 32px;
+    background-color: #ffffff;
+    color: #1f2937;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    border-top: 8px solid #3b82f6;
+    max-width: 400px;
+    width: 90%;
+    text-align: left;
 }
 
+.popExcluir h2 {
+    font-size: 22px;
+    color: #111827;
+}
+
+.popExcluir p {
+    font-size: 18px;
+    color: #374151;
+}
+
+.botoesConfirmacao {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px; 
+    padding-top: 10px;
+}
+
+.botoesConfirmacao button {
+    min-width: 90px;
+    font-size: 16px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.buttonSim {
+    background-color: #facc15;
+    color: #000;
+}
+
+.buttonSim:hover {
+    background-color: #eab308;
+    transform: scale(1.05);
+}
+
+.buttonNao {
+    background-color: #e5e7eb; /* Cinza claro */
+    color: #111827;
+}
+
+.buttonNao:hover {
+    background-color: #d1d5db;
+    transform: scale(1.05);
+}
+
+/* Mensagens de retorno */
 .mensagem {
     position: fixed;
     bottom: 10px;
