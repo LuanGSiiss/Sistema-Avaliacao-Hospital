@@ -9,6 +9,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consulta Perguntas</title>
+    <!-- links do menu -->
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/layout/menu-styles.css">
+    <script src="<?= BASE_URL ?>public/js/layout/comportamento_menu.js" defer></script>
+
     <link rel="stylesheet" href="<?= BASE_URL ?>public/css/pergunta/consulta-perguntas-styles.css">
 </head>
 <body>

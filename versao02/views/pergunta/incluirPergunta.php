@@ -9,8 +9,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Incluir Pergunta</title>
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/pergunta/manutencao-pergunta-styles.css">
+    <!-- links do menu -->
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/layout/menu-styles.css">
+    <script src="<?= BASE_URL ?>public/js/layout/comportamento_menu.js" defer></script>
 
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/pergunta/manutencao-pergunta-styles.css">
     <!-- CSS do Select2 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
