@@ -11,7 +11,6 @@
     <title>Alterar Pergunta</title>
     <!-- links do menu -->
     <link rel="stylesheet" href="<?= BASE_URL ?>public/css/layout/menu-styles.css">
-    <script src="<?= BASE_URL ?>public/js/layout/comportamento_menu.js" defer></script>
 
     <link rel="stylesheet" href="<?= BASE_URL ?>public/css/pergunta/manutencao-pergunta-styles.css">
     <!-- CSS do Select2 -->
