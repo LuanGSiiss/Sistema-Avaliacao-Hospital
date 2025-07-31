@@ -16,42 +16,48 @@ class PerguntaController extends RenderView
             
             $arrayPerguntas = array_map(function ($registro) {
                 return [
-                    'id_pergunta'      => $registro['id_pergunta'], 
-                    'texto_pergunta'          => $registro['texto_pergunta'], 
-                    'todos_setores'       => $registro['todos_setores'], 
-                    'status'    => $registro['status']
+                    'id_pergunta'    => $registro['id_pergunta'], 
+                    'texto_pergunta' => $registro['texto_pergunta'], 
+                    'todos_setores'  => $registro['todos_setores'], 
+                    'status'         => $registro['status']
                 ];
             }, $perguntasBase);
             
+            http_response_code(200);
             echo json_encode([
                 'status' => 'sucesso',
                 'data' => [
                     'perguntas' => $arrayPerguntas
                 ] 
             ]);
-        } catch (Exception $e) {
+        } catch (PDOException $e) {
+            http_response_code(500);
             echo json_encode([
                 'status' => 'erro',
-                'message' => $e->getMessage() 
+                'message' => "Ocorreu um erro interno no servidor ao processar a requisição: " . $e->getMessage() 
+            ]);
+        } catch (Exception $e) {
+            http_response_code(400);
+            echo json_encode([
+                'status' => 'erro',
+                'message' => "Ocorreu um erro inesperado ao processar a requisição: " . $e->getMessage() 
             ]);
         }
     }
 
-    public function formularioIncluir()
+    public function formularioIncluir(array $mensagens = [])
     {
         $setorModel = new SetorModel();
-        $setoresAtivos = $setorModel->BuscarTodosAtivos();
+        $setoresAtivos = $setorModel->BuscarSetoresAtivos();
 
         $this->loadView('pergunta.incluirPergunta', [
-            'setoresAtivos' => $setoresAtivos
-        ]); 
+            'setoresAtivos' => $setoresAtivos,
+            'mensagens' => $mensagens
+        ]);
     }
 
     public function registrarPergunta()
     {
-        $setorModel = new SetorModel();
-        $setoresAtivos = $setorModel->BuscarTodosAtivos();
-
         try {
             //valida se os campos estão preechidos
             if( (!isset($_POST['texto_pergunta']) || trim($_POST['texto_pergunta']) == "") || (!isset($_POST['todos_setores']) && (!isset($_POST['setores']) || !is_array($_POST['setores']) || $_POST['setores'] == [] )) ) {
@@ -62,12 +68,12 @@ class PerguntaController extends RenderView
             $todosSetores = !empty($_POST['todos_setores']);
             $setores = $_POST['setores'] ?? [];
             
-            //Validador do tipo
-            if(!is_string($textoPergunta)){
-                throw new Exception("O texto da pergunta deve ser do tipo string.");
-            } elseif(!$todosSetores && !is_array($setores)) {
-                throw new Exception("Os setores deve ser do tipo array.");
-            }
+            // Validador do tipo
+            // if(!is_string($textoPergunta)){
+            //     throw new Exception("O texto da pergunta deve ser do tipo string.");
+            // } elseif(!$todosSetores && !is_array($setores)) {
+            //     throw new Exception("Os setores deve ser do tipo array.");
+            // }
 
             $pergunta = new Pergunta(null, $textoPergunta, $todosSetores);
             $perguntaModel = new PerguntaModel();
@@ -75,27 +81,21 @@ class PerguntaController extends RenderView
             $sucesso = $perguntaModel->registrar($pergunta, $setores);
 
             if($sucesso) {
-                $this->loadView('pergunta.incluirPergunta', [
-                    'sucessoMensagem' => "Pergunta cadastrada com Sucesso",
-                    'setoresAtivos' => $setoresAtivos 
-                ]); 
+                $this->formularioIncluir(['sucessoMensagem' => "Pergunta cadastrada com Sucesso"]);
             }
 
         } catch(Exception $e) {
-            $this->loadView('pergunta.incluirPergunta', [
-                'erroRegistroPergunta' => $e->getMessage(),
-                'setoresAtivos' => $setoresAtivos
-            ]); 
+            $this->formularioIncluir(['erroRegistroPergunta' => $e->getMessage()]);
         }
     }
 
-    public function formularioAlterar($idPergunta, $mensagens = [])
+    public function formularioAlterar(int $idPergunta, array $mensagens = [])
     {
         $setorModel = new SetorModel();
-        $setoresAtivos = $setorModel->BuscarTodosAtivos();
+        $setoresAtivos = $setorModel->BuscarSetoresAtivos();
 
         $perguntaModel = new PerguntaModel();
-        $pergunta = $perguntaModel->buscarPeguntaPorId($idPergunta);
+        $pergunta = $perguntaModel->buscarPorId($idPergunta);
 
         $perguntaSetores = $perguntaModel->buscarSetoresPorPergunta($idPergunta);
         $perguntaSetoresArray = array_map(function ($registro) {
@@ -110,11 +110,8 @@ class PerguntaController extends RenderView
         ]);
     }
 
-    public function alterarPergunta($idPergunta)
+    public function alterarPergunta(int $idPergunta)
     {
-        $setorModel = new SetorModel();
-        $setoresAtivos = $setorModel->BuscarTodosAtivos();
-        
         try {
             //valida se os campos estão preechidos
             if( (!isset($_POST['texto_pergunta']) || trim($_POST['texto_pergunta']) == "") || (!isset($_POST['todos_setores']) && (!isset($_POST['setores']) || !is_array($_POST['setores']) || $_POST['setores'] == [] )) ) {
@@ -126,11 +123,11 @@ class PerguntaController extends RenderView
             $setores = $_POST['setores'] ?? [];
             
             //Validador do tipo
-            if(!is_string($textoPergunta)){
-                throw new Exception("O texto da pergunta deve ser do tipo string.");
-            } elseif(!$todosSetores && !is_array($setores)) {
-                throw new Exception("Os setores deve ser do tipo array.");
-            }
+            // if(!is_string($textoPergunta)){
+            //     throw new Exception("O texto da pergunta deve ser do tipo string.");
+            // } elseif(!$todosSetores && !is_array($setores)) {
+            //     throw new Exception("Os setores deve ser do tipo array.");
+            // }
 
             $pergunta = new Pergunta($idPergunta, $textoPergunta, $todosSetores);
             $perguntaModel = new PerguntaModel();
@@ -138,7 +135,7 @@ class PerguntaController extends RenderView
             $sucesso = $perguntaModel->alterar($pergunta, $setores);
 
             if($sucesso) {
-                $this->formularioAlterar($idPergunta, ['sucessoMensagem' => "Pergunta cadastrada com Sucesso"]); 
+                $this->formularioAlterar($idPergunta, ['sucessoMensagem' => "Pergunta alterada com Sucesso"]); 
             }
 
         } catch(Exception $e) {
@@ -149,10 +146,10 @@ class PerguntaController extends RenderView
     public function visualizarPergunta($idPergunta)
     {
         $setorModel = new SetorModel();
-        $setoresAtivos = $setorModel->BuscarTodosAtivos();
+        $setoresAtivos = $setorModel->BuscarSetoresAtivos();
 
         $perguntaModel = new PerguntaModel();
-        $pergunta = $perguntaModel->buscarPeguntaPorId($idPergunta);
+        $pergunta = $perguntaModel->buscarPorId($idPergunta);
 
         $perguntaSetores = $perguntaModel->buscarSetoresPorPergunta($idPergunta);
         $perguntaSetoresArray = array_map(function ($registro) {
@@ -187,6 +184,28 @@ class PerguntaController extends RenderView
                 'status' => 'erro',
                 'message' => $e->getMessage() 
             ]);
+        }
+    }
+
+    private function validarCamposPergunta($idPergunta, $textoPergunta, $todosSetores, $status, $setores, $alteracao = false) {
+        //Separar todas as validações por cada campo, todas do id, depois todas do texto e etc
+        //Validar tipo
+        if(!is_int($idPergunta) && $alteracao) {
+            return throw new Exception("O Código da pergunta deve ser do tipo inteiro.");
+        } 
+        
+        if(!is_string($textoPergunta)){
+            return throw new Exception("O Texto da pergunta deve ser do tipo string.");
+        } 
+        
+        if(!is_bool($todosSetores)) {
+            return throw new Exception("A informação de Todos os Setores deve do tipo boolean.");
+        } 
+        if(!is_int($status) && $status <> null) {
+            return throw new Exception("O Status da pergunta deve ser do tipo inteiro.");
+        } 
+        if(!$todosSetores && !is_array($setores)) {
+            return throw new Exception("Os setores deve ser do tipo array.");
         }
     }
 }

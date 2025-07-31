@@ -11,9 +11,8 @@
     <title>Visualizar Pergunta</title>
     <!-- links do menu -->
     <link rel="stylesheet" href="<?= BASE_URL ?>public/css/layout/menu-styles.css">
-
     <link rel="stylesheet" href="<?= BASE_URL ?>public/css/pergunta/manutencao-pergunta-styles.css">
-    <!-- CSS do Select2 -->
+    <!-- CSS e JS do Select2 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -33,10 +32,10 @@
                     </div>
                     <p>
                         <label for="setores">Setores</label>
-                        <select name="setores[]" name="setores" id="setores" multiple required disabled>
-                            <?php foreach ($setoresAtivos as $setor): ?>
-                                <option value="<?= $setor['id_setor'] ?>" <?= in_array($setor['id_setor'], $perguntaSetores) ? 'selected' : '' ?>><?= htmlspecialchars($setor['descricao']) ?></option>
-                            <?php endforeach; ?>
+                        <select name="setores[]" id="setores" multiple required disabled>
+                        <?php foreach ($setoresAtivos as $setor): ?>
+                            <option value="<?= $setor['id_setor'] ?>" <?= in_array($setor['id_setor'], $perguntaSetores) ? 'selected' : '' ?>><?= htmlspecialchars($setor['descricao']) ?></option>
+                        <?php endforeach; ?>
                         </select>
                     </p>
                     <p>

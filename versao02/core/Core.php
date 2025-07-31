@@ -36,7 +36,12 @@ class Core
                         return;
                     }
 
-                    call_user_func_array([$newController, $action], $matches);
+                    try {
+                        call_user_func_array([$newController, $action], $matches);
+                    } catch(Exception $e) {
+                        $this->tratarErroMetodoClasse("Erro Inesperado ao chamar o método: $e");
+                    }
+
                     return;
                 }
             }
@@ -47,9 +52,19 @@ class Core
         }
     }
 
-    private function tratarNotFound(string $mensagemErro = '') {
-            require_once __DIR__."/../controllers/NotFoundController.php";
-            $controller = new NotFoundController();
-            $controller->index($mensagemErro);
+    private function tratarNotFound(string $mensagemErro = '') 
+    {
+        require_once __DIR__."/../controllers/NotFoundController.php";
+        $controller = new NotFoundController();
+        $controller->index($mensagemErro);
+    }
+
+    private function tratarErroMetodoClasse(string $mensagemErro = '') 
+    {
+        if ($mensagemErro) {
+            echo $mensagemErro;
+        } else {
+            echo "Erro inesperado na chamado do método.";
         }
+    }
 }

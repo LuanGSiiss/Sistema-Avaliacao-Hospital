@@ -11,9 +11,9 @@
     <title>Incluir Pergunta</title>
     <!-- links do menu -->
     <link rel="stylesheet" href="<?= BASE_URL ?>public/css/layout/menu-styles.css">
-
     <link rel="stylesheet" href="<?= BASE_URL ?>public/css/pergunta/manutencao-pergunta-styles.css">
-    <!-- CSS do Select2 -->
+    <script src="<?= BASE_URL ?>public/js/pergunta/comportamento_manutencaoPergunta.js" defer></script>
+    <!-- CSS e JS do Select2 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -33,10 +33,10 @@
                     </div>
                     <p>
                         <label for="setores">Setores</label>
-                        <select name="setores[]" name="setores" id="setores" multiple required>
-                            <?php foreach ($setoresAtivos as $setor): ?>
-                                <option value="<?= $setor['id_setor'] ?>"><?= htmlspecialchars($setor['descricao']) ?></option>
-                            <?php endforeach; ?>
+                        <select name="setores[]" id="setores" multiple required>
+                        <?php foreach ($setoresAtivos as $setor): ?>
+                            <option value="<?= $setor['id_setor'] ?>"><?= htmlspecialchars($setor['descricao']) ?></option>
+                        <?php endforeach; ?>
                         </select>
                     </p>
                     <p>
@@ -49,15 +49,14 @@
                 <button id="limpar" type="reset">Limpar</button>
             </form>
             <!-- mensagem -->
-            <?php if (isset($erroRegistroPergunta)): ?>
-                <p class="mensagem erro"><?= htmlspecialchars($erroRegistroPergunta) ?></p>
-            <?php elseif (isset($sucessoMensagem)): ?>
-                <p class="mensagem sucesso"><?= htmlspecialchars($sucessoMensagem) ?></p>
+            <?php if (isset($mensagens['erroRegistroPergunta'])): ?>
+                <p class="mensagem erro"><?= htmlspecialchars($mensagens['erroRegistroPergunta']) ?></p>
+            <?php elseif (isset($mensagens['sucessoMensagem'])): ?>
+                <p class="mensagem sucesso"><?= htmlspecialchars($mensagens['sucessoMensagem']) ?></p>
             <?php endif; ?>
         </div>
     </div>
 </body>
-<script src="<?= BASE_URL ?>public/js/comportamento_manutencaoPergunta.js"></script>
 <script>
     $(document).ready(function() {
         $('#setores').select2({
@@ -69,8 +68,8 @@
 </script>
 </html>
 <!-- Exibir erro no console -->
-<?php if (isset($erroRegistroPergunta)): ?>
+<?php if (isset($mensagens['erroRegistroPergunta'])): ?>
     <script>
-        console.error("Erro ao registrar a Pergunta: <?= addslashes($erroRegistroPergunta) ?>");
+        console.error("Erro ao registrar a Pergunta: <?= addslashes($mensagens['erroRegistroPergunta']) ?>");
     </script>
 <?php endif; ?>

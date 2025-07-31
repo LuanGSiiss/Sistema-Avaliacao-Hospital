@@ -11,8 +11,8 @@
     <title>Consulta Perguntas</title>
     <!-- links do menu -->
     <link rel="stylesheet" href="<?= BASE_URL ?>public/css/layout/menu-styles.css">
-
     <link rel="stylesheet" href="<?= BASE_URL ?>public/css/pergunta/consulta-perguntas-styles.css">
+    <script src="<?= BASE_URL ?>public/js/pergunta/comportamento_consultaPerguntas.js" defer></script>
 </head>
 <body>
     <!-- Menu -->
@@ -43,12 +43,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <td colspan="4" class="efeitoCarragamento">Clique em "Consultar" para exibir os dados.</td>
+                    <td colspan="5" class="efeitoCarragamento">Clique em "Consultar" para exibir os dados.</td>
                     <!--Conteudo da busca-->
                 </tbody>
             </table>
         </div>
     </section>
 </body>
-<script src="<?= BASE_URL ?>public/js/comportamento_consultaPerguntas.js"></script>
 </html>

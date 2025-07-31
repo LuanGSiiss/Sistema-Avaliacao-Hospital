@@ -8,7 +8,6 @@ document.getElementById("butaoConsulta").addEventListener("click", function () {
     func_assinc.onload = function () {
         if (func_assinc.status === 200) {
             try {
-                console.log(func_assinc.responseText)
                 const dadosResposta = JSON.parse(func_assinc.responseText);
                 
                 if (dadosResposta.status = 'sucesso') {
@@ -45,6 +44,9 @@ document.getElementById("butaoConsulta").addEventListener("click", function () {
             } catch (erro) {
                 console.error("Erro ao parsear JSON:", erro.message);
             }
+        } else if(func_assinc.status === 400 || func_assinc.status === 500) {
+            alert("Erro inesperado");
+            console.error(func_assinc.responseText.message);
         } else {
             alert("requisição invalida");
         }
@@ -70,7 +72,7 @@ function efeitoCarragamentoTabela(tabela) {
     const tbody = tabela.querySelector('tbody');
     tbody.innerHTML = `
         <tr>
-            <td colspan="4" style="text-align: center;">Carregando...</td>
+            <td colspan="5" style="text-align: center;">Carregando...</td>
         </tr>
     `;
 }

@@ -68,15 +68,15 @@ class PerguntaModel extends Database
 
             $stmt = $this->pdo->prepare($sql);
             
-            $stmt->bindValue(':texto_pergunta', $pergunta->texto_pergunta, PDO::PARAM_STR);
-            $stmt->bindValue(':todos_setores', $pergunta->todos_setores, PDO::PARAM_BOOL);
-            $stmt->bindValue(':status', $pergunta->status, PDO::PARAM_INT);
+            $stmt->bindValue(':texto_pergunta', $pergunta->getTextoPergunta(), PDO::PARAM_STR);
+            $stmt->bindValue(':todos_setores', $pergunta->getTodosSetores(), PDO::PARAM_BOOL);
+            $stmt->bindValue(':status', $pergunta->getStatus(), PDO::PARAM_INT);
             $stmt->execute();
 
             $idPerguntaRegistrada = $this->pdo->lastInsertId();
 
             // Cadastrar a relação de Setor e Pergunta
-            if(!$pergunta->todos_setores) {
+            if(!$pergunta->getTodosSetores()) {
                 if (empty($setores)) {
                     throw new Exception("Setores não informados.");
                 }
@@ -103,7 +103,7 @@ class PerguntaModel extends Database
         }
     }
 
-    public function buscarPeguntaPorId(int $idPergunta)
+    public function buscarPorId(int $idPergunta)
     {
         if (!$this->pdo) {
             throw new Exception("Erro ao conectar com o banco de dados.");
@@ -167,9 +167,9 @@ class PerguntaModel extends Database
 
             $stmt = $this->pdo->prepare($sql);
             
-            $stmt->bindValue(':texto_pergunta', $pergunta->texto_pergunta, PDO::PARAM_STR);
-            $stmt->bindValue(':todos_setores', $pergunta->todos_setores, PDO::PARAM_BOOL);
-            $stmt->bindValue(':id_pergunta', $pergunta->id_pergunta, PDO::PARAM_INT);
+            $stmt->bindValue(':texto_pergunta', $pergunta->getTextoPergunta(), PDO::PARAM_STR);
+            $stmt->bindValue(':todos_setores', $pergunta->getTodosSetores(), PDO::PARAM_BOOL);
+            $stmt->bindValue(':id_pergunta', $pergunta->getIdPergunta(), PDO::PARAM_INT);
             $stmt->execute();
 
             //Excluir as relações entre Pergunta e Setor
@@ -179,11 +179,11 @@ class PerguntaModel extends Database
             $stmt = $this->pdo->prepare($sqlDelete);
             
             $stmt->execute([
-                'id_pergunta' => $pergunta->id_pergunta,
+                'id_pergunta' => $pergunta->getIdPergunta(),
             ]);
 
             // Cadastrar as relações de Pergunta e Setor
-            if(!$pergunta->todos_setores) {
+            if(!$pergunta->getTextoPergunta()) {
                 if (empty($setores)) {
                     throw new Exception("Setores não informados.");
                 }
@@ -195,7 +195,7 @@ class PerguntaModel extends Database
                     $stmt = $this->pdo->prepare($sql);
             
                     $stmt->execute([
-                        'id_pergunta' => $pergunta->id_pergunta,
+                        'id_pergunta' => $pergunta->getIdPergunta(),
                         'id_setor'  => $setor
                     ]);
                 }
