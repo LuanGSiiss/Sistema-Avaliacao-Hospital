@@ -59,26 +59,22 @@ class PerguntaController extends RenderView
     public function registrarPergunta()
     {
         try {
-            //valida se os campos estão preechidos
-            if( (!isset($_POST['texto_pergunta']) || trim($_POST['texto_pergunta']) == "") || (!isset($_POST['todos_setores']) && (!isset($_POST['setores']) || !is_array($_POST['setores']) || $_POST['setores'] == [] )) ) {
-                throw new Exception("Nem todos os campos obrigatórios foram informados.");
-            }
-
-            $textoPergunta = trim($_POST['texto_pergunta']);
-            $todosSetores = !empty($_POST['todos_setores']);
-            $setores = $_POST['setores'] ?? [];
+            $dados = [
+                'textoPergunta' => trim($_POST['texto_pergunta']) ?? '',
+                'todosSetores'  => !empty($_POST['todos_setores']),
+                'setores'       => $_POST['setores'] ?? []
+            ];
             
-            // Validador do tipo
-            // if(!is_string($textoPergunta)){
-            //     throw new Exception("O texto da pergunta deve ser do tipo string.");
-            // } elseif(!$todosSetores && !is_array($setores)) {
-            //     throw new Exception("Os setores deve ser do tipo array.");
-            // }
-
-            $pergunta = new Pergunta(null, $textoPergunta, $todosSetores);
             $perguntaModel = new PerguntaModel();
+            $perguntaModel->validarCamposPergunta($dados);
 
-            $sucesso = $perguntaModel->registrar($pergunta, $setores);
+            $pergunta = new Pergunta(
+                null, 
+                $dados['textoPergunta'], 
+                $dados['todosSetores']
+            );
+
+            $sucesso = $perguntaModel->registrar($pergunta, $dados['setores']);
 
             if($sucesso) {
                 $this->formularioIncluir(['sucessoMensagem' => "Pergunta cadastrada com Sucesso"]);
@@ -113,26 +109,24 @@ class PerguntaController extends RenderView
     public function alterarPergunta(int $idPergunta)
     {
         try {
-            //valida se os campos estão preechidos
-            if( (!isset($_POST['texto_pergunta']) || trim($_POST['texto_pergunta']) == "") || (!isset($_POST['todos_setores']) && (!isset($_POST['setores']) || !is_array($_POST['setores']) || $_POST['setores'] == [] )) ) {
-                throw new Exception("Nem todos os campos obrigatórios foram informados.");
-            }
 
-            $textoPergunta = trim($_POST['texto_pergunta']);
-            $todosSetores = !empty($_POST['todos_setores']);
-            $setores = $_POST['setores'] ?? [];
-            
-            //Validador do tipo
-            // if(!is_string($textoPergunta)){
-            //     throw new Exception("O texto da pergunta deve ser do tipo string.");
-            // } elseif(!$todosSetores && !is_array($setores)) {
-            //     throw new Exception("Os setores deve ser do tipo array.");
-            // }
+            $dados = [
+                'idPergunta' => $idPergunta,
+                'textoPergunta' => trim($_POST['texto_pergunta']) ?? '',
+                'todosSetores'  => !empty($_POST['todos_setores']),
+                'setores'       => $_POST['setores'] ?? []
+            ];
 
-            $pergunta = new Pergunta($idPergunta, $textoPergunta, $todosSetores);
             $perguntaModel = new PerguntaModel();
+            $perguntaModel->validarCamposPergunta($dados, true);
 
-            $sucesso = $perguntaModel->alterar($pergunta, $setores);
+            $pergunta = new Pergunta(
+                $dados['idPergunta'], 
+                $dados['textoPergunta'], 
+                $dados['todosSetores'],
+            );
+
+            $sucesso = $perguntaModel->alterar($pergunta, $dados['setores']);
 
             if($sucesso) {
                 $this->formularioAlterar($idPergunta, ['sucessoMensagem' => "Pergunta alterada com Sucesso"]); 
@@ -187,26 +181,6 @@ class PerguntaController extends RenderView
         }
     }
 
-    private function validarCamposPergunta($idPergunta, $textoPergunta, $todosSetores, $status, $setores, $alteracao = false) {
-        //Separar todas as validações por cada campo, todas do id, depois todas do texto e etc
-        //Validar tipo
-        if(!is_int($idPergunta) && $alteracao) {
-            return throw new Exception("O Código da pergunta deve ser do tipo inteiro.");
-        } 
-        
-        if(!is_string($textoPergunta)){
-            return throw new Exception("O Texto da pergunta deve ser do tipo string.");
-        } 
-        
-        if(!is_bool($todosSetores)) {
-            return throw new Exception("A informação de Todos os Setores deve do tipo boolean.");
-        } 
-        if(!is_int($status) && $status <> null) {
-            return throw new Exception("O Status da pergunta deve ser do tipo inteiro.");
-        } 
-        if(!$todosSetores && !is_array($setores)) {
-            return throw new Exception("Os setores deve ser do tipo array.");
-        }
-    }
+    
 }
 

@@ -2,7 +2,7 @@
 
 class Pergunta
 {
-    private int $id_pergunta;
+    private ?int $id_pergunta;
     private string $texto_pergunta;
     private bool $todos_setores;
     private int  $status;
