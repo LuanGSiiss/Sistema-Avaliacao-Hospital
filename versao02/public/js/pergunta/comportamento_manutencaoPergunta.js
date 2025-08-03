@@ -5,8 +5,8 @@ const selectSetores = document.getElementById('setores');
 const butaoEnviar = document.getElementById('enviar');
 
 textarea.addEventListener("input", function () {
-    this.style.height = "auto"; // Reseta a altura para evitar crescimento infinito
-    this.style.height = this.scrollHeight + "px"; // Define a nova altura com base no conteúdo
+    this.style.height = "auto";
+    this.style.height = this.scrollHeight + "px"; 
     
     if (textarea.value.trim() !== '') {
         butaoEnviar.disabled = false;

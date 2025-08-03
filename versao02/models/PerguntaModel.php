@@ -253,7 +253,7 @@ class PerguntaModel extends Database
             ]);
 
             $this->pdo->commit();
-            return true;
+            return $stmt->rowCount();
             
         } catch (PDOException $e) {
             $this->pdo->rollBack();

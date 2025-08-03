@@ -4,9 +4,28 @@ class RenderView
 {
     public function loadView($caminhoview, $args) 
     {
-        [$pasta, $view] = explode('.', $caminhoview);
-        extract($args);
+        try {
+            if (strpos($caminhoview, '.') === false) {
+                throw new InvalidArgumentException("Formato de caminho de view inválido. Use 'pasta.view'.");
+            }
 
-        require_once __DIR__."/../views/$pasta/$view.php";
+            [$pasta, $view] = explode('.', $caminhoview);
+            $caminhoCompleto = __DIR__ . "/../views/$pasta/$view.php";
+
+            if (!file_exists($caminhoCompleto)) {
+                throw new RuntimeException("Arquivo da view não encontrado: $caminhoCompleto");
+            }
+
+            extract($args);
+            require_once $caminhoCompleto;
+
+        } catch (Throwable $e) {
+            http_response_code(500);
+
+            echo json_encode([
+                'status' => 'erro',
+                'message' => 'Erro ao carregar a página.'
+            ]);
+        }
     }
 }

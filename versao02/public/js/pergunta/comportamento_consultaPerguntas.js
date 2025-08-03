@@ -10,7 +10,7 @@ document.getElementById("butaoConsulta").addEventListener("click", function () {
             try {
                 const dadosResposta = JSON.parse(func_assinc.responseText);
                 
-                if (dadosResposta.status = 'sucesso') {
+                if (dadosResposta.status === 'sucesso') {
                     const tbody = tabela.querySelector('tbody');
                     limparCorpoTabela(tabela);
     
@@ -38,15 +38,16 @@ document.getElementById("butaoConsulta").addEventListener("click", function () {
                         });
                     }
                 } else {
-                    alert("Erro com os dados da requisição.")
+                    exibirMensagemRetorno('Erro com os dados da requisição.', 0);
                     console.log(dadosResposta.message);
                 }
             } catch (erro) {
-                console.error("Erro ao parsear JSON:", erro.message);
+                exibirMensagemRetorno('Erro ao tratar os dados da requisição.', 0);
+                console.error("Erro ao tratar os dados da requisição: ", erro.message);
             }
         } else if(func_assinc.status === 400 || func_assinc.status === 500) {
-            alert("Erro inesperado");
-            console.error(func_assinc.responseText.message);
+            exibirMensagemRetorno('Erro inesperado', 0);
+            console.error(JSON.parse(func_assinc.responseText).message);
         } else {
             alert("requisição invalida");
         }
@@ -113,22 +114,25 @@ function excluirPergunta(idPergunta) {
     func_assinc.onload = function () {
         if (func_assinc.status === 200) {
             fecharMensagemExcluir();
-
             try {
                 const dadosResposta = JSON.parse(func_assinc.responseText);
                 
-                if (dadosResposta.status = 'sucesso') {
+                if (dadosResposta.status === 'sucesso') {
                     document.getElementById("butaoConsulta").click();
-                    exibirMensagemRetornoExclusão('Pergunta Excluída com Sucesso', 1);
+                    exibirMensagemRetorno('Pergunta Excluída com Sucesso', 1);
                 } else {
-                    exibirMensagemRetornoExclusão(dadosResposta.message, 0);
+                    exibirMensagemRetornoExclusão('Erro com os dados da requisição.', 0);
                     console.log(dadosResposta.message);
                 }
             } catch (erro) {
-                console.error("Erro ao parsear JSON:", erro.message);
+                exibirMensagemRetorno('Erro ao tratar os dados da requisição', 0);
+                console.error("Erro ao tratar os dados da requisição: ", erro.message);
             }
-        } else {
+        } else if(func_assinc.status === 400 || func_assinc.status === 500) {
             fecharMensagemExcluir();
+            exibirMensagemRetorno('Erro inesperado', 0);
+            console.error(JSON.parse(func_assinc.responseText).message);
+        } else {
             alert("requisição invalida");
         }
     };
@@ -138,7 +142,7 @@ function excluirPergunta(idPergunta) {
 
 function efeitoCarragamentoExcluir(divMensagem) {
     divMensagem.innerHTML = `
-        <div class="mensagemExcluir">Aguarde...</div>
+        <div class="popExcluir">Aguarde...</div>
     `;
 }
 
@@ -147,7 +151,7 @@ function fecharMensagemExcluir() {
     divMensagem.remove();
 }
 
-function exibirMensagemRetornoExclusão(mensagem, situacao) {
+function exibirMensagemRetorno(mensagem, situacao) {
     const mensagemStatus = document.createElement('div');
     // 1 = sucesso, 0 = erro
     if (situacao == 1) {

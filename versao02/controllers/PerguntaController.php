@@ -4,14 +4,13 @@ class PerguntaController extends RenderView
 {
     public function exibirConsulta()
     {
-        $this->loadView('pergunta.consultaPerguntas', []); 
+        $this->loadView('pergunta.consultaPerguntas', []);
     }
 
     public function buscarPerguntas()
     {
-        $perguntaModel = new PerguntaModel();
-        
         try {
+            $perguntaModel = new PerguntaModel();
             $perguntasBase = $perguntaModel->BuscarTodas();
             
             $arrayPerguntas = array_map(function ($registro) {
@@ -42,18 +41,32 @@ class PerguntaController extends RenderView
                 'status' => 'erro',
                 'message' => "Ocorreu um erro inesperado ao processar a requisição: " . $e->getMessage() 
             ]);
+        } catch (Error $e) {
+            http_response_code(500);
+            echo json_encode([
+                'status' => 'erro',
+                'message' => "Erro fatal: " . $e->getMessage()
+            ]);
         }
     }
 
     public function formularioIncluir(array $mensagens = [])
     {
-        $setorModel = new SetorModel();
-        $setoresAtivos = $setorModel->BuscarSetoresAtivos();
+        try {
+            $setorModel = new SetorModel();
+            $setoresAtivos = $setorModel->BuscarSetoresAtivos();
 
-        $this->loadView('pergunta.incluirPergunta', [
-            'setoresAtivos' => $setoresAtivos,
-            'mensagens' => $mensagens
-        ]);
+            $this->loadView('pergunta.incluirPergunta', [
+                'setoresAtivos' => $setoresAtivos,
+                'mensagens' => $mensagens
+            ]);
+        } catch (Throwable $e) {
+            http_response_code(500);
+            echo json_encode([
+                'status' => 'erro',
+                'message' => 'Erro ao carregar a página.'
+            ]);
+        }
     }
 
     public function registrarPergunta()
@@ -80,30 +93,41 @@ class PerguntaController extends RenderView
                 $this->formularioIncluir(['sucessoMensagem' => "Pergunta cadastrada com Sucesso"]);
             }
 
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $this->formularioIncluir(['erroRegistroPergunta' => $e->getMessage()]);
+        } catch (Error $e) {
+            $mensagemErro = "Erro fatal: " . $e->getMessage();
+            $this->formularioIncluir(['erroRegistroPergunta' => $mensagemErro]);
         }
     }
 
     public function formularioAlterar(int $idPergunta, array $mensagens = [])
     {
-        $setorModel = new SetorModel();
-        $setoresAtivos = $setorModel->BuscarSetoresAtivos();
-
-        $perguntaModel = new PerguntaModel();
-        $pergunta = $perguntaModel->buscarPorId($idPergunta);
-
-        $perguntaSetores = $perguntaModel->buscarSetoresPorPergunta($idPergunta);
-        $perguntaSetoresArray = array_map(function ($registro) {
-            return $registro['id_setor'];
-        }, $perguntaSetores);
-
-        $this->loadView('pergunta.alterarPergunta', [
-            'setoresAtivos' => $setoresAtivos,
-            'pergunta' => $pergunta,
-            'perguntaSetores' => $perguntaSetoresArray,
-            'mensagens' => $mensagens
-        ]);
+        try {
+            $setorModel = new SetorModel();
+            $setoresAtivos = $setorModel->BuscarSetoresAtivos();
+    
+            $perguntaModel = new PerguntaModel();
+            $pergunta = $perguntaModel->buscarPorId($idPergunta);
+    
+            $perguntaSetores = $perguntaModel->buscarSetoresPorPergunta($idPergunta);
+            $perguntaSetoresArray = array_map(function ($registro) {
+                return $registro['id_setor'];
+            }, $perguntaSetores);
+    
+            $this->loadView('pergunta.alterarPergunta', [
+                'setoresAtivos' => $setoresAtivos,
+                'pergunta' => $pergunta,
+                'perguntaSetores' => $perguntaSetoresArray,
+                'mensagens' => $mensagens
+            ]);
+        } catch (Throwable $e) {
+            http_response_code(500);
+            echo json_encode([
+                'status' => 'erro',
+                'message' => 'Erro ao carregar a página.'
+            ]);
+        }
     }
 
     public function alterarPergunta(int $idPergunta)
@@ -132,55 +156,82 @@ class PerguntaController extends RenderView
                 $this->formularioAlterar($idPergunta, ['sucessoMensagem' => "Pergunta alterada com Sucesso"]); 
             }
 
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $this->formularioAlterar($idPergunta, ['erroRegistroPergunta' => $e->getMessage()]);
+        } catch (Error $e) {
+            $mensagemErro = "Erro fatal: " . $e->getMessage();
+            $this->formularioIncluir(['erroRegistroPergunta' => $mensagemErro]);
         }
     }
 
-    public function visualizarPergunta($idPergunta)
+    public function visualizarPergunta(int $idPergunta)
     {
-        $setorModel = new SetorModel();
-        $setoresAtivos = $setorModel->BuscarSetoresAtivos();
-
-        $perguntaModel = new PerguntaModel();
-        $pergunta = $perguntaModel->buscarPorId($idPergunta);
-
-        $perguntaSetores = $perguntaModel->buscarSetoresPorPergunta($idPergunta);
-        $perguntaSetoresArray = array_map(function ($registro) {
-            return $registro['id_setor'];
-        }, $perguntaSetores);
-
-        $this->loadView('pergunta.visualizarPergunta', [
-            'setoresAtivos' => $setoresAtivos,
-            'pergunta' => $pergunta,
-            'perguntaSetores' => $perguntaSetoresArray
-        ]);
+        try {
+            $setorModel = new SetorModel();
+            $setoresAtivos = $setorModel->BuscarSetoresAtivos();
+    
+            $perguntaModel = new PerguntaModel();
+            $pergunta = $perguntaModel->buscarPorId($idPergunta);
+    
+            $perguntaSetores = $perguntaModel->buscarSetoresPorPergunta($idPergunta);
+            $perguntaSetoresArray = array_map(function ($registro) {
+                return $registro['id_setor'];
+            }, $perguntaSetores);
+    
+            $this->loadView('pergunta.visualizarPergunta', [
+                'setoresAtivos' => $setoresAtivos,
+                'pergunta' => $pergunta,
+                'perguntaSetores' => $perguntaSetoresArray
+            ]);
+        } catch (Throwable $e) {
+            http_response_code(500);
+            echo json_encode([
+                'status' => 'erro',
+                'message' => 'Erro ao carregar a página.'
+            ]);
+        }
     }
 
-    public function excluirPergunta($idPerguntaParametro)
+    public function excluirPergunta(int $idPerguntaParametro)
     {
-        $perguntaModel = new PerguntaModel();
-        
         try {
+            $perguntaModel = new PerguntaModel();
             $idPergunta = (int) $idPerguntaParametro;
 
-            $perguntaModel->excluir($idPergunta);
+            $linhasAfetadas = $perguntaModel->excluir($idPergunta);
+
+            if ($linhasAfetadas === 0) {
+                throw new Exception("Nenhuma pergunta foi excluída. Verifique se o ID informado é válido.");
+            }
+
             $mensagemSucesso = 'Pergunta com id ' . $idPergunta. ' excluída com sucesso';
 
+            http_response_code(200);
             echo json_encode([
                 'status' => 'sucesso',
                 'data' => [
                     'message' => $mensagemSucesso
                 ] 
             ]);
-        } catch (Exception $e) {
+        } catch (PDOException $e) {
+            http_response_code(500);
             echo json_encode([
                 'status' => 'erro',
-                'message' => $e->getMessage() 
+                'message' => "Erro de banco de dados: " . $e->getMessage() 
+            ]);
+        } catch (Exception $e) {
+            http_response_code(400);
+            echo json_encode([
+                'status' => 'erro',
+                'message' => "Ocorreu um erro inesperado ao processar a requisição: " . $e->getMessage() 
+            ]);
+        } catch (Error $e) {
+            http_response_code(500);
+            echo json_encode([
+                'status' => 'erro',
+                'message' => "Erro fatal: " . $e->getMessage()
             ]);
         }
     }
-
-    
 }
 
