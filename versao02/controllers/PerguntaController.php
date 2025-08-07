@@ -22,6 +22,7 @@ class PerguntaController extends RenderView
                 ];
             }, $perguntasBase);
             
+            header('Content-Type: application/json');
             http_response_code(200);
             echo json_encode([
                 'status' => 'sucesso',
@@ -29,24 +30,8 @@ class PerguntaController extends RenderView
                     'perguntas' => $arrayPerguntas
                 ] 
             ]);
-        } catch (PDOException $e) {
-            http_response_code(500);
-            echo json_encode([
-                'status' => 'erro',
-                'message' => "Ocorreu um erro interno no servidor ao processar a requisição: " . $e->getMessage() 
-            ]);
-        } catch (Exception $e) {
-            http_response_code(400);
-            echo json_encode([
-                'status' => 'erro',
-                'message' => "Ocorreu um erro inesperado ao processar a requisição: " . $e->getMessage() 
-            ]);
-        } catch (Error $e) {
-            http_response_code(500);
-            echo json_encode([
-                'status' => 'erro',
-                'message' => "Erro fatal: " . $e->getMessage()
-            ]);
+        }  catch (Throwable $e) {
+            $this->tratarErroRetornoAjax($e);
         }
     }
 
@@ -61,10 +46,11 @@ class PerguntaController extends RenderView
                 'mensagens' => $mensagens
             ]);
         } catch (Throwable $e) {
+            header('Content-Type: application/json');
             http_response_code(500);
             echo json_encode([
                 'status' => 'erro',
-                'message' => 'Erro ao carregar a página.'
+                'message' => 'Erro ao carregar a página.' . $e->getMessage()
             ]);
         }
     }
@@ -89,16 +75,14 @@ class PerguntaController extends RenderView
 
             $sucesso = $perguntaModel->registrar($pergunta, $dados['setores']);
 
-            if($sucesso) {
+            if ($sucesso) {
                 $this->formularioIncluir(['sucessoMensagem' => "Pergunta cadastrada com Sucesso"]);
             }
 
-        } catch (Exception $e) {
-            $this->formularioIncluir(['erroRegistroPergunta' => $e->getMessage()]);
-        } catch (Error $e) {
-            $mensagemErro = "Erro fatal: " . $e->getMessage();
-            $this->formularioIncluir(['erroRegistroPergunta' => $mensagemErro]);
-        }
+        } catch (Throwable $e) {
+            $mensagemErro = "Erro: " . $e->getMessage();
+            $this->formularioIncluir(['erroRegistroPergunta' => $mensagemErro]); 
+        } 
     }
 
     public function formularioAlterar(int $idPergunta, array $mensagens = [])
@@ -122,10 +106,11 @@ class PerguntaController extends RenderView
                 'mensagens' => $mensagens
             ]);
         } catch (Throwable $e) {
+            header('Content-Type: application/json');
             http_response_code(500);
             echo json_encode([
                 'status' => 'erro',
-                'message' => 'Erro ao carregar a página.'
+                'message' => 'Erro ao carregar a página.' . $e->getMessage()
             ]);
         }
     }
@@ -152,15 +137,13 @@ class PerguntaController extends RenderView
 
             $sucesso = $perguntaModel->alterar($pergunta, $dados['setores']);
 
-            if($sucesso) {
+            if ($sucesso) {
                 $this->formularioAlterar($idPergunta, ['sucessoMensagem' => "Pergunta alterada com Sucesso"]); 
-            }
+            } 
 
-        } catch (Exception $e) {
-            $this->formularioAlterar($idPergunta, ['erroRegistroPergunta' => $e->getMessage()]);
-        } catch (Error $e) {
-            $mensagemErro = "Erro fatal: " . $e->getMessage();
-            $this->formularioIncluir(['erroRegistroPergunta' => $mensagemErro]);
+        } catch (Throwable $e) {
+            $mensagemErro = "Erro: " . $e->getMessage();
+            $this->formularioAlterar($idPergunta, ['erroRegistroPergunta' => $mensagemErro]); 
         }
     }
 
@@ -184,10 +167,11 @@ class PerguntaController extends RenderView
                 'perguntaSetores' => $perguntaSetoresArray
             ]);
         } catch (Throwable $e) {
+            header('Content-Type: application/json');
             http_response_code(500);
             echo json_encode([
                 'status' => 'erro',
-                'message' => 'Erro ao carregar a página.'
+                'message' => 'Erro ao carregar a página.' . $e->getMessage()
             ]);
         }
     }
@@ -198,14 +182,15 @@ class PerguntaController extends RenderView
             $perguntaModel = new PerguntaModel();
             $idPergunta = (int) $idPerguntaParametro;
 
-            $linhasAfetadas = $perguntaModel->excluir($idPergunta);
+            $registrosAfetadas = $perguntaModel->excluir($idPergunta);
 
-            if ($linhasAfetadas === 0) {
+            if ($registrosAfetadas === 0) {
                 throw new Exception("Nenhuma pergunta foi excluída. Verifique se o ID informado é válido.");
             }
 
             $mensagemSucesso = 'Pergunta com id ' . $idPergunta. ' excluída com sucesso';
 
+            header('Content-Type: application/json');
             http_response_code(200);
             echo json_encode([
                 'status' => 'sucesso',
@@ -213,25 +198,29 @@ class PerguntaController extends RenderView
                     'message' => $mensagemSucesso
                 ] 
             ]);
-        } catch (PDOException $e) {
-            http_response_code(500);
-            echo json_encode([
-                'status' => 'erro',
-                'message' => "Erro de banco de dados: " . $e->getMessage() 
-            ]);
-        } catch (Exception $e) {
-            http_response_code(400);
-            echo json_encode([
-                'status' => 'erro',
-                'message' => "Ocorreu um erro inesperado ao processar a requisição: " . $e->getMessage() 
-            ]);
-        } catch (Error $e) {
-            http_response_code(500);
-            echo json_encode([
-                'status' => 'erro',
-                'message' => "Erro fatal: " . $e->getMessage()
-            ]);
+        } catch (Throwable $e) {
+            $this->tratarErroRetornoAjax($e);
         }
     }
-}
 
+    private function tratarErroRetornoAjax(Throwable $e) {
+        $httpCode = 500;
+        $mensagem = "Erro inesperado ao tratar a requisição";
+        
+        if ($e instanceof PDOException) {
+            $mensagem = "Erro de banco de dados: " . $e->getMessage();
+        } elseif($e instanceof Exception) {
+            $httpCode = 400;
+            $mensagem = "Ocorreu um erro inesperado ao processar a requisição: " . $e->getMessage();
+        } elseif($e instanceof Error) {
+            $mensagem = "Erro fatal: " . $e->getMessage();
+        }
+
+        header('Content-Type: application/json');
+        http_response_code($httpCode);
+        echo json_encode([
+            'status' => 'erro',
+            'message' => $mensagem
+        ]);
+    }
+}
