@@ -22,14 +22,14 @@ class PerguntaController extends RenderView
                 ];
             }, $perguntasBase);
             
-            header('Content-Type: application/json');
+            header('Content-Type: application/json; charset=utf-8');
             http_response_code(200);
             echo json_encode([
                 'status' => 'sucesso',
                 'data' => [
                     'perguntas' => $arrayPerguntas
                 ] 
-            ]);
+            ], JSON_UNESCAPED_UNICODE);
         }  catch (Throwable $e) {
             $this->tratarErroRetornoAjax($e);
         }
@@ -46,12 +46,12 @@ class PerguntaController extends RenderView
                 'mensagens' => $mensagens
             ]);
         } catch (Throwable $e) {
-            header('Content-Type: application/json');
+            header('Content-Type: application/json; charset=utf-8');
             http_response_code(500);
             echo json_encode([
                 'status' => 'erro',
                 'message' => 'Erro ao carregar a página.' . $e->getMessage()
-            ]);
+            ], JSON_UNESCAPED_UNICODE);
         }
     }
 
@@ -106,12 +106,12 @@ class PerguntaController extends RenderView
                 'mensagens' => $mensagens
             ]);
         } catch (Throwable $e) {
-            header('Content-Type: application/json');
+            header('Content-Type: application/json; charset=utf-8');
             http_response_code(500);
             echo json_encode([
                 'status' => 'erro',
                 'message' => 'Erro ao carregar a página.' . $e->getMessage()
-            ]);
+            ], JSON_UNESCAPED_UNICODE);
         }
     }
 
@@ -167,12 +167,12 @@ class PerguntaController extends RenderView
                 'perguntaSetores' => $perguntaSetoresArray
             ]);
         } catch (Throwable $e) {
-            header('Content-Type: application/json');
+            header('Content-Type: application/json; charset=utf-8');
             http_response_code(500);
             echo json_encode([
                 'status' => 'erro',
                 'message' => 'Erro ao carregar a página.' . $e->getMessage()
-            ]);
+            ], JSON_UNESCAPED_UNICODE);
         }
     }
 
@@ -190,14 +190,14 @@ class PerguntaController extends RenderView
 
             $mensagemSucesso = 'Pergunta com id ' . $idPergunta. ' excluída com sucesso';
 
-            header('Content-Type: application/json');
+            header('Content-Type: application/json; charset=utf-8');
             http_response_code(200);
             echo json_encode([
                 'status' => 'sucesso',
                 'data' => [
                     'message' => $mensagemSucesso
                 ] 
-            ]);
+            ], JSON_UNESCAPED_UNICODE);
         } catch (Throwable $e) {
             $this->tratarErroRetornoAjax($e);
         }
@@ -211,16 +211,16 @@ class PerguntaController extends RenderView
             $mensagem = "Erro de banco de dados: " . $e->getMessage();
         } elseif($e instanceof Exception) {
             $httpCode = 400;
-            $mensagem = "Ocorreu um erro inesperado ao processar a requisição: " . $e->getMessage();
+            $mensagem = "Ocorreu um erro inesperado: " . $e->getMessage();
         } elseif($e instanceof Error) {
             $mensagem = "Erro fatal: " . $e->getMessage();
         }
 
-        header('Content-Type: application/json');
+        header('Content-Type: application/json; charset=utf-8');
         http_response_code($httpCode);
         echo json_encode([
             'status' => 'erro',
             'message' => $mensagem
-        ]);
+        ], JSON_UNESCAPED_UNICODE);
     }
 }

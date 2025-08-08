@@ -46,7 +46,7 @@ document.getElementById("butaoConsulta").addEventListener("click", function () {
                 console.error("Erro ao tratar os dados da requisição: ", erro.message);
             }
         } else if(func_assinc.status === 400 || func_assinc.status === 500) {
-            exibirMensagemRetorno('Erro inesperado', 0);
+            exibirMensagemRetorno(JSON.parse(func_assinc.responseText).message, 0);
             console.error(JSON.parse(func_assinc.responseText).message);
         } else {
             alert("requisição invalida");
@@ -121,7 +121,7 @@ function excluirPergunta(idPergunta) {
                     document.getElementById("butaoConsulta").click();
                     exibirMensagemRetorno('Pergunta Excluída com Sucesso', 1);
                 } else {
-                    exibirMensagemRetornoExclusão('Erro com os dados da requisição.', 0);
+                    exibirMensagemRetorno('Erro com os dados da requisição.', 0);
                     console.log(dadosResposta.message);
                 }
             } catch (erro) {
@@ -130,7 +130,7 @@ function excluirPergunta(idPergunta) {
             }
         } else if(func_assinc.status === 400 || func_assinc.status === 500) {
             fecharMensagemExcluir();
-            exibirMensagemRetorno('Erro inesperado', 0);
+            exibirMensagemRetorno(JSON.parse(func_assinc.responseText).message, 0);
             console.error(JSON.parse(func_assinc.responseText).message);
         } else {
             alert("requisição invalida");

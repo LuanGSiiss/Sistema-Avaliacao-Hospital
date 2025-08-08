@@ -114,7 +114,10 @@ class PerguntaModel extends Database
             return true;
             
         } catch (Throwable $e) {
-            $this->pdo->rollBack();
+            if($this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
+
             throw $e;
         }
     }
@@ -167,7 +170,10 @@ class PerguntaModel extends Database
             return true;
             
         } catch (Throwable $e) {
-            $this->pdo->rollBack();
+            if($this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
+            
             throw $e;
         }
     }
@@ -188,8 +194,8 @@ class PerguntaModel extends Database
             if($resultadoPerguntaEmAvaliacoes['total'] > 0) {
                 throw new Exception("A pergunta possui relacionamento com avaliações, não será possível realizar a exclusão.");
             }
-
             $this->pdo->beginTransaction();
+
 
             //Deletar os relacionamentos de Pergunta e Setor
             $sqlDeletePerguntaSetor = "DELETE FROM pergunta_setor
@@ -211,7 +217,10 @@ class PerguntaModel extends Database
             return $stmt3->rowCount();
             
         } catch (Throwable $e) {
-            $this->pdo->rollBack();
+            if($this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
+
             throw $e;
         }
     }
