@@ -1,13 +1,13 @@
 BEGIN;
 
 -- Setores
-INSERT INTO setor(descricao) VALUES
+INSERT INTO setores(descricao) VALUES
 	('Recepção'),
     ('Farmácia');
 
 -- Dispositvos
-INSERT INTO dispositivos(nome_dispositivo) VALUES
-	('Padrão');
+INSERT INTO dispositivos(codigo_identificador, nome) VALUES
+	('001-001', 'Padrão');
 
 -- Perguntas
 INSERT INTO perguntas(texto_pergunta, todos_setores) VALUES

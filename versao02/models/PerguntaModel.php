@@ -18,7 +18,7 @@ class PerguntaModel extends Database
         $sqlBusca = "SELECT p.id_pergunta, p.texto_pergunta 
                     FROM perguntas p
                     LEFT JOIN pergunta_setor ps USING(id_pergunta)
-                    LEFT JOIN setor s USING(id_setor)
+                    LEFT JOIN setores s USING(id_setor)
                     WHERE p.status = 1 
                     AND ( p.todos_setores = true OR ps.id_setor = :id_setor AND s.status = 1)
                     ORDER BY RANDOM()
@@ -125,9 +125,9 @@ class PerguntaModel extends Database
             $this->pdo->beginTransaction();
 
             $sqlUpdatePergunta = "UPDATE perguntas
-                        SET texto_pergunta = :texto_pergunta,
-                            todos_setores = :todos_setores
-                        WHERE id_pergunta = :id_pergunta;";
+                                    SET texto_pergunta = :texto_pergunta,
+                                    todos_setores = :todos_setores
+                                    WHERE id_pergunta = :id_pergunta;";
 
             $stmt1 = $this->pdo->prepare($sqlUpdatePergunta);
             

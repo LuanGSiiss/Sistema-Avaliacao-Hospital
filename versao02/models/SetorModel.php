@@ -16,10 +16,11 @@ class SetorModel extends Database
     public function BuscarSetoresAtivos(): array
     {
         $sqlBusca = "SELECT id_setor, descricao
-                        FROM setor 
+                        FROM setores 
                         WHERE status = 1
                         ORDER BY descricao;";
-        $stmt = $this->pdo->query($sqlBusca);
+        $stmt = $this->pdo->prepare($sqlBusca);
+        $stmt->execute([]);
         $resultado = $stmt->fetchAll();
         
         return $resultado;
