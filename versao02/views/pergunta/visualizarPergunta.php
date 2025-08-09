@@ -40,7 +40,7 @@
                     </p>
                     <p>
                         <label for="texto_pergunta" >Texto da Pergunta</label>
-                        <textarea name="texto_pergunta" id="texto_pergunta" maxlength="350" rows="5" oninput="contagemCaracteres()" placeholder="Achei bom porque..." required disabled><?= $pergunta['texto_pergunta'] ?></textarea>
+                        <textarea name="texto_pergunta" id="texto_pergunta" maxlength="350" rows="5" oninput="contagemCaracteres()" placeholder="Achei bom porque..." required disabled><?= htmlspecialchars($pergunta['texto_pergunta']) ?></textarea>
                     </p>
                 </div>
             </div>

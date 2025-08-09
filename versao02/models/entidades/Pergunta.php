@@ -37,21 +37,33 @@ class Pergunta
     // setters
     public function setIdPergunta($IdPergunta) 
     {
+        if (!is_null($IdPergunta) && (!is_int($IdPergunta) || $IdPergunta <= 0)) {
+            throw new InvalidArgumentException("ID da pergunta deve ser inteiro positivo ou nulo.");
+        }
         $this->id_pergunta = $IdPergunta;
     }
 
     public function setTextoPergunta($TextoPergunta) 
     {
+        if (!is_string($TextoPergunta) || trim($TextoPergunta) === '' || mb_strlen(trim($TextoPergunta)) > 350) {
+            throw new InvalidArgumentException("Texto da pergunta inválido ou excede 350 caracteres.");
+        }
         $this->texto_pergunta = $TextoPergunta;
     }
 
     public function setTodosSetores($TodosSetores) 
     {
+        if (!is_bool($TodosSetores)) {
+            throw new InvalidArgumentException("'TodosSetores' deve ser booleano.");
+        }
         $this->todos_setores = $TodosSetores;
     }
 
     public function setStatus($Status) 
     {
+        if (!is_int($Status) || !in_array($Status, [0, 1], true)) {
+            throw new InvalidArgumentException("Status deve ser 0 (inativo) ou 1 (ativo).");
+        }
         $this->status = $Status;
     }
 }

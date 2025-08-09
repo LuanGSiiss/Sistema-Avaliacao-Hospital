@@ -10,6 +10,10 @@ class PerguntaController extends RenderView
     public function buscarPerguntas()
     {
         try {
+            if(!class_exists('PerguntaModel')) {
+                throw new Exception("Classe 'PerguntaModel' não existe.");
+            }
+            
             $perguntaModel = new PerguntaModel();
             $perguntasBase = $perguntaModel->BuscarTodas();
             
@@ -35,14 +39,19 @@ class PerguntaController extends RenderView
         }
     }
 
-    public function formularioIncluir(array $mensagens = [])
+    public function formularioIncluir(array $mensagens = [], array $perguntaPreenchida = [])
     {
         try {
+            if(!class_exists('SetorModel')) {
+                throw new Exception("Classe 'SetorModel' não existe.");
+            }
+
             $setorModel = new SetorModel();
             $setoresAtivos = $setorModel->BuscarSetoresAtivos();
 
             $this->loadView('pergunta.incluirPergunta', [
                 'setoresAtivos' => $setoresAtivos,
+                'perguntaPreenchida' => $perguntaPreenchida,
                 'mensagens' => $mensagens
             ]);
         } catch (Throwable $e) {
@@ -50,7 +59,7 @@ class PerguntaController extends RenderView
             http_response_code(500);
             echo json_encode([
                 'status' => 'erro',
-                'message' => 'Erro ao carregar a página.' . $e->getMessage()
+                'message' => 'Erro ao carregar a página: ' . $e->getMessage()
             ], JSON_UNESCAPED_UNICODE);
         }
     }
@@ -63,6 +72,10 @@ class PerguntaController extends RenderView
                 'todosSetores'  => !empty($_POST['todos_setores']),
                 'setores'       => $_POST['setores'] ?? []
             ];
+
+            if(!class_exists('PerguntaModel')) {
+                throw new Exception("Classe 'PerguntaModel' não existe.");
+            }
             
             $perguntaModel = new PerguntaModel();
             $perguntaModel->validarCamposPergunta($dados);
@@ -81,13 +94,19 @@ class PerguntaController extends RenderView
 
         } catch (Throwable $e) {
             $mensagemErro = "Erro: " . $e->getMessage();
-            $this->formularioIncluir(['erroRegistroPergunta' => $mensagemErro]); 
+            $this->formularioIncluir(['erroRegistroPergunta' => $mensagemErro], $dados); 
         } 
     }
 
-    public function formularioAlterar(int $idPergunta, array $mensagens = [])
+    public function formularioAlterar(int $idPergunta, array $mensagens = [], array $perguntaPreenchida = [])
     {
         try {
+            if(!class_exists('SetorModel')) {
+                throw new Exception("Classe 'SetorModel' não existe.");
+            } elseif(!class_exists('PerguntaModel')) {
+                throw new Exception("Classe 'PerguntaModel' não existe.");
+            }
+
             $setorModel = new SetorModel();
             $setoresAtivos = $setorModel->BuscarSetoresAtivos();
     
@@ -103,6 +122,7 @@ class PerguntaController extends RenderView
                 'setoresAtivos' => $setoresAtivos,
                 'pergunta' => $pergunta,
                 'perguntaSetores' => $perguntaSetoresArray,
+                'perguntaPreenchida' => $perguntaPreenchida,
                 'mensagens' => $mensagens
             ]);
         } catch (Throwable $e) {
@@ -110,7 +130,7 @@ class PerguntaController extends RenderView
             http_response_code(500);
             echo json_encode([
                 'status' => 'erro',
-                'message' => 'Erro ao carregar a página.' . $e->getMessage()
+                'message' => 'Erro ao carregar a página: ' . $e->getMessage()
             ], JSON_UNESCAPED_UNICODE);
         }
     }
@@ -126,6 +146,10 @@ class PerguntaController extends RenderView
                 'setores'       => $_POST['setores'] ?? []
             ];
 
+            if(!class_exists('PerguntaModel')) {
+                throw new Exception("Classe 'PerguntaModel' não existe.");
+            }
+            
             $perguntaModel = new PerguntaModel();
             $perguntaModel->validarCamposPergunta($dados, true);
 
@@ -143,13 +167,19 @@ class PerguntaController extends RenderView
 
         } catch (Throwable $e) {
             $mensagemErro = "Erro: " . $e->getMessage();
-            $this->formularioAlterar($idPergunta, ['erroRegistroPergunta' => $mensagemErro]); 
+            $this->formularioAlterar($idPergunta, ['erroRegistroPergunta' => $mensagemErro], $dados); 
         }
     }
 
     public function visualizarPergunta(int $idPergunta)
     {
         try {
+            if(!class_exists('SetorModel')) {
+                throw new Exception("Classe 'SetorModel' não existe.");
+            } elseif(!class_exists('PerguntaModel')) {
+                throw new Exception("Classe 'PerguntaModel' não existe.");
+            }
+
             $setorModel = new SetorModel();
             $setoresAtivos = $setorModel->BuscarSetoresAtivos();
     
@@ -171,7 +201,7 @@ class PerguntaController extends RenderView
             http_response_code(500);
             echo json_encode([
                 'status' => 'erro',
-                'message' => 'Erro ao carregar a página.' . $e->getMessage()
+                'message' => 'Erro ao carregar a página: ' . $e->getMessage()
             ], JSON_UNESCAPED_UNICODE);
         }
     }

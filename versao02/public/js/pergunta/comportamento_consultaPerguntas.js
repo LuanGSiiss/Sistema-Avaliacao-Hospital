@@ -1,4 +1,6 @@
 // Chamada Principal
+const numeroColunas = 5
+
 document.getElementById("butaoConsulta").addEventListener("click", function () {
     const tabela = document.getElementById("resultadoConsulta");
     efeitoCarragamentoTabela(tabela);
@@ -59,6 +61,15 @@ document.getElementById("butaoConsulta").addEventListener("click", function () {
 
 function adicionarLinha(tabela, valores) {
     const novaLinha = tabela.insertRow();
+    //Para quando não for encontrado nenhum registo
+    if (valores.length === 1) {
+        const celula = novaLinha.insertCell();
+        celula.innerHTML = valores[0];
+        celula.colSpan = numeroColunas;
+        celula.style.cssText = 'text-align: center;';
+        return;
+    }
+    
     valores.forEach((valor, index ) => {
         const celula = novaLinha.insertCell();
         celula.innerHTML = valor;
@@ -66,6 +77,7 @@ function adicionarLinha(tabela, valores) {
         if (index === valores.length - 1) {
             celula.classList.add("colunaAcoes");
         }
+        
     });
 };
 
@@ -73,7 +85,7 @@ function efeitoCarragamentoTabela(tabela) {
     const tbody = tabela.querySelector('tbody');
     tbody.innerHTML = `
         <tr>
-            <td colspan="5" style="text-align: center;">Carregando...</td>
+            <td colspan="${numeroColunas}" style="text-align: center;">Carregando...</td>
         </tr>
     `;
 }

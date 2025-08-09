@@ -29,19 +29,22 @@
                 <div class="inputs">
                     <div>
                         <label for="todos_setores">Todos os Setores?</label>
-                        <input type="checkbox" value="1" name="todos_setores" id="todos_setores">
+                        <!-- carregar dados salvos caso retorne erro -->
+                        <input type="checkbox" value="1" name="todos_setores" id="todos_setores" <?= (isset($perguntaPreenchida['todosSetores']) && $perguntaPreenchida['todosSetores']) ? 'checked' : '' ?>>
                     </div>
                     <p>
                         <label for="setores">Setores</label>
                         <select name="setores[]" id="setores" multiple required>
                         <?php foreach ($setoresAtivos as $setor): ?>
-                            <option value="<?= $setor['id_setor'] ?>"><?= htmlspecialchars($setor['descricao']) ?></option>
+                            <option value="<?= $setor['id_setor'] ?>" 
+                            <?= (isset($perguntaPreenchida['setores']) && in_array($setor['id_setor'], $perguntaPreenchida['setores'])) ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($setor['descricao']) ?></option>
                         <?php endforeach; ?>
                         </select>
                     </p>
                     <p>
                         <label for="texto_pergunta" >Texto da Pergunta</label>
-                        <textarea name="texto_pergunta" id="texto_pergunta" maxlength="350" rows="5" oninput="contagemCaracteres()" placeholder="Achei bom porque..." required></textarea>
+                        <textarea name="texto_pergunta" id="texto_pergunta" maxlength="350" rows="5" oninput="contagemCaracteres()" placeholder="Achei bom porque..." required><?= isset($perguntaPreenchida['textoPergunta']) ? htmlspecialchars($perguntaPreenchida['textoPergunta']) : '' ?></textarea>
                         <p class="contador-char" id="contadorChar">0/350 caracteres</p>
                     </p>
                 </div>
@@ -73,3 +76,4 @@
         console.error("Erro ao registrar a Pergunta: <?= addslashes($mensagens['erroRegistroPergunta']) ?>");
     </script>
 <?php endif; ?>
+
