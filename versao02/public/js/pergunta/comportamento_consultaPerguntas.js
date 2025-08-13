@@ -167,9 +167,9 @@ function exibirMensagemRetorno(mensagem, situacao) {
     const mensagemStatus = document.createElement('div');
     // 1 = sucesso, 0 = erro
     if (situacao == 1) {
-        mensagemStatus.innerHTML = `<p class="mensagem sucesso">${mensagem}</p>`;
+        mensagemStatus.innerHTML = `<div class="mensagem sucesso"><p class="mensagemTexto ">${mensagem}</p><div class="slide-tempo"></div></div>`;
     } else {
-        mensagemStatus.innerHTML = `<p class="mensagem erro">${mensagem}</p>`;
+        mensagemStatus.innerHTML = `<div class="mensagem erro"><p class="mensagemTexto">${mensagem}</p><div class="slide-tempo"></div></div>`;
     }
     document.body.appendChild(mensagemStatus);
 

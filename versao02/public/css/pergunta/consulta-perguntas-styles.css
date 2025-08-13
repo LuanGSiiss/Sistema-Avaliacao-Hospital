@@ -251,22 +251,34 @@ body {
     position: fixed;
     bottom: 10px;
     right: 10px;
+    border-radius: 0.5rem;
+}
+
+.mensagemTexto {
     font-size: 1.4rem;
     padding: 1rem;
-    border-radius: 0.5rem;
     text-align: center;
 }
 
-.mensagem.sucesso {
+.sucesso {
     background-color: #d1fae5;
     color: #065f46;
     border: 1px solid #10b981;
 }
 
-.mensagem.erro {
+.erro {
     background-color: #fee2e2;
     color: #991b1b;
     border: 1px solid #ef4444;
+}
+
+.slide-tempo {
+    height: 4px;
+    background: linear-gradient(to left, white, blue);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 5s ease;
+    transform: scaleX(1); 
 }
 
 @media (max-width: 768px) {
