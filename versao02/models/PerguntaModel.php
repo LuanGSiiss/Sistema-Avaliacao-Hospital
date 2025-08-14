@@ -7,7 +7,7 @@ class PerguntaModel extends Database
     public function __construct()
     {
         $this->pdo = $this->getConnection();
-
+        
         if (!$this->pdo) {
             throw new Exception("Erro ao conectar com o banco de dados.");
         }

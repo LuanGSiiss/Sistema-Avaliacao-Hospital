@@ -246,6 +246,10 @@ class PerguntaController extends RenderView
             $mensagem = "Erro fatal: " . $e->getMessage();
         }
 
+        if (!mb_check_encoding($mensagem, 'UTF-8')) {
+            $mensagem = mb_convert_encoding($mensagem, 'UTF-8', 'auto');
+        }
+
         header('Content-Type: application/json; charset=utf-8');
         http_response_code($httpCode);
         echo json_encode([
