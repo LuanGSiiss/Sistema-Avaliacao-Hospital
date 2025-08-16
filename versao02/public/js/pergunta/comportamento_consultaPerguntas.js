@@ -107,14 +107,16 @@ function mensagemExcluir(idPergunta) {
         <h2>Confirmação</h3>
         <p>Tem certeza que deseja excluir o registro?</p>
         <div class="botoesConfirmacao">
-            <button class="buttonSim" onclick="excluirPergunta(${idPergunta})">Sim</button>
-            <button id="buttonNao" onclick="fecharMensagemExcluir()">Não</button>
+            <button class="buttonSim">Sim</button>
+            <button id="buttonNao">Não</button>
         </div>
     `;
 
     divMensagem.appendChild(popMensagem);
     document.body.appendChild(divMensagem);
-
+    
+    popMensagem.querySelector(".buttonSim").addEventListener("click", () => excluirPergunta(idPergunta));
+    popMensagem.querySelector("#buttonNao").addEventListener("click", fecharMensagemExcluir);
 }
 
 function excluirPergunta(idPergunta) {
@@ -165,16 +167,31 @@ function fecharMensagemExcluir() {
 
 function exibirMensagemRetorno(mensagem, situacao) {
     const mensagemStatus = document.createElement('div');
+    const conteudoMensagem = document.createElement('p');
+    conteudoMensagem.className = "mensagem-texto";
+    conteudoMensagem.textContent  = mensagem;
+
+    const slideTempo = document.createElement('div');
+    slideTempo.className = "slide-tempo";
+
+    const barraSlideTempo = document.createElement('div');
+    barraSlideTempo.className = "barra";
+
+    document.body.appendChild(mensagemStatus);
+    mensagemStatus.appendChild(conteudoMensagem);
+    mensagemStatus.appendChild(slideTempo);
+    slideTempo.appendChild(barraSlideTempo);
+    
     // 1 = sucesso, 0 = erro
     if (situacao == 1) {
-        mensagemStatus.innerHTML = `<div class="mensagem sucesso"><p class="mensagemTexto ">${mensagem}</p><div class="slide-tempo"></div></div>`;
+        mensagemStatus.className = "mensagem sucesso";
     } else {
-        mensagemStatus.innerHTML = `<div class="mensagem erro"><p class="mensagemTexto">${mensagem}</p><div class="slide-tempo"></div></div>`;
+        mensagemStatus.className = "mensagem erro";
     }
-    document.body.appendChild(mensagemStatus);
-
+    
     setTimeout(() => {
         mensagemStatus.remove();
-    }, 5000);
+    }, 8000);
 }
+
 

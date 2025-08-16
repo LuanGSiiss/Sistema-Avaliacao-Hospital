@@ -159,6 +159,12 @@ button {
     min-height: 42px;
 }
 
+input:disabled, textarea:disabled, select:disabled {
+    background-color: #ebebeb;
+    color: #333;
+    border: 1px solid #999;
+    opacity: 1;
+}
 
 /* Responsivo */
 @media (max-width: 768px) {

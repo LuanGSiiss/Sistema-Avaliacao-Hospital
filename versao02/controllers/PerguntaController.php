@@ -35,7 +35,7 @@ class PerguntaController extends RenderView
                 ] 
             ], JSON_UNESCAPED_UNICODE);
         }  catch (Throwable $e) {
-            $this->tratarErroRetornoAjax($e);
+            $this->tratarErroRetornoJson($e);
         }
     }
 
@@ -55,12 +55,7 @@ class PerguntaController extends RenderView
                 'mensagens' => $mensagens
             ]);
         } catch (Throwable $e) {
-            header('Content-Type: application/json; charset=utf-8');
-            http_response_code(500);
-            echo json_encode([
-                'status' => 'erro',
-                'message' => 'Erro ao carregar a página: ' . $e->getMessage()
-            ], JSON_UNESCAPED_UNICODE);
+            $this->tratarErroRetornoJson($e);
         }
     }
 
@@ -126,12 +121,7 @@ class PerguntaController extends RenderView
                 'mensagens' => $mensagens
             ]);
         } catch (Throwable $e) {
-            header('Content-Type: application/json; charset=utf-8');
-            http_response_code(500);
-            echo json_encode([
-                'status' => 'erro',
-                'message' => 'Erro ao carregar a página: ' . $e->getMessage()
-            ], JSON_UNESCAPED_UNICODE);
+            $this->tratarErroRetornoJson($e);
         }
     }
 
@@ -197,12 +187,7 @@ class PerguntaController extends RenderView
                 'perguntaSetores' => $perguntaSetoresArray
             ]);
         } catch (Throwable $e) {
-            header('Content-Type: application/json; charset=utf-8');
-            http_response_code(500);
-            echo json_encode([
-                'status' => 'erro',
-                'message' => 'Erro ao carregar a página: ' . $e->getMessage()
-            ], JSON_UNESCAPED_UNICODE);
+            $this->tratarErroRetornoJson($e);
         }
     }
 
@@ -229,11 +214,11 @@ class PerguntaController extends RenderView
                 ] 
             ], JSON_UNESCAPED_UNICODE);
         } catch (Throwable $e) {
-            $this->tratarErroRetornoAjax($e);
+            $this->tratarErroRetornoJson($e);
         }
     }
 
-    private function tratarErroRetornoAjax(Throwable $e) {
+    private function tratarErroRetornoJson(Throwable $e) {
         $httpCode = 500;
         $mensagem = "Erro inesperado ao tratar a requisição";
         
