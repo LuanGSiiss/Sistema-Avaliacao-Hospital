@@ -3,6 +3,7 @@
 $routes = [
     'GET' => [
         '/' => 'HomeController@index',
+        '/login' => 'LoginController@formularioLogin',
         '/consultaAvaliacoes' => 'ConsultaAvaliacoesController@exibirConsulta',
         '/consultaAvaliacoes/buscar' => 'ConsultaAvaliacoesController@buscarAvaliacoes',
         '/cadastroAvaliacao' => 'CadastroAvaliacaoController@index',
@@ -13,6 +14,7 @@ $routes = [
         '/pergunta/visualizar/{id}' => 'PerguntaController@visualizarPergunta'
     ],
     'POST' => [
+        '/login' => 'LoginController@validarLogin',
         '/cadastroAvaliacao' => 'CadastroAvaliacaoController@registrarAvaliacao',
         '/pergunta/incluir' => 'PerguntaController@registrarPergunta',
         '/pergunta/alterar/{id}' => 'PerguntaController@alterarPergunta'
