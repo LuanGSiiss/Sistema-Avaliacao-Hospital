@@ -13,7 +13,7 @@ class LoginModel extends Database
         }
     }
 
-    public function buscaUsuario(array $dados)
+    public function buscaUsuario(array $dados): mixed
     {
         try {
             $sqlBuscaUsuario = "SELECT id_usuario, email, nome 
@@ -26,7 +26,7 @@ class LoginModel extends Database
             ]);
             $usuario = $stmt->fetch();
 
-            return $usuario ? $usuario : false;
+            return $usuario;
             
         } catch (Throwable $e) {
             throw $e;

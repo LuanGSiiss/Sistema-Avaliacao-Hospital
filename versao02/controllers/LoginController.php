@@ -14,7 +14,7 @@ class LoginController extends RenderView
         try {
             $dados = [
                 'email' => $_POST['email'] ?? '',
-                'senha'  => $_POST['email'] ?? ''
+                'senha'  => $_POST['senha'] ?? ''
             ];
 
             if(!class_exists('LoginModel')) {
@@ -36,15 +36,14 @@ class LoginController extends RenderView
 
                 $_SESSION['id_usuario'] = $usuario['id_usuario'];
                 $_SESSION['nome'] = $usuario['nome'];
-
-                $controllerPerguntaTeste = new PerguntaController();
-                $controllerPerguntaTeste->exibirConsulta();
+                
+                require_once __DIR__ . '/../utils/config.php';
+                header("Location: " . BASE_URL . "consultaPerguntas");
             } else {
-                throw new Exception("Falha ao logar! E-mail ou Senha incorretos");
+                throw new Exception("Falha ao logar! E-mail ou Senha incorretos: ");
             }
         } catch (Throwable $e) {
-            $mensagemErro = "Erro: " . $e->getMessage();
-            $this->formularioLogin(['erroRegistroPergunta' => $mensagemErro]); 
+            $this->formularioLogin(['erroRegistroPergunta' => $e->getMessage()]); 
         } 
     }
 }
