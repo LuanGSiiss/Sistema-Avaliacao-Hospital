@@ -22,10 +22,10 @@ class LoginController extends RenderView
             }
             
             //Valida Parametros
-            if (!is_string($dados['email']) || trim($dados['email']) === '' || mb_strlen(trim($dados['email'])) > 350) {
-                throw new Exception("Email inválido ou excede 350 caracteres.");
-            } elseif (!is_string($dados['senha']) || trim($dados['senha']) === '' || mb_strlen(trim($dados['senha'])) > 350) {
-                throw new Exception("Senha inválido ou excede 350 caracteres.");
+            if (!is_string($dados['email']) || trim($dados['email']) === '' || mb_strlen(trim($dados['email'])) > 50) {
+                throw new Exception("Email inválido ou excede 50 caracteres.");
+            } elseif (!is_string($dados['senha']) || trim($dados['senha']) === '' || mb_strlen(trim($dados['senha'])) > 50) {
+                throw new Exception("Senha inválido ou excede 50 caracteres.");
             }
 
             $loginModel = new LoginModel();

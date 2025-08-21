@@ -27,7 +27,6 @@ class LoginModel extends Database
             $usuario = $stmt->fetch();
 
             return $usuario;
-            
         } catch (Throwable $e) {
             throw $e;
         }
