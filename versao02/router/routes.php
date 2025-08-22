@@ -2,16 +2,15 @@
 
 $routes = [
     'GET' => [
-        '/' => 'HomeController@index',
-        '/login' => 'LoginController@formularioLogin',
-        '/consultaAvaliacoes' => 'ConsultaAvaliacoesController@exibirConsulta',
-        '/consultaAvaliacoes/buscar' => 'ConsultaAvaliacoesController@buscarAvaliacoes',
-        '/cadastroAvaliacao' => 'CadastroAvaliacaoController@index',
-        '/consultaPerguntas' => 'PerguntaController@exibirConsulta',
-        '/consultaPerguntas/buscar' => 'PerguntaController@buscarPerguntas',
-        '/pergunta/incluir' => 'PerguntaController@formularioIncluir',
-        '/pergunta/alterar/{id}' => 'PerguntaController@formularioAlterar',
-        '/pergunta/visualizar/{id}' => 'PerguntaController@visualizarPergunta'
+        '/login' => 'LoginController@formularioLogin@semSessao',
+        '/consultaAvaliacoes' => 'ConsultaAvaliacoesController@exibirConsulta@comSessao',
+        '/consultaAvaliacoes/buscar' => 'ConsultaAvaliacoesController@buscarAvaliacoes@comSessao',
+        '/cadastroAvaliacao' => 'CadastroAvaliacaoController@index@comSessao',
+        '/consultaPerguntas' => 'PerguntaController@exibirConsulta@comSessao',
+        '/consultaPerguntas/buscar' => 'PerguntaController@buscarPerguntas@comSessao',
+        '/pergunta/incluir' => 'PerguntaController@formularioIncluir@comSessao',
+        '/pergunta/alterar/{id}' => 'PerguntaController@formularioAlterar@comSessao',
+        '/pergunta/visualizar/{id}' => 'PerguntaController@visualizarPergunta@comSessao'
     ],
     'POST' => [
         '/login' => 'LoginController@validarLogin',

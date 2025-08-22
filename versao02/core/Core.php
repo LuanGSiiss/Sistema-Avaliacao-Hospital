@@ -20,8 +20,13 @@ class Core
                     $routerFound = true;
                     array_shift($matches);
 
-                    [$currentController, $action] = explode('@', $controller);
+                    [$currentController, $action, $withSession] = explode('@', $controller);
                     
+                    //Vericar se é necessário estar logado para acessar a página
+                    if ($withSession === "comSessao") {
+                        SessaoModel::validarSessao();
+                    }
+
                     $controllerFilePath = __DIR__ . "/../controllers/$currentController.php";
                     if (!file_exists($controllerFilePath)) {
                         $this->tratarNotFound("Arquivo do controller não encontrado: $controllerFilePath");
