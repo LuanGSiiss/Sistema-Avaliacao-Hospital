@@ -13,12 +13,12 @@ $routes = [
         '/pergunta/visualizar/{id}' => 'PerguntaController@visualizarPergunta@comSessao'
     ],
     'POST' => [
-        '/login' => 'LoginController@validarLogin',
-        '/cadastroAvaliacao' => 'CadastroAvaliacaoController@registrarAvaliacao',
-        '/pergunta/incluir' => 'PerguntaController@registrarPergunta',
-        '/pergunta/alterar/{id}' => 'PerguntaController@alterarPergunta'
+        '/login' => 'LoginController@validarLogin@semSessao',
+        '/cadastroAvaliacao' => 'CadastroAvaliacaoController@registrarAvaliacao@comSessao',
+        '/pergunta/incluir' => 'PerguntaController@registrarPergunta@comSessao',
+        '/pergunta/alterar/{id}' => 'PerguntaController@alterarPergunta@comSessao'
     ],
     'DELETE' => [
-        '/pergunta/excluir/{id}' => 'PerguntaController@excluirPergunta'
+        '/pergunta/excluir/{id}' => 'PerguntaController@excluirPergunta@comSessao'
     ]
 ];

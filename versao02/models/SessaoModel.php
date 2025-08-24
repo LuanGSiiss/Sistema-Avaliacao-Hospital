@@ -3,21 +3,54 @@ require_once __DIR__ . '/../utils/config.php';
 
 class SessaoModel extends Database
 {
-    public static function  validarSessao()
+    private static function iniciarSessao(): void
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+    }
+    public static function  criarSessao($usuario): bool
+    {
+        session_set_cookie_params([
+            'lifetime' => 0,
+            'httponly' => true,
+            'secure'   => true, 
+            'samesite' => 'Strict'
+        ]);
+        self::iniciarSessao();
+
+        $_SESSION['id_usuario'] = $usuario['id_usuario'];
+        $_SESSION['nome'] = $usuario['nome'];
+        $_SESSION['logado'] = true;
+        $_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
+        $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+
+        session_regenerate_id(true);
+        return true;
+    }
+    
+    public static function  validarSessao(): bool
     {
         try {
-            if (!isset($_SESSION)) {
-                session_start();
-            }
-
-            if (!isset($_SESSION['id_usuario'])) {
-                die('Você não pode acessar esta página porque não está logado.<p><a href="' . BASE_URL . 'login">Login</a></p>');
+            self::iniciarSessao();
+            
+            if (!isset($_SESSION['logado']) || $_SESSION['logado'] === false) {
+                header("Location: " . BASE_URL . "login");
+                exit;
             }
 
             return true;
         } catch (Throwable $e) {
-            throw $e;
+            error_log("Erro na validação de sessão: " . $e->getMessage());
+            header("Location: " . BASE_URL . "login");
+            exit;
         }
+    }
+    public static function  destruirSessao(): void
+    {
+        self::iniciarSessao();
+        session_unset();
+        session_destroy();
     }
 }
 ?>

@@ -44,7 +44,7 @@ class Core
                     try {
                         call_user_func_array([$newController, $action], $matches);
                     } catch(Exception $e) {
-                        $this->tratarErroMetodoClasse("Erro Inesperado ao chamar o método: $e");
+                        $this->tratarErroMetodoClasse( $e->getMessage() );
                     }
 
                     return;
@@ -66,10 +66,6 @@ class Core
 
     private function tratarErroMetodoClasse(string $mensagemErro = '') 
     {
-        if ($mensagemErro) {
-            echo $mensagemErro;
-        } else {
-            echo "Erro inesperado na chamado do método.";
-        }
+        echo "Erro inesperado na chamado do método: " . $mensagemErro;
     }
 }

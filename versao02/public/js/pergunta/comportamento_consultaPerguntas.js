@@ -48,8 +48,15 @@ document.getElementById("butaoConsulta").addEventListener("click", function () {
                 console.error("Erro ao tratar os dados da requisição: ", erro.message);
             }
         } else if(func_assinc.status === 400 || func_assinc.status === 500) {
-            exibirMensagemRetorno(JSON.parse(func_assinc.responseText).message, 0);
-            console.error(JSON.parse(func_assinc.responseText).message);
+            var dadosResposta;
+            try {
+                dadosResposta = JSON.parse(func_assinc.responseText).message;
+                
+            } catch {
+                dadosResposta = func_assinc.responseText;
+            }
+            exibirMensagemRetorno(dadosResposta, 0);
+            console.error(dadosResposta);
         } else {
             alert("requisição invalida");
         }
@@ -144,8 +151,15 @@ function excluirPergunta(idPergunta) {
             }
         } else if(func_assinc.status === 400 || func_assinc.status === 500) {
             fecharMensagemExcluir();
-            exibirMensagemRetorno(JSON.parse(func_assinc.responseText).message, 0);
-            console.error(JSON.parse(func_assinc.responseText).message);
+            var dadosResposta;
+            try {
+                dadosResposta = JSON.parse(func_assinc.responseText).message;
+                
+            } catch {
+                dadosResposta = func_assinc.responseText;
+            }
+            exibirMensagemRetorno(dadosResposta, 0);
+            console.error(dadosResposta);
         } else {
             alert("requisição invalida");
         }
