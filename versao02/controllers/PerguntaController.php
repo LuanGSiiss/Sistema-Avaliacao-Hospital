@@ -194,6 +194,10 @@ class PerguntaController extends RenderView
     public function excluirPergunta(int $idPerguntaParametro)
     {
         try {
+            if(!class_exists('PerguntaModel')) {
+                throw new Exception("Classe 'PerguntaModel' não existe.");
+            }
+
             $perguntaModel = new PerguntaModel();
             $idPergunta = (int) $idPerguntaParametro;
 

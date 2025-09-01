@@ -5,6 +5,9 @@ class LoginController extends RenderView
 {
     public function formularioLogin(array $mensagens = [])
     {
+        if (isset($_GET['msg']) && $_GET['msg'] === 'login_required') {
+            $mensagens['erroLogin'] = "É necessário estar logado para acessar o sistema.";
+        }
         $this->loadView('login.login', [
             'mensagens' => $mensagens
         ]);
@@ -33,7 +36,7 @@ class LoginController extends RenderView
             $usuario = $loginModel->buscaUsuario($dados);
 
             if ($usuario) {
-                SessaoModel::criarSessao($usuario);
+                Sessao::criarSessao($usuario);
                 header("Location: " . BASE_URL . "consultaPerguntas");
             } else {
                 throw new Exception("Falha ao logar! E-mail ou Senha incorretos.");

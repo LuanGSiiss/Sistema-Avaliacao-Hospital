@@ -24,7 +24,7 @@ class Core
                     
                     //Vericar se é necessário estar logado para acessar a página
                     if ($withSession === "comSessao") {
-                        SessaoModel::validarSessao();
+                        Sessao::validarSessao();
                     }
 
                     $controllerFilePath = __DIR__ . "/../controllers/$currentController.php";

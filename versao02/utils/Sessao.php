@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../utils/config.php';
 
-class SessaoModel extends Database
+class Sessao extends Database
 {
     private static function iniciarSessao(): void
     {
@@ -35,14 +35,14 @@ class SessaoModel extends Database
             self::iniciarSessao();
             
             if (!isset($_SESSION['logado']) || $_SESSION['logado'] === false) {
-                header("Location: " . BASE_URL . "login");
+                header("Location: " . BASE_URL . "login?msg=login_required");
                 exit;
             }
 
             return true;
         } catch (Throwable $e) {
             error_log("Erro na validação de sessão: " . $e->getMessage());
-            header("Location: " . BASE_URL . "login");
+            header("Location: " . BASE_URL . "login?msg=login_required");
             exit;
         }
     }
