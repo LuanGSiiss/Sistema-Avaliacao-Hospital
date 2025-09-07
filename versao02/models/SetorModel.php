@@ -97,18 +97,28 @@ class SetorModel extends Database
     public function excluir(int $idSetor): int
     {
         try {
-            $sqlSetorEmPerguntas = "SELECT count(*) as total
+            $sqlSetorEmPerguntas = "SELECT 1 as total
                                             FROM pergunta_setor
                                             WHERE id_setor = :idSetor;";
             $stmt1 = $this->pdo->prepare($sqlSetorEmPerguntas);
             $stmt1->execute([
                 'idSetor' => $idSetor
             ]);
-            
             $resultadoSetorEmPerguntas = $stmt1->fetch();
 
-            if($resultadoSetorEmPerguntas['total'] > 0) {
+            $sqlSetorEmAvaliacoes = "SELECT 1 as total
+                                            FROM avaliacoes
+                                            WHERE id_setor = :idSetor;";
+            $stmt2 = $this->pdo->prepare($sqlSetorEmAvaliacoes);
+            $stmt2->execute([
+                'idSetor' => $idSetor
+            ]);
+            $resultadoSetorEmAvaliacoes = $stmt2->fetch();
+
+            if(isset($resultadoSetorEmPerguntas['total'])) {
                 throw new Exception("O Setor possui relacionamento com Perguntas, não será possível realizar a exclusão.");
+            } elseif(isset($resultadoSetorEmAvaliacoes['total'])) {
+                throw new Exception("O Setor possui relacionamento com Avaliações, não será possível realizar a exclusão.");
             }
 
             //Deletar Setor

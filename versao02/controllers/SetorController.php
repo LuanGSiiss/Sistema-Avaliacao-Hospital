@@ -38,11 +38,11 @@ class SetorController extends RenderView
         }
     }
 
-    public function formularioIncluir(array $mensagens = [], array $setorPreenchida = [])
+    public function formularioIncluir(array $mensagens = [], array $setorPreenchido = [])
     {
         try {
             $this->loadView('setor.incluirSetor', [
-                'setorPreenchida' => $setorPreenchida,
+                'setorPreenchido' => $setorPreenchido,
                 'mensagens' => $mensagens
             ]);
         } catch (Throwable $e) {
@@ -77,23 +77,23 @@ class SetorController extends RenderView
 
         } catch (Throwable $e) {
             $mensagemErro = "Erro: " . $e->getMessage();
-            $this->formularioIncluir(['erroRegistroSetor' => $mensagemErro], $dados); 
+            $this->formularioIncluir(['erroRegistro' => $mensagemErro], $dados); 
         } 
     }
 
-    public function formularioAlterar(int $idSetor, array $mensagens = [], array $setorPreenchida = [])
+    public function formularioAlterar(int $idSetor, array $mensagens = [], array $setorPreenchido = [])
     {
         try {
             if(!class_exists('SetorModel')) {
                 throw new Exception("Classe 'SetorModel' não existe.");
             }
-
+            
             $setorModel = new SetorModel();
             $setor = $setorModel->buscarPorId($idSetor);
     
             $this->loadView('setor.alterarSetor', [
                 'setor' => $setor,
-                'setorPreenchida' => $setorPreenchida,
+                'setorPreenchido' => $setorPreenchido,
                 'mensagens' => $mensagens
             ]);
         } catch (Throwable $e) {
@@ -104,11 +104,12 @@ class SetorController extends RenderView
     public function alterarSetor(int $idSetor)
     {
         try {
-
+            
             $dados = [
+                'idSetor' => $idSetor,
                 'descricao' => trim($_POST['descricao']) ?? ''
             ];
-
+            
             if(!class_exists('SetorModel')) {
                 throw new Exception("Classe 'SetorModel' não existe.");
             }
@@ -129,7 +130,7 @@ class SetorController extends RenderView
 
         } catch (Throwable $e) {
             $mensagemErro = "Erro: " . $e->getMessage();
-            $this->formularioAlterar($idSetor, ['erroRegistroSetor' => $mensagemErro], $dados); 
+            $this->formularioAlterar($idSetor, ['erroRegistro' => $mensagemErro], $dados); 
         }
     }
 

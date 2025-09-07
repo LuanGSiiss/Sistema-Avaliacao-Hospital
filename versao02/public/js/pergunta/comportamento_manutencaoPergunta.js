@@ -2,17 +2,10 @@
 const textarea = document.getElementById('texto_pergunta');
 const todosSetores = document.getElementById('todos_setores');
 const selectSetores = document.getElementById('setores');
-const butaoEnviar = document.getElementById('enviar');
 
 textarea.addEventListener("input", function () {
     this.style.height = "auto";
     this.style.height = this.scrollHeight + "px"; 
-    
-    if (textarea.value.trim() !== '') {
-        butaoEnviar.disabled = false;
-    } else {
-        butaoEnviar.disabled = true;
-    }
 });
 
 // Para vir desabilitado ou habilitado na alteração

@@ -17,7 +17,7 @@ $routes = [
         '/consultaSetores/buscar' => 'SetorController@buscarSetores@comSessao',
         '/setor/incluir' => 'SetorController@formularioIncluir@comSessao',
         '/setor/alterar/{id}' => 'SetorController@formularioAlterar@comSessao',
-        '/setor/visualizar/{id}' => 'SetorController@visualizarPergunta@comSessao'
+        '/setor/visualizar/{id}' => 'SetorController@visualizarSetor@comSessao'
     ],
     'POST' => [
         '/login' => 'LoginController@validarLogin@semSessao',
@@ -32,6 +32,6 @@ $routes = [
     'DELETE' => [
         '/pergunta/excluir/{id}' => 'PerguntaController@excluirPergunta@comSessao',
 
-        '/setor/excluir/{id}' => 'SetorController@excluirPergunta@comSessao'
+        '/setor/excluir/{id}' => 'SetorController@excluirSetor@comSessao'
     ]
 ];

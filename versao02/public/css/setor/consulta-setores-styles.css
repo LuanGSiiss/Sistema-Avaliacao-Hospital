@@ -1,0 +1,317 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.6rem;
+    background-color: #f3f4f6;
+    color: #333;
+}
+
+.estrutura {
+    max-width: 1600px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+.cabecalho-consulta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+.cabecalho-consulta h1 {
+    color: #d32f2f; /* vermelho profissional */
+    font-size: 2.4rem;
+}
+
+.cabecalho-consulta button {
+    padding: 1rem 2rem;
+    font-size: 1.6rem;
+    background-color: #3b82f6;
+    color: #fff;
+    border: none;
+    border-radius: 0.6rem;
+    transition: background-color 0.2s;
+}
+
+.cabecalho-consulta button:hover {
+    background-color: #2563eb;
+    cursor: pointer;
+}
+
+.estrutura a[href*="incluir"] {
+    display: inline-block;
+    background-color: #10b981; /* verde-água */
+    color: white;
+    font-weight: bold;
+    font-size: 1.5rem;
+    text-decoration: none;
+    padding: 1rem 2rem;
+    border-radius: 0.6rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-bottom: 2rem;
+}
+
+.estrutura a[href*="incluir"]:hover {
+    background-color: #059669; /* verde mais escuro */
+    transform: scale(1.03);
+}
+
+/* consulta */
+
+.consulta {
+    overflow-x: auto;
+}
+
+.consulta table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 0.6rem;
+    overflow: hidden;
+}
+
+.consulta th, 
+.consulta td {
+    padding: 1.2rem;
+    text-align: left;
+    border-left: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 1.4rem;
+}
+
+.consulta td:last-child,
+.consulta th:last-child {
+    border-right: none;
+}
+
+.consulta td:first-child,
+.consulta th:first-child {
+    border-left: none;
+}
+
+.consulta th {
+    background-color: #e6f4ea;
+    color: #166534;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.consulta td {
+    background-color: #ffffff;
+    color: #333;
+    word-break: break-word;
+}
+
+.consulta .efeitoCarragamento{
+    text-align: center;
+    font-style: italic;
+    color: #6b7280;
+    padding: 2rem 0;
+}
+
+/* Butoes de acoes nos registros da consulta */
+.colunaAcoes {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 2px 0;
+}
+
+.botaoAcao {
+    font-size: 13px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-decoration: none;
+    color: white;
+    transition: background-color 0.3s ease, transform 0.2s;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.botaoAcao.alterar {
+    background-color: #3b82f6;
+}
+
+.botaoAcao.alterar:hover {
+    background-color: #2563eb;
+    transform: scale(1.05);
+}
+
+.botaoAcao.visualizar {
+    background-color: #10b981;
+}
+
+.botaoAcao.visualizar:hover {
+    background-color: #059669;
+    transform: scale(1.05);
+}
+
+.botaoAcao.excluir {
+    background-color: #ef4444; 
+}
+
+.botaoAcao.excluir:hover {
+    background-color: #dc2626;
+    transform: scale(1.05);
+}
+
+/* Mensagem de exclusão */
+.divExcluir {
+    position: fixed;
+    z-index: 1000;
+    display: flex;
+    top: 0; right: 0; bottom: 0; left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0.5);
+}
+
+.popExcluir {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px 32px;
+    background-color: #ffffff;
+    color: #1f2937;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    border-top: 8px solid #3b82f6;
+    max-width: 400px;
+    width: 90%;
+    text-align: left;
+}
+
+.popExcluir h2 {
+    font-size: 22px;
+    color: #111827;
+}
+
+.popExcluir p {
+    font-size: 18px;
+    color: #374151;
+}
+
+.botoesConfirmacao {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px; 
+    padding-top: 10px;
+}
+
+.botoesConfirmacao button {
+    min-width: 90px;
+    font-size: 16px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.buttonSim {
+    background-color: #facc15;
+    color: #000;
+}
+
+.buttonSim:hover {
+    background-color: #eab308;
+    transform: scale(1.05);
+}
+
+.buttonNao {
+    background-color: #e5e7eb; /* Cinza claro */
+    color: #111827;
+}
+
+.buttonNao:hover {
+    background-color: #d1d5db;
+    transform: scale(1.05);
+}
+
+/* Mensagens de retorno */
+.mensagem {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+
+.mensagem-texto {
+    font-size: 1.4rem;
+    padding: 1rem;
+    text-align: center;
+}
+
+.mensagem.sucesso {
+    background-color: #d1fae5;
+    color: #065f46;
+    border: 1px solid #10b981;
+}
+
+.mensagem.erro {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #ef4444;
+}
+
+.slide-tempo {
+    height: 4px;
+    background: #ddd;
+    overflow: hidden;
+}
+
+.barra {
+    height: 100%;
+    width: 0;
+    background: #4d63a0;
+    animation: carregarSlideTempo 8s linear forwards;
+}
+
+@keyframes carregarSlideTempo {
+    from { width: 100%; }
+    to   { width: 0; }
+}
+
+@media (max-width: 768px) {
+    .cabecalho-consulta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .cabecalho-consulta h1 {
+        font-size: 2rem;
+    }
+
+    .cabecalho-consulta button {
+        width: 100%;
+    }
+
+    .consulta th,
+    .consulta td {
+        font-size: 1.2rem;
+        padding: 0.8rem;
+    }
+}
+
+

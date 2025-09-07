@@ -44,25 +44,25 @@ a:hover {
 }
 
 /* formulario */
-.formulario-pergunta {
+.formulario-setor {
     display: flex;
     flex-direction: column;
     gap: 2rem;
 }
 
-.formulario-pergunta .inputs p {
+.formulario-setor .inputs p {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-.formulario-pergunta label {
+.formulario-setor label {
     font-weight: bold;
     font-size: 1.4rem;
 }
 
-.formulario-pergunta textarea,
-select {
+.formulario-setor input 
+{
     padding: 1rem;
     font-size: 1.5rem;
     border-radius: 0.5rem;
@@ -71,36 +71,9 @@ select {
     width: 100%;
 }
 
-.formulario-pergunta textarea:focus,
-select:focus {
+.formulario-setor input:focus 
+{
     outline: 2px solid #3b82f6;
-}
-
-.checkbox-container {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.checkbox-container input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    accent-color: #2563eb; /* azul suave */
-}
-
-.checkbox-container label {
-    font-size: 1.5rem;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* Contador de caracteres */
-.contador-char {
-    font-size: 1.2rem;
-    color: #555;
-    text-align: right;
 }
 
 button {
@@ -152,15 +125,8 @@ button {
     border: 1px solid #ef4444;
 }
 
-/* Select2 */
-.select2-container--default .select2-selection--multiple {
-    border-radius: 0.5rem;
-    border: 1px solid #ccc;
-    padding: 0.5rem;
-    min-height: 42px;
-}
-
-input:disabled, textarea:disabled, select:disabled {
+/* visualização */
+input:disabled {
     background-color: #ebebeb;
     color: #333;
     border: 1px solid #999;

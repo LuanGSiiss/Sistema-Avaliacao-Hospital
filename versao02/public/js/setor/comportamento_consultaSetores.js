@@ -1,12 +1,12 @@
 // Chamada Principal
-const numeroColunas = 5
+const numeroColunas = 4
 
 document.getElementById("butaoConsulta").addEventListener("click", function () {
     const tabela = document.getElementById("resultadoConsulta");
     efeitoCarragamentoTabela(tabela);
 
     const func_assinc = new XMLHttpRequest();
-    func_assinc.open("GET", "./consultaPerguntas/buscar", true);
+    func_assinc.open("GET", "./consultaSetores/buscar", true);
     func_assinc.onload = function () {
         if (func_assinc.status === 200) {
             try {
@@ -18,22 +18,20 @@ document.getElementById("butaoConsulta").addEventListener("click", function () {
     
                     const conteudo = dadosResposta.data;
     
-                    if (!conteudo || !conteudo.perguntas || conteudo.perguntas.length === 0) {
+                    if (!conteudo || !conteudo.setores || conteudo.setores.length === 0) {
                         adicionarLinha(tbody, ["Nenhum registro encontrado"]);
                     } else {
-                        conteudo.perguntas.forEach( pergunta => {
-                            let todos_setores = pergunta.todos_setores ? "Sim" : "Não";
-                            let situacao = pergunta.status ? "Ativo" : "Inativo";
+                        conteudo.setores.forEach( setor => {
+                            let situacao = setor.status ? "Ativo" : "Inativo";
                             let acoes = `
-                            <a href="./pergunta/alterar/${pergunta.id_pergunta}" class="botaoAcao alterar">Alterar</a>
-                            <a href="./pergunta/visualizar/${pergunta.id_pergunta}" class="botaoAcao visualizar">Visualizar</a>
-                            <span onclick="mensagemExcluir(${pergunta.id_pergunta})" class="botaoAcao excluir">Excluir</span>
+                            <a href="./setor/alterar/${setor.id_setor}" class="botaoAcao alterar">Alterar</a>
+                            <a href="./setor/visualizar/${setor.id_setor}" class="botaoAcao visualizar">Visualizar</a>
+                            <span onclick="mensagemExcluir(${setor.id_setor})" class="botaoAcao excluir">Excluir</span>
                             `
 
                             adicionarLinha(tbody, [
-                                pergunta.id_pergunta,
-                                pergunta.texto_pergunta,
-                                todos_setores,
+                                setor.id_setor,
+                                setor.descricao,
                                 situacao,
                                 acoes,
                             ]);
@@ -103,7 +101,7 @@ function limparCorpoTabela(tabela) {
 }
 
 //Exclusão
-function mensagemExcluir(idPergunta) {
+function mensagemExcluir(idSetor) {
     const divMensagem = document.createElement('div');
     divMensagem.className = 'divExcluir';
     divMensagem.id = 'divExcluir';
@@ -122,16 +120,16 @@ function mensagemExcluir(idPergunta) {
     divMensagem.appendChild(popMensagem);
     document.body.appendChild(divMensagem);
     
-    popMensagem.querySelector(".buttonSim").addEventListener("click", excluirPergunta(idPergunta));
+    popMensagem.querySelector(".buttonSim").addEventListener("click", excluirPergunta(idSetor));
     popMensagem.querySelector("#buttonNao").addEventListener("click", fecharMensagemExcluir);
 }
 
-function excluirPergunta(idPergunta) {
+function excluirPergunta(idSetor) {
     const divMensagem = document.getElementById("divExcluir");
     efeitoCarragamentoExcluir(divMensagem);
 
     const func_assinc = new XMLHttpRequest();
-    func_assinc.open("DELETE", `./pergunta/excluir/${idPergunta}`, true);
+    func_assinc.open("DELETE", `./setor/excluir/${idSetor}`, true);
     func_assinc.onload = function () {
         if (func_assinc.status === 200) {
             fecharMensagemExcluir();
