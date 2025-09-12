@@ -12,12 +12,22 @@ ALTER TABLE setores ADD CONSTRAINT pk_setor PRIMARY KEY (id_setor);
 --Analisar Melhor
 CREATE TABLE dispositivos (
 	id_dispositivo SERIAL NOT NULL,
+	id_setor INTEGER NOT NULL,
 	codigo_identificador VARCHAR(7) NOT NULL,
 	nome VARCHAR(50) NOT NULL,
 	status INTEGER NOT NULL DEFAULT 1 -- 0 - INATIVO; 1 - ATIVO
 );
 
 ALTER TABLE dispositivos ADD CONSTRAINT pk_dispositivo PRIMARY KEY (id_dispositivo);
+ALTER TABLE dispositivos ADD CONSTRAINT fk_setor FOREIGN KEY (id_setor) 
+	REFERENCES setores(id_setor);
+
+--Aplicar mudanças nos dispositivos
+ALTER TABLE dispositivos ADD COLUMN id_setor INTEGER NOT NULL DEFAULT 1;
+
+ALTER TABLE dispositivos ADD CONSTRAINT fk_setor FOREIGN KEY (id_setor) 
+	REFERENCES setores(id_setor);
+--^^temporario
 
 CREATE TABLE perguntas (
 	id_pergunta SERIAL NOT NULL,
