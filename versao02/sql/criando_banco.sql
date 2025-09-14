@@ -22,13 +22,6 @@ ALTER TABLE dispositivos ADD CONSTRAINT pk_dispositivo PRIMARY KEY (id_dispositi
 ALTER TABLE dispositivos ADD CONSTRAINT fk_setor FOREIGN KEY (id_setor) 
 	REFERENCES setores(id_setor);
 
---Aplicar mudanças nos dispositivos
-ALTER TABLE dispositivos ADD COLUMN id_setor INTEGER NOT NULL DEFAULT 1;
-
-ALTER TABLE dispositivos ADD CONSTRAINT fk_setor FOREIGN KEY (id_setor) 
-	REFERENCES setores(id_setor);
---^^temporario
-
 CREATE TABLE perguntas (
 	id_pergunta SERIAL NOT NULL,
 	texto_pergunta  VARCHAR(350) NOT NULL,
