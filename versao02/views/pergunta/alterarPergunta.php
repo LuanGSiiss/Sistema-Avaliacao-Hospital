@@ -1,8 +1,3 @@
-<?php
-    // require "../controller/validaSessao.php";
-    require_once __DIR__ . '/../../utils/config.php';
-?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -55,8 +50,8 @@
                 <button id="limpar" type="reset">Limpar</button>
             </form>
             <!-- mensagem -->
-            <?php if (isset($mensagens['erroRegistroPergunta'])): ?>
-                <p class="mensagem erro"><?= htmlspecialchars($mensagens['erroRegistroPergunta']) ?></p>
+            <?php if (isset($mensagens['erroRegistro'])): ?>
+                <p class="mensagem erro"><?= htmlspecialchars($mensagens['erroRegistro']) ?></p>
             <?php elseif (isset($mensagens['sucessoMensagem'])): ?>
                 <p class="mensagem sucesso"><?= htmlspecialchars($mensagens['sucessoMensagem']) ?></p>
             <?php endif; ?>
@@ -74,8 +69,8 @@
 </script>
 </html>
 <!-- Exibir erro no console -->
-<?php if (isset($mensagens['erroRegistroPergunta'])): ?>
+<?php if (isset($mensagens['erroRegistro'])): ?>
     <script>
-        console.error("Erro ao registrar a Pergunta: <?= addslashes($mensagens['erroRegistroPergunta']) ?>");
+        console.error("Erro ao registrar a Pergunta: <?= addslashes($mensagens['erroRegistro']) ?>");
     </script>
 <?php endif; ?>

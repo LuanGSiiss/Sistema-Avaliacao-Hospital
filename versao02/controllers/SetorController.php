@@ -62,7 +62,7 @@ class SetorController extends RenderView
             }
             
             $setorModel = new SetorModel();
-            $setorModel->validarCamposSetor($dados);
+            $setorModel->validarCampos($dados);
 
             $setor = new Setor(
                 null, 
@@ -115,7 +115,7 @@ class SetorController extends RenderView
             }
             
             $setorModel = new SetorModel();
-            $setorModel->validarCamposSetor($dados, true);
+            $setorModel->validarCampos($dados, true);
 
             $setor = new Setor(
                 $dados['idSetor'],

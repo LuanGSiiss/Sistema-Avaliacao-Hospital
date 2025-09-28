@@ -136,7 +136,7 @@ class SetorModel extends Database
         }
     }
 
-    public function validarCamposSetor(array $dados, bool $alteracao = false) 
+    public function validarCampos(array $dados, bool $alteracao = false) 
     {
         // ID
         if($alteracao) {
@@ -146,8 +146,7 @@ class SetorModel extends Database
         }
 
         // Descrição
-        $texto = $dados['descricao'] ?? '';
-        if (!is_string($texto) || trim($texto) === '' || mb_strlen(trim($texto)) > 50) {
+        if (!is_string($dados['descricao']) || trim($dados['descricao']) === '' || mb_strlen(trim($dados['descricao'])) > 50) {
             throw new Exception("Descrição do Setor inválido ou excede 50 caracteres.");
         }
 

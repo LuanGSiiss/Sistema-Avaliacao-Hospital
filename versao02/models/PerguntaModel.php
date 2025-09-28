@@ -20,12 +20,12 @@ class PerguntaModel extends Database
                     LEFT JOIN pergunta_setor ps USING(id_pergunta)
                     LEFT JOIN setores s USING(id_setor)
                     WHERE p.status = 1 
-                    AND ( p.todos_setores = true OR ps.id_setor = :id_setor AND s.status = 1)
+                    AND ( p.todos_setores = true OR ps.id_setor = :idSetor AND s.status = 1)
                     ORDER BY RANDOM()
                     LIMIT 1;";
         $stmt = $this->pdo->prepare($sqlBusca);
         $stmt->execute([
-            'id_setor' => $idSetor
+            'idSetor' => $idSetor
         ]);
         $resultado = $stmt->fetch();
 
@@ -82,11 +82,11 @@ class PerguntaModel extends Database
             $this->pdo->beginTransaction();
 
             $sqlInsertPergunta = "INSERT INTO perguntas(texto_pergunta, todos_setores, status)
-                                    VALUES(:texto_pergunta, :todos_setores, :status);";
+                                    VALUES(:textoPergunta, :todosSetores, :status);";
 
             $stmt1 = $this->pdo->prepare($sqlInsertPergunta);
-            $stmt1->bindValue(':texto_pergunta', $pergunta->getTextoPergunta(), PDO::PARAM_STR);
-            $stmt1->bindValue(':todos_setores', $pergunta->getTodosSetores(), PDO::PARAM_BOOL);
+            $stmt1->bindValue(':textoPergunta', $pergunta->getTextoPergunta(), PDO::PARAM_STR);
+            $stmt1->bindValue(':todosSetores', $pergunta->getTodosSetores(), PDO::PARAM_BOOL);
             $stmt1->bindValue(':status', $pergunta->getStatus(), PDO::PARAM_INT);
             $stmt1->execute();
 
@@ -100,12 +100,12 @@ class PerguntaModel extends Database
 
                 foreach ($setores as $setor) {
                     $sqlInsertPerguntaSetores = "INSERT INTO pergunta_setor(id_pergunta, id_setor)
-                                                    VALUES(:id_pergunta, :id_setor);";
+                                                    VALUES(:idPergunta, :idSetor);";
 
                     $stmt2 = $this->pdo->prepare($sqlInsertPerguntaSetores);
                     $stmt2->execute([
-                        'id_pergunta' => $idPerguntaRegistrada,
-                        'id_setor'  => $setor
+                        'idPergunta' => $idPerguntaRegistrada,
+                        'idSetor'  => $setor
                     ]);
                 }
             }
@@ -128,24 +128,24 @@ class PerguntaModel extends Database
             $this->pdo->beginTransaction();
 
             $sqlUpdatePergunta = "UPDATE perguntas
-                                    SET texto_pergunta = :texto_pergunta,
-                                    todos_setores = :todos_setores
-                                    WHERE id_pergunta = :id_pergunta;";
+                                    SET texto_pergunta = :textoPergunta,
+                                    todos_setores = :todosSetores
+                                    WHERE id_pergunta = :idPergunta;";
 
             $stmt1 = $this->pdo->prepare($sqlUpdatePergunta);
             
-            $stmt1->bindValue(':texto_pergunta', $pergunta->getTextoPergunta(), PDO::PARAM_STR);
-            $stmt1->bindValue(':todos_setores', $pergunta->getTodosSetores(), PDO::PARAM_BOOL);
-            $stmt1->bindValue(':id_pergunta', $pergunta->getIdPergunta(), PDO::PARAM_INT);
+            $stmt1->bindValue(':textoPergunta', $pergunta->getTextoPergunta(), PDO::PARAM_STR);
+            $stmt1->bindValue(':todosSetores', $pergunta->getTodosSetores(), PDO::PARAM_BOOL);
+            $stmt1->bindValue(':idPergunta', $pergunta->getIdPergunta(), PDO::PARAM_INT);
             $stmt1->execute();
 
             //Excluir as relações entre Pergunta e Setor
             $sqlDelete = "DELETE FROM pergunta_setor
-                            WHERE id_pergunta = :id_pergunta;";
+                            WHERE id_pergunta = :idPergunta;";
 
             $stmt2 = $this->pdo->prepare($sqlDelete);
             $stmt2->execute([
-                'id_pergunta' => $pergunta->getIdPergunta(),
+                'idPergunta' => $pergunta->getIdPergunta(),
             ]);
 
             // Cadastrar as relações de Pergunta e Setor
@@ -156,12 +156,12 @@ class PerguntaModel extends Database
 
                 foreach ($setores as $setor) {
                     $sqlInsertPerguntaSetores = "INSERT INTO pergunta_setor(id_pergunta, id_setor)
-                                                    VALUES(:id_pergunta, :id_setor);";
+                                                    VALUES(:idPergunta, :idSetor);";
 
                     $stmt3 = $this->pdo->prepare($sqlInsertPerguntaSetores);
                     $stmt3->execute([
-                        'id_pergunta' => $pergunta->getIdPergunta(),
-                        'id_setor'  => $setor
+                        'idPergunta' => $pergunta->getIdPergunta(),
+                        'idSetor'  => $setor
                     ]);
                 }
             }
@@ -225,7 +225,7 @@ class PerguntaModel extends Database
         }
     }
 
-    public function validarCamposPergunta(array $dados, bool $alteracao = false) 
+    public function validarCampos(array $dados, bool $alteracao = false) 
     {
         // ID
         if($alteracao) {
@@ -235,8 +235,7 @@ class PerguntaModel extends Database
         }
 
         // Texto da Pergunta
-        $texto = $dados['textoPergunta'] ?? '';
-        if (!is_string($texto) || trim($texto) === '' || mb_strlen(trim($texto)) > 350) {
+        if (!is_string($dados['textoPergunta']) || trim($dados['textoPergunta']) === '' || mb_strlen(trim($dados['textoPergunta'])) > 350) {
             throw new Exception("Texto da pergunta inválido ou excede 350 caracteres.");
         }
 

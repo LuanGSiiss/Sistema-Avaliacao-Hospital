@@ -1,8 +1,3 @@
-<?php
-    // require "../controller/validaSessao.php";
-    require_once __DIR__ . '/../../utils/config.php';
-?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>

@@ -67,13 +67,13 @@ class PerguntaController extends RenderView
                 'todosSetores'  => !empty($_POST['todos_setores']),
                 'setores'       => $_POST['setores'] ?? []
             ];
-
+            
             if(!class_exists('PerguntaModel')) {
                 throw new Exception("Classe 'PerguntaModel' não existe.");
             }
             
             $perguntaModel = new PerguntaModel();
-            $perguntaModel->validarCamposPergunta($dados);
+            $perguntaModel->validarCampos($dados);
 
             $pergunta = new Pergunta(
                 null, 
@@ -89,7 +89,7 @@ class PerguntaController extends RenderView
 
         } catch (Throwable $e) {
             $mensagemErro = "Erro: " . $e->getMessage();
-            $this->formularioIncluir(['erroRegistroPergunta' => $mensagemErro], $dados); 
+            $this->formularioIncluir(['erroRegistro' => $mensagemErro], $dados); 
         } 
     }
 
@@ -135,13 +135,13 @@ class PerguntaController extends RenderView
                 'todosSetores'  => !empty($_POST['todos_setores']),
                 'setores'       => $_POST['setores'] ?? []
             ];
-
+            
             if(!class_exists('PerguntaModel')) {
                 throw new Exception("Classe 'PerguntaModel' não existe.");
             }
             
             $perguntaModel = new PerguntaModel();
-            $perguntaModel->validarCamposPergunta($dados, true);
+            $perguntaModel->validarCampos($dados, true);
 
             $pergunta = new Pergunta(
                 $dados['idPergunta'], 
@@ -157,7 +157,7 @@ class PerguntaController extends RenderView
 
         } catch (Throwable $e) {
             $mensagemErro = "Erro: " . $e->getMessage();
-            $this->formularioAlterar($idPergunta, ['erroRegistroPergunta' => $mensagemErro], $dados); 
+            $this->formularioAlterar($idPergunta, ['erroRegistro' => $mensagemErro], $dados); 
         }
     }
 

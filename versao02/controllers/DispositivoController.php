@@ -13,7 +13,13 @@ class DispositivoController extends RenderView
             if(!class_exists('DispositivoModel')) {
                 throw new Exception("Classe 'DispositivoModel' não existe.");
             }
-            
+            if(!class_exists('SetorModel')) {
+                throw new Exception("Classe 'SetorModel' não existe.");
+            }
+
+            $setorModel = new SetorModel();
+            $setoresAtivos = $setorModel->BuscarSetoresAtivos();
+
             $dispositivoModel = new DispositivoModel();
             $dispositivosBase = $dispositivoModel->BuscarTodas();
             
@@ -32,7 +38,8 @@ class DispositivoController extends RenderView
             echo json_encode([
                 'status' => 'sucesso',
                 'data' => [
-                    'dispositivos' => $arrayDispositivos
+                    'dispositivos' => $arrayDispositivos,
+                    'setores' => $setoresAtivos
                 ] 
             ], JSON_UNESCAPED_UNICODE);
         }  catch (Throwable $e) {
@@ -46,13 +53,16 @@ class DispositivoController extends RenderView
             if(!class_exists('DispositivoModel')) {
                 throw new Exception("Classe 'DispositivoModel' não existe.");
             }
+            if(!class_exists('SetorModel')) {
+                throw new Exception("Classe 'SetorModel' não existe.");
+            }
 
             $setorModel = new SetorModel();
             $setoresAtivos = $setorModel->BuscarSetoresAtivos();
 
             $this->loadView('dispositivo.incluirDispositivo', [
                 'setoresAtivos' => $setoresAtivos,
-                'dispositivoPreenchida' => $dispositivoPreenchido,
+                'dispositivoPreenchido' => $dispositivoPreenchido,
                 'mensagens' => $mensagens
             ]);
         } catch (Throwable $e) {
@@ -64,7 +74,7 @@ class DispositivoController extends RenderView
     {
         try {
             $dados = [
-                'idSetor'             => $_POST['id_setor'],
+                'idSetor'             => (int) $_POST['setor'] ?? null,
                 'codigoIdentificador' => trim($_POST['codigo_identificador']) ?? '',
                 'nome'                => trim($_POST['nome']) ?? '',
             ];
@@ -74,7 +84,7 @@ class DispositivoController extends RenderView
             }
             
             $dispositivoModel = new DispositivoModel();
-            $dispositivoModel->validarCamposDispositivo($dados);
+            $dispositivoModel->validarCampos($dados);
 
             $dispositivo = new Dispositivo(
                 null, 
@@ -82,6 +92,10 @@ class DispositivoController extends RenderView
                 $dados['codigoIdentificador'],
                 $dados['nome']
             );
+
+            if ($dispositivoModel->validarDuplicacao($dispositivo)) {
+                throw new Exception("Já existe um Dispositivo cadastro com esse Código ou Nome.");
+            }
 
             $sucesso = $dispositivoModel->registrar($dispositivo);
 
@@ -126,7 +140,7 @@ class DispositivoController extends RenderView
         try {
             $dados = [
                 'idDispositivo' => $idDispositivo,
-                'idSetor'             => $_POST['id_setor'],
+                'idSetor'             => (int) $_POST['setor'] ?? null,
                 'codigoIdentificador' => trim($_POST['codigo_identificador']) ?? '',
                 'nome'                => trim($_POST['nome']) ?? '',
             ];
@@ -136,7 +150,7 @@ class DispositivoController extends RenderView
             }
             
             $dispositivoModel = new DispositivoModel();
-            $dispositivoModel->validarCamposDispositivo($dados, true);
+            $dispositivoModel->validarCampos($dados, true);
 
             $dispositivo = new Dispositivo(
                 $dados['idDispositivo'], 
@@ -145,6 +159,9 @@ class DispositivoController extends RenderView
                 $dados['nome']
             );
 
+            if ($dispositivoModel->validarDuplicacao($dispositivo, true)) {
+                throw new Exception("Já existe um Dispositivo cadastro com esse Código ou Nome.");
+            }
             $sucesso = $dispositivoModel->alterar($dispositivo);
 
             if ($sucesso) {

@@ -19,7 +19,7 @@
                 <div class="inputs">
                     <p>
                         <label for="descricao" >Descrição</label>
-                        <input type="text" name="descricao" id="descricao" maxlength="50" placeholder="Recepção" required><?= isset($setorPreenchido['descricao']) ? htmlspecialchars($setorPreenchido['descricao']) : '' ?></input>
+                        <input type="text" name="descricao" id="descricao" maxlength="50" placeholder="Recepção" required value="<?= isset($setorPreenchido['descricao']) ? htmlspecialchars($setorPreenchido['descricao']) : '' ?>">
                     </p>
                 </div>
                 <button id="enviar" type="submit">Enviar</button>
