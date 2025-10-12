@@ -20,6 +20,10 @@
             <div class="formulario-dispositivo">
                 <div class="inputs">
                     <p>
+                        <label for="codigo" >Código</label>
+                        <input type="number" name="codigo" id="codigo" disabled value="<?= htmlspecialchars($dispositivo['id_dispositivo']) ?>">
+                    </p>
+                    <p>
                         <label for="setor">Setor</label>
                         <select name="setor" id="setor" disabled>
                             <option value>Selecione...</option>

@@ -69,6 +69,8 @@ class SetorController extends RenderView
                 $dados['descricao'], 
             );
 
+            $setorModel->validarDuplicidade($setor);
+
             $sucesso = $setorModel->registrar($setor);
 
             if ($sucesso) {
@@ -121,6 +123,8 @@ class SetorController extends RenderView
                 $dados['idSetor'],
                 $dados['descricao']
             );
+
+            $setorModel->validarDuplicidade($setor, true);
 
             $sucesso = $setorModel->alterar($setor);
 

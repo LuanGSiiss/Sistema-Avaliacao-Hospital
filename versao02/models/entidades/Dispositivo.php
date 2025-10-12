@@ -50,7 +50,7 @@ class Dispositivo
     }
     public function setIdSetor($IdSetor) 
     {
-        if (!is_null($IdSetor) && (!is_int($IdSetor) || $IdSetor <= 0)) {
+        if (is_null($IdSetor) || (!is_int($IdSetor) || $IdSetor <= 0)) {
             throw new InvalidArgumentException("ID do Setor deve ser inteiro positivo ou nulo.");
         }
         $this->id_setor = $IdSetor;

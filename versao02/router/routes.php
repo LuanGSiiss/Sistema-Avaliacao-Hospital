@@ -3,9 +3,10 @@
 $routes = [
     'GET' => [
         '/login' => 'LoginController@formularioLogin@semSessao',
-        '/consultaAvaliacoes' => 'ConsultaAvaliacoesController@exibirConsulta@comSessao',
-        '/consultaAvaliacoes/buscar' => 'ConsultaAvaliacoesController@buscarAvaliacoes@comSessao',
-        '/cadastroAvaliacao' => 'CadastroAvaliacaoController@index@comSessao',
+
+        '/consultaAvaliacoes' => 'AvaliacaoController@exibirConsulta@comSessao',
+        '/consultaAvaliacoes/buscar' => 'AvaliacaoController@buscarAvaliacoes@comSessao',
+        '/cadastroAvaliacao' => 'AvaliacaoController@formularioAvaliacao@semSessao',
 
         '/consultaPerguntas' => 'PerguntaController@exibirConsulta@comSessao',
         '/consultaPerguntas/buscar' => 'PerguntaController@buscarPerguntas@comSessao',
@@ -27,7 +28,8 @@ $routes = [
     ],
     'POST' => [
         '/login' => 'LoginController@validarLogin@semSessao',
-        '/cadastroAvaliacao' => 'CadastroAvaliacaoController@registrarAvaliacao@comSessao',
+
+        '/avaliacao/incluir' => 'AvaliacaoController@registrarAvaliacao@semSessao',
 
         '/pergunta/incluir' => 'PerguntaController@registrarPergunta@comSessao',
         '/pergunta/alterar/{id}' => 'PerguntaController@alterarPergunta@comSessao',

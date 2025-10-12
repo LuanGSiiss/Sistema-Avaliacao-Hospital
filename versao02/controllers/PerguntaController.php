@@ -81,6 +81,8 @@ class PerguntaController extends RenderView
                 $dados['todosSetores']
             );
 
+            $perguntaModel->validarDuplicidade($pergunta);
+
             $sucesso = $perguntaModel->registrar($pergunta, $dados['setores']);
 
             if ($sucesso) {
@@ -148,6 +150,8 @@ class PerguntaController extends RenderView
                 $dados['textoPergunta'], 
                 $dados['todosSetores'],
             );
+
+            $perguntaModel->validarDuplicidade($pergunta, true);
 
             $sucesso = $perguntaModel->alterar($pergunta, $dados['setores']);
 

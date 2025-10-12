@@ -21,6 +21,10 @@
             <a href="<?= BASE_URL ?>consultaPerguntas">Voltar</a>
             <div class="formulario-pergunta">
                 <div class="inputs">
+                    <p>
+                        <label for="codigo" >Código</label>
+                        <input type="number" name="codigo" id="codigo" disabled value="<?= htmlspecialchars($pergunta['id_pergunta']) ?>">
+                    </p>
                     <div>
                         <label for="todos_setores">Todos os Setores?</label>
                         <input type="checkbox" value="1" name="todos_setores" id="todos_setores" <?= ($pergunta['todos_setores']) ? 'checked' : '' ?> disabled>

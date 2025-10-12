@@ -18,6 +18,10 @@
             <div class="formulario-setor">
                 <div class="inputs">
                     <p>
+                        <label for="codigo" >Código</label>
+                        <input type="number" name="codigo" id="codigo" disabled value="<?= htmlspecialchars($setor['id_setor']) ?>">
+                    </p>
+                    <p>
                         <label for="descricao" >Descrição</label>
                         <input type="text" name="descricao" id="descricao" maxlength="50" placeholder="Recepção" required disabled value="<?= htmlspecialchars($setor['descricao']) ?>"/>
                     </p>

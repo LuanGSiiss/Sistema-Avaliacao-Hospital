@@ -18,6 +18,10 @@
             <form class="formulario-setor" method="post" action="<?= BASE_URL ?>setor/alterar/<?= $setor['id_setor'] ?>">
                 <div class="inputs">
                     <p>
+                        <label for="codigo" >Código</label>
+                        <input type="number" name="codigo" id="codigo" disabled value="<?= htmlspecialchars($setor['id_setor']) ?>">
+                    </p>
+                    <p>
                         <label for="descricao" >Descrição</label>
                         <input type="text" name="descricao" id="descricao" maxlength="50" placeholder="Recepção" required value="<?= isset($setorPreenchido['descricao']) ? htmlspecialchars($setorPreenchido['descricao']) : htmlspecialchars($setor['descricao']) ?>"/>
                     </p>

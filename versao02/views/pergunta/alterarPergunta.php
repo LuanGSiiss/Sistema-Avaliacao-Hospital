@@ -22,6 +22,10 @@
             <a href="<?= BASE_URL ?>consultaPerguntas">Voltar</a>
             <form class="formulario-pergunta" method="post" action="<?= BASE_URL ?>pergunta/alterar/<?= $pergunta['id_pergunta'] ?>">
                 <div class="inputs">
+                    <p>
+                        <label for="codigo" >Código</label>
+                        <input type="number" name="codigo" id="codigo" disabled value="<?= htmlspecialchars($pergunta['id_pergunta']) ?>">
+                    </p>
                     <div>
                         <label for="todos_setores">Todos os Setores?</label>
                         <input type="checkbox" value="1" name="todos_setores" id="todos_setores" <?= isset($perguntaPreenchida['todosSetores']) 

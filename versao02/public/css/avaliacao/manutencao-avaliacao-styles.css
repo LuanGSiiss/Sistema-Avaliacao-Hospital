@@ -124,6 +124,27 @@ label {
     background-color: #005f2c;
 }
 
+/* Mensagens */
+.mensagem {
+    font-size: 1.4rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.mensagem.sucesso {
+    background-color: #d1fae5;
+    color: #065f46;
+    border: 1px solid #10b981;
+}
+
+.mensagem.erro {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #ef4444;
+}
+
 
 
 

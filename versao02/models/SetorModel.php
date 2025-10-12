@@ -136,6 +136,33 @@ class SetorModel extends Database
         }
     }
 
+    public function validarDuplicidade(Setor $setor, bool $alteracao = false) {
+        try {
+            $sqlBuscaRegistro = "SELECT id_setor FROM setores
+                                    WHERE descricao = :descricao;";
+
+            $stmt1 = $this->pdo->prepare($sqlBuscaRegistro);
+            $stmt1->bindValue(':descricao', $setor->getDescricao(), PDO::PARAM_STR);
+            $stmt1->execute();
+
+            $resultado = $stmt1->fetch();
+            $duplicado = $resultado ? true : false; 
+
+            if ($alteracao && $duplicado && $resultado['id_setor'] === $setor->getIdSetor()) {
+                $duplicado = false;
+            }
+
+            if ($duplicado) {
+                throw new Exception("Já existe um Setor cadastro com essa Descrição.");
+            }
+
+            return false;
+            
+        } catch (Throwable $e) {
+            throw $e;
+        }
+    }
+
     public function validarCampos(array $dados, bool $alteracao = false) 
     {
         // ID

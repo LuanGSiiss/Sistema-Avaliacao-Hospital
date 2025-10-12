@@ -119,7 +119,7 @@ class DispositivoModel extends Database
         }
     }
 
-    public function validarDuplicacao(Dispositivo $dispositivo, bool $alteracao = false) {
+    public function validarDuplicidade(Dispositivo $dispositivo, bool $alteracao = false) {
         try {
             $sqlBuscaRegistro = "SELECT id_dispositivo FROM dispositivos
                                     WHERE codigo_identificador = :codigoIdentificador
@@ -131,10 +131,17 @@ class DispositivoModel extends Database
             $stmt1->execute();
 
             $resultado = $stmt1->fetch();
-            if ($alteracao) {
-                return $resultado['id_dispositivo'] === $dispositivo->getIdDispositivo() ? false : true;
+            $duplicado = $resultado ? true : false; 
+
+            if ($alteracao && $duplicado && $resultado['id_dispositivo'] === $dispositivo->getIdDispositivo()) {
+                $duplicado = false;
             }
-            return $resultado ? true : false;
+
+            if ($duplicado) {
+                throw new Exception("Já existe um Dispositivo cadastro com esse Código ou Nome.");
+            }
+
+            return false;
             
         } catch (Throwable $e) {
             throw $e;

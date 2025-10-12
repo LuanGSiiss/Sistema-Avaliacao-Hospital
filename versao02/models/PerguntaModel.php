@@ -225,6 +225,33 @@ class PerguntaModel extends Database
         }
     }
 
+    public function validarDuplicidade(Pergunta $pergunta, bool $alteracao = false) {
+        try {
+            $sqlBuscaRegistro = "SELECT id_pergunta FROM perguntas
+                                    WHERE texto_pergunta = :textoPergunta;";
+
+            $stmt1 = $this->pdo->prepare($sqlBuscaRegistro);
+            $stmt1->bindValue(':textoPergunta', $pergunta->getTextoPergunta(), PDO::PARAM_STR);
+            $stmt1->execute();
+
+            $resultado = $stmt1->fetch();
+            $duplicado = $resultado ? true : false; 
+
+            if ($alteracao && $duplicado && $resultado['id_pergunta'] === $pergunta->getIdPergunta()) {
+                $duplicado = false;
+            }
+
+            if ($duplicado) {
+                throw new Exception("Já existe uma Pergunta cadastra com esse Texto.");
+            }
+
+            return false;
+            
+        } catch (Throwable $e) {
+            throw $e;
+        }
+    }
+
     public function validarCampos(array $dados, bool $alteracao = false) 
     {
         // ID

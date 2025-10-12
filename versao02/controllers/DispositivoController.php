@@ -93,9 +93,7 @@ class DispositivoController extends RenderView
                 $dados['nome']
             );
 
-            if ($dispositivoModel->validarDuplicacao($dispositivo)) {
-                throw new Exception("Já existe um Dispositivo cadastro com esse Código ou Nome.");
-            }
+            $dispositivoModel->validarDuplicidade($dispositivo);
 
             $sucesso = $dispositivoModel->registrar($dispositivo);
 
@@ -159,9 +157,8 @@ class DispositivoController extends RenderView
                 $dados['nome']
             );
 
-            if ($dispositivoModel->validarDuplicacao($dispositivo, true)) {
-                throw new Exception("Já existe um Dispositivo cadastro com esse Código ou Nome.");
-            }
+            $dispositivoModel->validarDuplicidade($dispositivo, true);
+
             $sucesso = $dispositivoModel->alterar($dispositivo);
 
             if ($sucesso) {

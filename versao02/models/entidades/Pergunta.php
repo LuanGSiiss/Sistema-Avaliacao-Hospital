@@ -35,12 +35,12 @@ class Pergunta
     }
 
     // setters
-    public function setIdPergunta($IdPergunta) 
+    public function setIdPergunta($idPergunta) 
     {
-        if (!is_null($IdPergunta) && (!is_int($IdPergunta) || $IdPergunta <= 0)) {
+        if (!is_null($idPergunta) && (!is_int($idPergunta) || $idPergunta <= 0)) {
             throw new InvalidArgumentException("ID da pergunta deve ser inteiro positivo ou nulo.");
         }
-        $this->id_pergunta = $IdPergunta;
+        $this->id_pergunta = $idPergunta;
     }
 
     public function setTextoPergunta($TextoPergunta) 

@@ -18,6 +18,10 @@
             <form class="formulario-dispositivo" method="post" action="<?= BASE_URL ?>dispositivo/alterar/<?= $dispositivo['id_dispositivo'] ?>">
                 <div class="inputs">
                     <p>
+                        <label for="codigo" >Código</label>
+                        <input type="number" name="codigo" id="codigo" disabled value="<?= htmlspecialchars($dispositivo['id_dispositivo']) ?>">
+                    </p>
+                    <p>
                         <label for="setor">Setor</label>
                         <select name="setor" id="setor" required>
                             <option value>Selecione...</option>

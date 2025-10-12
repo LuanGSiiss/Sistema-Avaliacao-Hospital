@@ -1,29 +1,21 @@
-<?php
-    require_once __DIR__ . '/../../utils/config.php';
-?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/avaliacao/cadastro-avaliacao-styles.css">
-    <title>Avaliação do Hospital Regional do Alto vale</title>
+    <title>Avaliação do Hospital Regional do Alto Vale</title>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/avaliacao/manutencao-avaliacao-styles.css">
+    <script src="<?= BASE_URL ?>public/js/avaliacao/comportamento_manutencaoAvaliacao.js" defer></script>
 </head>
 <body>
     <div class="estrutura">
-        <form class="avaliacao" action="<?= BASE_URL ?>cadastroAvaliacao" method="POST">
+        <form class="avaliacao" method="post" action="<?= BASE_URL ?>avaliacao/incluir">
             <h1>Avaliação do Hospital Regional do Alto Vale</h1>
             <?php if (isset($pergunta)): ?>
                 <p class="pergunta"> <?= htmlspecialchars($pergunta['texto_pergunta']) ?> </p>
                 <input type="hidden" value="<?= $pergunta['id_pergunta'] ?>" name="id_pergunta">
-            <?php elseif (isset($erroPergunta)): ?>
-                <p class="pergunta"> Erro ao buscar pergunta</p>
-                <script>
-                    console.error("Erro ao buscar pergunta: <?= addslashes($erroPergunta) ?>");
-                </script>
             <?php else: ?>
-                <p class="pergunta">Nenhuma pergunta disponível no momento.</p>
+                <
             <?php endif; ?>
             <label style="margin-bottom: 0%;">
                 Feedback(opcional)
@@ -52,12 +44,17 @@
             
             <p class="aviso">Sua avaliação espontânea é anônima, nenhuma informação pessoal é solicitada ou armazenada.</p>
         </form>
+        <!-- mensagem -->
+        <?php if (isset($mensagens['erroRegistro'])): ?>
+            <p class="mensagem erro"><?= htmlspecialchars($mensagens['erroRegistro']) ?></p>
+        <?php elseif (isset($mensagens['sucessoMensagem'])): ?>
+            <p class="mensagem sucesso"><?= htmlspecialchars($mensagens['sucessoMensagem']) ?></p>
+        <?php endif; ?>
     </div>
-    <script src="<?= BASE_URL ?>public/js/comportamento_cadastroAvaliacao.js"></script>
 </body>
 </html>
-<?php if (isset($erroRegistroAvaliacao)): ?>
+<?php if (isset($mensagens['erroRegistro'])): ?>
     <script>
-        console.error("Erro ao registrar a Avaliação: <?= addslashes($erroRegistroAvaliacao) ?>");
+        console.error("Erro ao registrar a Avaliação: <?= addslashes($mensagens['erroRegistro']) ?>");
     </script>
 <?php endif; ?>
