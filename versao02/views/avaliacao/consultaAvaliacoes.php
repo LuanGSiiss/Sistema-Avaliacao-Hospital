@@ -1,19 +1,13 @@
-<?php
-    // require "../controller/validaSessao.php";
-    require_once __DIR__ . '/../../utils/config.php';
-?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consulta de Avaliações</title>
+    <title>Consulta Avaliações</title>
     <!-- links do menu -->
     <link rel="stylesheet" href="<?= BASE_URL ?>public/css/layout/menu-styles.css">
-
     <link rel="stylesheet" href="<?= BASE_URL ?>public/css/avaliacao/consulta-avaliacoes-styles.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/avaliacao/consulta-avaliacoes-styles.css">
+    <script src="<?= BASE_URL ?>public/js/avaliacao/comportamento_consultaAvaliacoes.js" defer></script>
 </head>
 <body>
     <!-- Menu -->
@@ -28,11 +22,11 @@
             <table id="resultadoConsulta">
                 <colgroup>
                     <col style="width: 5%;">
+                    <col style="width: 10%;">
                     <col style="width: 5%;">
                     <col style="width: 5%;">
                     <col style="width: 5%;">
-                    <col style="width: 5%;">
-                    <col style="width: 65%;">
+                    <col style="width: 60%;">
                     <col style="width: 10%;">
                 </colgroup>
                 <thead>
@@ -40,7 +34,7 @@
                         <th>Código</th>
                         <th>Setor</th>
                         <th>Código Pergunta</th>
-                        <th>Código Dispositivo</th>
+                        <th>Dispositivo</th>
                         <th>Nota</th>
                         <th>Feedback Textual</th>
                         <th>Data/Hora do Cadastro</th>
@@ -55,5 +49,4 @@
     </section>
     
 </body>
-<script src="<?= BASE_URL ?>public/js/comportamento_consultaAvaliacoes.js"></script>
 </html>

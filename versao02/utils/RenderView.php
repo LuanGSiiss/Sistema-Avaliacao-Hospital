@@ -24,7 +24,7 @@ class RenderView
 
             echo json_encode([
                 'status' => 'erro',
-                'message' => 'Erro ao carregar a página.'
+                'message' => 'Erro ao carregar a página: ' . $e
             ], JSON_UNESCAPED_UNICODE);
         }
     }

@@ -1,6 +1,6 @@
-// Chamada Principal
 const numeroColunas = 5
 
+// Chamada Principal
 document.getElementById("butaoConsulta").addEventListener("click", function () {
     const tabela = document.getElementById("resultadoConsulta");
     efeitoCarragamentoTabela(tabela);

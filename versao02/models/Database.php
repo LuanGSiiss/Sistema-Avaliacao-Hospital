@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../utils/configDb.php';
+require_once __DIR__ . '/../config/config_db.php';
 
 class Database
 {

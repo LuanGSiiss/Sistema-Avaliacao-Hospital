@@ -20,7 +20,7 @@ button {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-button:hover {
+button:hover:enabled {
     transform: scale(1.05);
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
@@ -122,6 +122,11 @@ label {
 
 .button_enviar:hover:enabled {
     background-color: #005f2c;
+}
+
+.button_enviar:disabled {
+    background-color: #ebebeb;
+    color: #333;
 }
 
 /* Mensagens */

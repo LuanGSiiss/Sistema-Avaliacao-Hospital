@@ -1,5 +1,4 @@
 <?php
-require_once __DIR__ . '/../utils/config.php';
 
 class Sessao extends Database
 {

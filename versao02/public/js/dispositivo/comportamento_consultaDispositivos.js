@@ -1,6 +1,6 @@
-// Chamada Principal
 const numeroColunas = 5
 
+// Chamada Principal
 document.getElementById("butaoConsulta").addEventListener("click", function () {
     const tabela = document.getElementById("resultadoConsulta");
     efeitoCarragamentoTabela(tabela);
@@ -21,8 +21,10 @@ document.getElementById("butaoConsulta").addEventListener("click", function () {
                     if (!conteudo || !conteudo.dispositivos || conteudo.dispositivos.length === 0) {
                         adicionarLinha(tbody, ["Nenhum registro encontrado"]);
                     } else {
+                        setores = conteudo.setores;
+                        
                         conteudo.dispositivos.forEach( dispositivo => {
-                            setores = conteudo.setores;
+                            
 
                             let setor = setores.find(setor => setor['id_setor'] === dispositivo.id_setor).descricao;
                             let situacao = dispositivo.status ? "Ativo" : "Inativo";
@@ -32,7 +34,6 @@ document.getElementById("butaoConsulta").addEventListener("click", function () {
                             <span onclick="mensagemExcluir(${dispositivo.id_dispositivo})" class="botaoAcao excluir">Excluir</span>
                             `
                             
-                            // setores.forEach( setor => { if(setor['id_setor'] === dispositivo.id_setor) return setor['id_setor'].descricao;})
                             adicionarLinha(tbody, [
                                 dispositivo.id_dispositivo,
                                 dispositivo.codigo_identificador,
@@ -88,7 +89,6 @@ function adicionarLinha(tabela, valores) {
         if (index === valores.length - 1) {
             celula.classList.add("colunaAcoes");
         }
-        
     });
 };
 

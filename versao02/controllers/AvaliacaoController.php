@@ -2,7 +2,7 @@
 
 class AvaliacaoController extends RenderView
 {
-    public function formularioAvaliacao(array $mensagens = [], array $avaliacaoPreenchida = [])
+    public function formularioAvaliacao(array $mensagens = [])
     {
         try {
             if(!class_exists('PerguntaModel')) {
@@ -10,12 +10,14 @@ class AvaliacaoController extends RenderView
             }
 
             $setor = (int) $_GET['setor'] ?? null;
+            $dispositivo = (int) $_GET['dispositivo'] ?? null;
             $perguntaModel = new PerguntaModel();
             $pergunta = $perguntaModel->buscarPerguntaAleatoriaPorSetor($setor);
     
             $this->loadView('avaliacao.incluirAvaliacao', [
                 'pergunta' => $pergunta,
-                'avaliacaoPreenchida' => $avaliacaoPreenchida,
+                'setor' => $setor,
+                'dispositivo' => $dispositivo,
                 'mensagens' => $mensagens
             ]); 
         } catch(Exception $e) {
@@ -27,9 +29,9 @@ class AvaliacaoController extends RenderView
     {
         try {
             $dados = [
-                'idSetor'       => 1, //Por enquanto não foi implementado a seleção de setor
+                'idSetor'       => (int) $_GET['setor'] ?? null,
+                'idDispositivo' => (int) $_GET['dispositivo'] ?? null,
                 'idPergunta'    => (int) $_POST['id_pergunta'] ?? null,
-                'idDispositivo' => 1, //Por enquanto não foi implementado a seleção de dispositivo
                 'nota'          => (int) $_POST['nota'] ?? null,
                 'feedback'      => trim($_POST['feedback']) ?? ''
             ];
@@ -58,7 +60,7 @@ class AvaliacaoController extends RenderView
             
         } catch(Exception $e) {
             $mensagemErro = "Erro: " . $e->getMessage();
-            $this->formularioAvaliacao(['erroRegistro' => $mensagemErro], $dados); 
+            $this->formularioAvaliacao(['erroRegistro' => $mensagemErro]); 
         }
     }
     
@@ -73,9 +75,21 @@ class AvaliacaoController extends RenderView
             if(!class_exists('AvaliacaoModel')) {
                 throw new Exception("Classe 'AvaliacaoModel' não existe.");
             }
+            if(!class_exists('SetorModel')) {
+                throw new Exception("Classe 'SetorModel' não existe.");
+            }
+            if(!class_exists('DispositivoModel')) {
+                throw new Exception("Classe 'DispositivoModel' não existe.");
+            }
 
             $avaliacaoModel = new AvaliacaoModel();
             $avaliacoesBase = $avaliacaoModel->BuscarTodas();
+
+            $setorModel = new SetorModel();
+            $setores = $setorModel->BuscarTodas();
+
+            $dispositivoModel = new DispositivoModel();
+            $dispositivos = $dispositivoModel->BuscarTodas();
 
             $arrayAvaliacoes = array_map(function ($registro) {
                 return [
@@ -94,7 +108,9 @@ class AvaliacaoController extends RenderView
             echo json_encode([
                 'status' => 'sucesso',
                 'data' => [
-                    'avaliacoes' => $arrayAvaliacoes
+                    'avaliacoes'   => $arrayAvaliacoes,
+                    'setores'      => $setores,
+                    'dispositivos' => $dispositivos
                 ] 
             ]);
         } catch (Exception $e) {

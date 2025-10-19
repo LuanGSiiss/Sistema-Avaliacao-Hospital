@@ -9,13 +9,13 @@
 </head>
 <body>
     <div class="estrutura">
-        <form class="avaliacao" method="post" action="<?= BASE_URL ?>avaliacao/incluir">
+        <form class="avaliacao" method="post" action="<?= BASE_URL ?>avaliacao/incluir?setor=<?= $setor ?>&dispositivo=<?= $dispositivo ?>">
             <h1>Avaliação do Hospital Regional do Alto Vale</h1>
             <?php if (isset($pergunta)): ?>
                 <p class="pergunta"> <?= htmlspecialchars($pergunta['texto_pergunta']) ?> </p>
                 <input type="hidden" value="<?= $pergunta['id_pergunta'] ?>" name="id_pergunta">
             <?php else: ?>
-                <
+                <p> *Ainda não há nenhuma pergunta cadastrada no sistema.* </p>
             <?php endif; ?>
             <label style="margin-bottom: 0%;">
                 Feedback(opcional)

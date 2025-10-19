@@ -42,6 +42,11 @@
                         <label for="nome" >Nome</label>
                         <input type="text" name="nome" id="nome" maxlength="50" placeholder="Mesa 1" disabled value="<?= htmlspecialchars($dispositivo['nome']) ?>">
                     </p>
+                    <p>
+                        <label for="url-avaliacao" >URL para Avaliação</label>
+                        <!-- usado localhost por ser em desenvolvimento -->
+                        <input type="text" name="url-avaliacao" id="url-avaliacao" disabled value="<?= 'localhost'.BASE_URL.'cadastroAvaliacao?setor='.$dispositivo['id_setor'].'&dispositivo='.$dispositivo['id_dispositivo'] ?>">
+                    </p>
                 </div>
             </div>
         </div>

@@ -1,7 +1,3 @@
-<?php
-    require_once __DIR__ . '/../../utils/config.php';
-?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -17,7 +13,7 @@
             contador.textContent = countdown;
 
             if (countdown === 0) {
-                window.location.href = 'cadastroAvaliacao';
+                window.location.href = document.referrer;
             } else {
                 countdown--;
                 setTimeout(updateCountdown, 1000);
