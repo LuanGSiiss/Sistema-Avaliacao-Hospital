@@ -4,15 +4,88 @@
     padding: 0;
 }
 
+html {
+    font-size: 62.5%; /* 1rem = 10px */
+}
+
 body {
     height: 100vh;
     width: 100vw;
     background: linear-gradient(135deg, #a2dfa2, #74b974);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.6rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 2rem; 
+}
+
+.estrutura {
+    width: 100%;
+    max-width: 90rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.avaliacao {
+    background-color: #fff;
+    padding: 4rem;
+    border-radius: 1.2rem;
+    width: 100%;
+    box-shadow: 0 1rem 2.5rem rgba(0,0,0,0.1);
+}
+
+.avaliacao h1 {
+    text-align: center;
+    color: #d32f2f;
+    margin-bottom: 2rem;
+}
+
+.avaliacao .pergunta {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 2rem 0 1rem 0;
+}
+
+label {
+    display: block;
+    margin: 2rem 0 1rem;
+    font-weight: bold;
+}
+
+textarea {
+    height: 10rem;
+    width: 100%;
+    resize: vertical;
+    padding: 1rem;
+    font-size: 1em;
+    border: 0.1rem solid #ccc;
+    border-radius: 0.5rem;
+}
+
+.avaliacao .paremetro_nota {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+    color: #555;
+    font-size: 0.95em;
+}
+
+.avaliacao .avaliacao_nota {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin: 1rem 0 2rem;
+    justify-content: center; 
+}
+
+.avaliacao .aviso {
+    padding: 1.5rem 0;
+    font-size: 0.9em;
+    color: #555;
+    text-align: center;
 }
 
 button {
@@ -22,100 +95,33 @@ button {
 
 button:hover:enabled {
     transform: scale(1.05);
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
-}
-
-textarea {
-    height: 100px;
-    width: 100%;
-    resize: vertical;
-    padding: 10px;
-    font-size: 1em;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.estrutura {
-    width: 100%;
-    max-width: 900px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.avaliacao {
-    background-color: #fff;
-    padding: 40px;
-    border-radius: 12px;
-    width: 100%;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
-
-.avaliacao h1 {
-    text-align: center;
-    color: #d32f2f;
-    margin-bottom: 20px;
-}
-
-.avaliacao .pergunta {
-    font-size: 1.1em;
-    font-weight: bold;
-    margin: 20px 0 10px 0;
-}
-
-label {
-    display: block;
-    margin: 20px 0 10px;
-    font-weight: bold;
-}
-
-.avaliacao .paremetro_nota {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
-    color: #555;
-    font-size: 0.95em;
-}
-
-.avaliacao .avaliacao_nota{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 10px 0 20px;
-    justify-content: center; 
-}
-
-.avaliacao .aviso {
-    padding: 15px 0;
-    font-size: 0.9em;
-    color: #555;
-    text-align: center;
+    box-shadow: 0 0 1rem rgba(0,0,0,0.2);
 }
 
 .button_normal {
-    flex: 1 1 60px;
-    padding: 12px;
+    flex: 1 1 6rem;
+    padding: 1.2rem;
     text-align: center;
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 0.6rem;
     font-weight: bold;
     font-size: 1em;
-    min-width: 45px;
+    min-width: 4.5rem;
 }
 
 .button_selected {
-    outline: 3px solid #000;
+    outline: 0.3rem solid #000;
 }
 
 .button_enviar {
     width: 100%;
-    padding: 12px;
-    margin-top: 10px;
+    padding: 1.2rem;
+    margin-top: 1rem;
     background-color: #00773a;
     color: white;
     font-size: 1.1em;
-    border-radius: 6px;
+    border-radius: 0.6rem;
     border: none;
     transition: background-color 0.3s;
 }
@@ -141,19 +147,17 @@ label {
 .mensagem.sucesso {
     background-color: #d1fae5;
     color: #065f46;
-    border: 1px solid #10b981;
+    border: 0.1rem solid #10b981;
 }
 
 .mensagem.erro {
     background-color: #fee2e2;
     color: #991b1b;
-    border: 1px solid #ef4444;
+    border: 0.1rem solid #ef4444;
 }
 
 
-
-
-/* Cores de cada botão das notas*/
+/* Cores de cada botão das notas */
 .avaliacao_nota #nota1 { background-color: #FF0000; }
 .avaliacao_nota #nota2 { background-color: #FF4500; } 
 .avaliacao_nota #nota3 { background-color: #FF7F00; } 
@@ -163,4 +167,4 @@ label {
 .avaliacao_nota #nota7 { background-color: #7FFF00; } 
 .avaliacao_nota #nota8 { background-color: #32CD32; } 
 .avaliacao_nota #nota9 { background-color: #228B22; }  
-.avaliacao_nota #nota10 { background-color: #008000; } 
+.avaliacao_nota #nota10 { background-color: #008000; }  

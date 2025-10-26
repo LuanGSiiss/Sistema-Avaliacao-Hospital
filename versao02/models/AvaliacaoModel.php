@@ -66,7 +66,7 @@ class AvaliacaoModel extends Database
         }
 
         // Feedback Textual
-        if (!is_null($dados['feedback']) && (!is_string($dados['feedback']) || trim($dados['feedback']) === '' || mb_strlen(trim($dados['feedback'])) > 350)) {
+        if (isset($dados['feedback']) && (!is_string($dados['feedback']) || mb_strlen(trim($dados['feedback'])) > 350)) {
             throw new Exception("Feedback Textual inválido ou excede 350 caracteres.");
         }
 

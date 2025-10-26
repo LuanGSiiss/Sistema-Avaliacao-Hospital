@@ -5,7 +5,7 @@
 }
 
 html {
-    font-size: 62.5%;
+    font-size: 62.5%; /* 1rem = 10px */
 }
 
 body {
@@ -16,12 +16,12 @@ body {
 }
 
 .estrutura {
-    max-width: 1600px;
+    max-width: 160rem;
     margin: 3rem auto;
     padding: 2rem;
     background-color: white;
     border-radius: 1rem;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    box-shadow: 0 0.5rem 2rem rgba(0,0,0,0.05);
 }
 
 .cabecalho-consulta {
@@ -33,7 +33,7 @@ body {
 }
 
 .cabecalho-consulta h1 {
-    color: #d32f2f; /* vermelho profissional */
+    color: #d32f2f;
     font-size: 2.4rem;
 }
 
@@ -54,7 +54,7 @@ body {
 
 .estrutura a[href*="incluir"] {
     display: inline-block;
-    background-color: #10b981; /* verde-água */
+    background-color: #10b981; 
     color: white;
     font-weight: bold;
     font-size: 1.5rem;
@@ -66,12 +66,11 @@ body {
 }
 
 .estrutura a[href*="incluir"]:hover {
-    background-color: #059669; /* verde mais escuro */
+    background-color: #059669;
     transform: scale(1.03);
 }
 
 /* consulta */
-
 .consulta {
     overflow-x: auto;
 }
@@ -106,7 +105,7 @@ body {
 .consulta th {
     background-color: #e6f4ea;
     color: #166534;
-    font-weight: 600;
+    font-weight: 60rem;
     position: sticky;
     top: 0;
     z-index: 1;
@@ -128,16 +127,16 @@ body {
 /* Butoes de acoes nos registros da consulta */
 .colunaAcoes {
     display: flex;
-    gap: 6px;
+    gap: 0.6rem;
     justify-content: center;
     flex-wrap: wrap;
-    padding: 2px 0;
+    padding: 0.2rem 0;
 }
 
 .botaoAcao {
-    font-size: 13px;
-    padding: 4px 8px;
-    border-radius: 4px;
+    font-size: 1.3rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.4rem;
     text-decoration: none;
     color: white;
     transition: background-color 0.3s ease, transform 0.2s;
@@ -187,41 +186,41 @@ body {
 .popExcluir {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    padding: 24px 32px;
+    gap: 1.6rem;
+    padding: 2.4rem 3.2rem;
     background-color: #ffffff;
     color: #1f2937;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-    border-radius: 8px;
-    border-top: 8px solid #3b82f6;
-    max-width: 400px;
+    box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.25);
+    border-radius: 0.8rem;
+    border-top: 0.8rem solid #3b82f6;
+    max-width: 40rem;
     width: 90%;
     text-align: left;
 }
 
 .popExcluir h2 {
-    font-size: 22px;
+    font-size: 2.2rem;
     color: #111827;
 }
 
 .popExcluir p {
-    font-size: 18px;
+    font-size: 1.8rem;
     color: #374151;
 }
 
 .botoesConfirmacao {
     display: flex;
     justify-content: flex-end;
-    gap: 12px; 
-    padding-top: 10px;
+    gap: 1.2rem; 
+    padding-top: 1rem;
 }
 
 .botoesConfirmacao button {
-    min-width: 90px;
-    font-size: 16px;
-    padding: 6px 12px;
+    min-width: 9rem;
+    font-size: 1.6rem;
+    padding: 0.6rem 1.2rem;
     border: none;
-    border-radius: 6px;
+    border-radius: 0.6rem;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s;
 }
@@ -237,7 +236,7 @@ body {
 }
 
 .buttonNao {
-    background-color: #e5e7eb; /* Cinza claro */
+    background-color: #e5e7eb;
     color: #111827;
 }
 
@@ -249,10 +248,10 @@ body {
 /* Mensagens de retorno */
 .mensagem {
     position: fixed;
-    bottom: 10px;
-    right: 10px;
+    bottom: 1rem;
+    right: 1rem;
     border-radius: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 0.4rem 0.6rem rgba(0,0,0,0.1);
 }
 
 
@@ -275,7 +274,7 @@ body {
 }
 
 .slide-tempo {
-    height: 4px;
+    height: 0.4rem;
     background: #ddd;
     overflow: hidden;
 }

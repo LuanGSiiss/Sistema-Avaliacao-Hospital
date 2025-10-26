@@ -5,7 +5,7 @@
 }
 
 html {
-    font-size: 62.5%;
+    font-size: 62.5%; /* 1rem = 10px */
 }
 
 body {
@@ -17,12 +17,12 @@ body {
 
 /* Estrutura principal */
 .estrutura {
-    max-width: 900px;
+    max-width: 90rem;
     margin: 4rem auto;
     padding: 3rem;
     background-color: #fff;
     border-radius: 1rem;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.05);
 }
 
 .estrutura > div {
@@ -75,7 +75,7 @@ select {
 .formulario-pergunta #codigo:focus, 
 textarea:focus,
 select:focus {
-    outline: 2px solid #3b82f6;
+    outline: 0.2rem solid #3b82f6;
 }
 
 .checkbox-container {
@@ -86,10 +86,10 @@ select:focus {
 }
 
 .checkbox-container input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
+    width: 2rem;
+    height: 2rem;
     cursor: pointer;
-    accent-color: #2563eb; /* azul suave */
+    accent-color: #2563eb;
 }
 
 .checkbox-container label {
@@ -159,7 +159,7 @@ button {
     border-radius: 0.5rem;
     border: 1px solid #ccc;
     padding: 0.5rem;
-    min-height: 42px;
+    min-height: 4.2rem;
 }
 
 input:disabled, textarea:disabled, select:disabled {
@@ -169,7 +169,6 @@ input:disabled, textarea:disabled, select:disabled {
     opacity: 1;
 }
 
-/* Responsivo */
 @media (max-width: 768px) {
     .estrutura {
         padding: 2rem;

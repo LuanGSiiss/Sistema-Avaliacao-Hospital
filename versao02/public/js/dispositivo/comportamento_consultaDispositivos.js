@@ -126,8 +126,8 @@ function mensagemExcluir(idDispositivo) {
     divMensagem.appendChild(popMensagem);
     document.body.appendChild(divMensagem);
     
-    popMensagem.querySelector(".buttonSim").addEventListener("click", excluirDispositivo(idDispositivo));
-    popMensagem.querySelector("#buttonNao").addEventListener("click", fecharMensagemExcluir);
+    popMensagem.querySelector(".buttonSim").addEventListener("click", () => excluirDispositivo(idDispositivo));
+    popMensagem.querySelector("#buttonNao").addEventListener("click", () => fecharMensagemExcluir());
 }
 
 function excluirDispositivo(idDispositivo) {

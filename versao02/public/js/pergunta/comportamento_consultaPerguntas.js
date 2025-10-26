@@ -122,8 +122,8 @@ function mensagemExcluir(idPergunta) {
     divMensagem.appendChild(popMensagem);
     document.body.appendChild(divMensagem);
     
-    popMensagem.querySelector(".buttonSim").addEventListener("click", excluirPergunta(idPergunta));
-    popMensagem.querySelector("#buttonNao").addEventListener("click", fecharMensagemExcluir);
+    popMensagem.querySelector(".buttonSim").addEventListener("click", () => excluirPergunta(idPergunta));
+    popMensagem.querySelector("#buttonNao").addEventListener("click", () => fecharMensagemExcluir());
 }
 
 function excluirPergunta(idPergunta) {
