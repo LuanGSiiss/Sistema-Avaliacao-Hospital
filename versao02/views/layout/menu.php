@@ -13,8 +13,7 @@
             <li class="menu-item">
                 <p>Dashboard</p>
                 <ul class="sub-menu">
-                    <li><a href="#">Avaliações</a></li>
-                    <li><a href="#">Perguntas</a></li>
+                    <li><a href="<?= BASE_URL ?>dashboard">Dashboard</a></li>
                 </ul> 
             </li>
         </ul>

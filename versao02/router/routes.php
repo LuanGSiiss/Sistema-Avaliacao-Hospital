@@ -24,7 +24,10 @@ $routes = [
         '/consultaDispositivos/buscar' => 'DispositivoController@buscarDispositivos@comSessao',
         '/dispositivo/incluir' => 'DispositivoController@formularioIncluir@comSessao',
         '/dispositivo/alterar/{id}' => 'DispositivoController@formularioAlterar@comSessao',
-        '/dispositivo/visualizar/{id}' => 'DispositivoController@visualizarDispositivo@comSessao'
+        '/dispositivo/visualizar/{id}' => 'DispositivoController@visualizarDispositivo@comSessao',
+
+        '/dashboard' => 'DashboardController@exibirPainel@comSessao',
+        '/dashboard/buscar' => 'DashboardController@buscarIndicadores@comSessao',
     ],
     'POST' => [
         '/login' => 'LoginController@validarLogin@semSessao',
