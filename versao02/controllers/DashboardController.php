@@ -16,13 +16,17 @@ class DashboardController extends RenderView
             
             $dashboardModel = new DashboardModel();
             $mediasNotasPorSetor = $dashboardModel->buscarMediasNotasPorSetor();
+
+            $indicadores = [
+                'mediasNotasPorSetor' => $mediasNotasPorSetor
+            ];
             
             header('Content-Type: application/json; charset=utf-8');
             http_response_code(200);
             echo json_encode([
                 'status' => 'sucesso',
                 'data' => [
-                    'mediasNotasPorSetor' => $mediasNotasPorSetor
+                    'indicadores' => $indicadores
                 ] 
             ], JSON_UNESCAPED_UNICODE);
         }  catch (Throwable $e) {

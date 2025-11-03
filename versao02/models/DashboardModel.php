@@ -18,7 +18,7 @@ class DashboardModel extends Database
     // ]
     public function buscarMediasNotasPorSetor(): array
     {
-        $sqlBusca = "SELECT id_setor, avg(nota) from avaliacoes
+        $sqlBusca = "SELECT id_setor, avg(nota) as media from avaliacoes
                     GROUP BY id_setor
                     ORDER BY id_setor;";
         $stmt = $this->pdo->prepare($sqlBusca);
@@ -38,12 +38,12 @@ class DashboardModel extends Database
         $resultadoTratado = array_map(function ($registro) use ($mapaSetores) {
             return [
                 'setor' => $mapaSetores[$registro['id_setor']] ?? null,
-                'nota'  => $registro['nota']    
+                'media'  => $registro['media']    
             
             ];
         }, $resultado);
 
-        return $resultado;
+        return $resultadoTratado;
     }
 
 }
