@@ -1,19 +1,52 @@
 var graficoMediasNotaPorSetor = null;
 var graficoProporcaoAvaliacoesPorSetor = null;
+var graficoMediasNotasUltimosMeses = null;
 
 
 export async function carregarGraficos(indicadores) {
 
-  carregarGraficoMediasNotaPorSetor(indicadores.mediasNotasPorSetor);
+  carregarGraficoMediasNotasPorSetor(indicadores.mediasNotasPorSetor);
+  carregarGraficoProporcaoAvaliacoesPorSetor(indicadores.proporcaoAvaliacoesPorSetor);
+
 };
 
-
-async function carregarGraficoMediasNotaPorSetor(dados) {
-  if (graficoMediasNotaPorSetor) {
-    graficoMediasNotaPorSetor.destroy();
+//funções "filhas"
+async function carregarGraficoMediasNotasUltimosMeses(dados) {
+  if (graficoMediasNotasUltimosMeses) {
+    graficoMediasNotasUltimosMeses.destroy();
   }
 
-  graficoMediasNotaPorSetor = new Chart(
+  graficoMediasNotasUltimosMeses = new Chart(
+    document.getElementById('mediasNotasUltimosMeses'),
+    {
+      type: 'bar',
+      options: {
+        scales: {
+          y: {
+            max: 10,
+            min: 1
+          }
+        }
+      },
+      data: {
+        labels: dados.map(x => x.mes),
+        datasets: [
+          {
+            label: 'Média das Notas dos últimos 12 meses',
+            data: dados.map(row => row.media)
+          }
+        ]
+      }
+    }
+  );
+};
+
+async function carregarGraficoMediasNotasPorSetor(dados) {
+  if (graficoMediasNotasPorSetor) {
+    graficoMediasNotasPorSetor.destroy();
+  }
+
+  graficoMediasNotasPorSetor = new Chart(
     document.getElementById('mediasNotasPorSetor'),
     {
       type: 'bar',
@@ -29,7 +62,7 @@ async function carregarGraficoMediasNotaPorSetor(dados) {
         labels: dados.map(x => x.setor),
         datasets: [
           {
-            label: 'Média de Notas por Setor',
+            label: 'Média das Notas por Setor',
             data: dados.map(row => row.media)
           }
         ]
@@ -55,16 +88,16 @@ async function carregarGraficoProporcaoAvaliacoesPorSetor(dados) {
           },
           title: {
             display: true,
-            text: 'Proporção do número de avaliações por setor'
+            text: 'Proporção da quantidade de avaliações por setor'
           }
         }
       },
       data: {
-        labels: ['Red', 'Orange', 'Yellow', 'Green', 'Blue'],
+        labels: dados.map(x => x.setor),
         datasets: [
           {
-            label: 'Média de Notas por Setor',
-            data: dados.map(row => row.media)
+            label: 'Quantidade de avaliações por setor',
+            data: dados.map(row => row.totalAvaliacoes)
           }
         ]
       }

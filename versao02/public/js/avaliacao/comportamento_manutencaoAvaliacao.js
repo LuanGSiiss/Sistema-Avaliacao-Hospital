@@ -12,5 +12,8 @@ function selecionarNota(botaoClicado) {
 
     // Habilita o botão de enviar
     const botaoEnviar = document.querySelector('.button_enviar');
-    botaoEnviar.disabled = false;
+    const inputIdPergunta = document.querySelector('#id_pergunta');
+    if(inputIdPergunta) {
+        botaoEnviar.disabled = false;
+    }
 }

@@ -20,8 +20,9 @@
     <button id="butaoConsulta">Consultar</button>
 
     <!-- Média das notas por setor -->
+    <div style="width: 800px;"><canvas id="mediasNotasUltimosMeses"></canvas></div>
     <div style="width: 800px;"><canvas id="mediasNotasPorSetor"></canvas></div>
-    <div style="width: 800px;"><canvas id="proporcaoAvaliacoesPorSetor"></canvas></div>
+    <div style="width: 500px;"><canvas id="proporcaoAvaliacoesPorSetor"></canvas></div>
 
 </body>
 </html>

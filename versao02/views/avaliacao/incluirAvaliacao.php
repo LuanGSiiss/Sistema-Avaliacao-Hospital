@@ -13,7 +13,7 @@
             <h1>Avaliação do Hospital Regional do Alto Vale</h1>
             <?php if (isset($pergunta)): ?>
                 <p class="pergunta"> <?= htmlspecialchars($pergunta['texto_pergunta']) ?> </p>
-                <input type="hidden" value="<?= $pergunta['id_pergunta'] ?>" name="id_pergunta">
+                <input type="hidden" value="<?= $pergunta['id_pergunta'] ?>" name="id_pergunta" id="id_pergunta">
             <?php else: ?>
                 <p> *Ainda não há nenhuma pergunta cadastrada no sistema.* </p>
             <?php endif; ?>
