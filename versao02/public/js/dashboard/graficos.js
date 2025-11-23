@@ -1,4 +1,4 @@
-var graficoMediasNotaPorSetor = null;
+var graficoMediasNotasPorSetor = null;
 var graficoProporcaoAvaliacoesPorSetor = null;
 var graficoMediasNotasUltimosMeses = null;
 
@@ -7,6 +7,7 @@ export async function carregarGraficos(indicadores) {
 
   carregarGraficoMediasNotasPorSetor(indicadores.mediasNotasPorSetor);
   carregarGraficoProporcaoAvaliacoesPorSetor(indicadores.proporcaoAvaliacoesPorSetor);
+  carregarGraficoMediasNotasUltimosMeses(indicadores.mediasNotasUltimosMeses)
 
 };
 
@@ -96,7 +97,7 @@ async function carregarGraficoProporcaoAvaliacoesPorSetor(dados) {
         labels: dados.map(x => x.setor),
         datasets: [
           {
-            label: 'Quantidade de avaliações por setor',
+            label: 'Quantidade de avaliações',
             data: dados.map(row => row.totalAvaliacoes)
           }
         ]
