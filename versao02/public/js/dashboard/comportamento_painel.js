@@ -53,12 +53,14 @@ function enviarRequisicaoBuscarIndicadores() {
 
 function exibirMediasNotasPorPergunta(dados) {
     const divIndicador = document.getElementById('mediasNotasPorPergunta');
-    divIndicador.innerHTML = '<h2>Média das Avaliações por Pergunta</h2>';
+    divIndicador.innerHTML = '';
+
     const tabelaIndicador = criarTabela(['Pergunta', 'Média']);
     const tbody = tabelaIndicador.querySelector('tbody');
     
     dados.forEach( pergunta => {
         let media = pergunta.media ? parseFloat(pergunta.media).toFixed(2) : '-';
+
         adicionarLinha(tbody, [
             pergunta.texto_pergunta,
             media
@@ -97,9 +99,17 @@ function adicionarLinha(tabela, valores) {
         return;
     }
     
-    valores.forEach((valor) => {
+    valores.forEach((valor, index) => {
         const celula = novaLinha.insertCell();
         celula.innerHTML = valor;
+
+        //estilo adicional para a média
+        if (index === valores.length - 1) {
+            let corNota = parseFloat(valor) >= 8 ? '#065f46' : (parseFloat(valor) < 5 ? '#991b1b' : '#333');
+            
+            celula.style.color = corNota;
+            celula.style.textAlign = 'center';
+        }
     });
 };
 

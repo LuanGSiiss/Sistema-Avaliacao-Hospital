@@ -2,8 +2,13 @@ var graficoMediasNotasPorSetor = null;
 var graficoProporcaoAvaliacoesPorSetor = null;
 var graficoMediasNotasUltimosMeses = null;
 
+const cores = {
+    primaria: '#0ea5e9', 
+    secundaria: '#4f46e5'
+};
 
 export async function carregarGraficos(indicadores) {
+  Chart.defaults.font.family = "'Segoe UI', sans-serif";
 
   carregarGraficoMediasNotasUltimosMeses(indicadores.mediasNotasUltimosMeses)
   carregarGraficoMediasNotasPorSetor(indicadores.mediasNotasPorSetor);
@@ -16,15 +21,27 @@ async function carregarGraficoMediasNotasUltimosMeses(dados) {
     graficoMediasNotasUltimosMeses.destroy();
   }
 
-  graficoMediasNotasUltimosMeses = new Chart(
-    document.getElementById('mediasNotasUltimosMeses'),
+  graficoMediasNotasUltimosMeses = new Chart( 
+    document.getElementById('mediasNotasUltimosMeses'), 
     {
       type: 'bar',
       options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { 
+            display: false 
+          }, 
+          tooltip: {
+            backgroundColor: '#1f2937',
+            padding: 12,
+            cornerRadius: 8,
+          }
+        },
         scales: {
           y: {
-            max: 10,
-            min: 1
+            beginAtZero: true,
+            max: 10
           }
         }
       },
@@ -32,8 +49,11 @@ async function carregarGraficoMediasNotasUltimosMeses(dados) {
         labels: dados.map(x => x.mes),
         datasets: [
           {
-            label: 'Média das Avaliações dos últimos 12 meses',
-            data: dados.map(row => row.media)
+            label: 'Média Mensal',
+            data: dados.map(row => row.media),
+            backgroundColor: cores.primaria,
+            borderRadius: 6,
+            barPercentage: 0.8
           }
         ]
       }
@@ -51,10 +71,22 @@ async function carregarGraficoMediasNotasPorSetor(dados) {
     {
       type: 'bar',
       options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { 
+            display: false 
+          }
+        },
         scales: {
           y: {
-            max: 10,
-            min: 1
+            grid: { 
+              display: false 
+            }
+          },
+          x: {
+            max: 10
           }
         }
       },
@@ -62,8 +94,11 @@ async function carregarGraficoMediasNotasPorSetor(dados) {
         labels: dados.map(x => x.setor),
         datasets: [
           {
-            label: 'Média das Avaliações por Setor',
-            data: dados.map(row => row.media)
+            label: 'Nota Média',
+            data: dados.map(row => row.media),
+            backgroundColor: cores.secundaria,
+            borderRadius: 4,
+            barThickness: 40,
           }
         ]
       }
@@ -82,13 +117,17 @@ async function carregarGraficoProporcaoAvaliacoesPorSetor(dados) {
       type: 'pie',
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: {
-            position: 'top',
+            position: 'bottom',
+            labels: { 
+              usePointStyle: true, 
+              padding: 20 
+            }
           },
           title: {
-            display: true,
-            text: 'Proporção da quantidade de avaliações por setor'
+            display: false
           }
         }
       },
@@ -96,8 +135,9 @@ async function carregarGraficoProporcaoAvaliacoesPorSetor(dados) {
         labels: dados.map(x => x.setor),
         datasets: [
           {
-            label: 'Quantidade de avaliações',
-            data: dados.map(row => row.total)
+            data: dados.map(row => row.total),
+            borderWidth: 0,
+            hoverOffset: 10
           }
         ]
       }
