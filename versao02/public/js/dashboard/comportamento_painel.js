@@ -1,7 +1,12 @@
 import { carregarGraficos } from './graficos.js';
 
-document.getElementById("butaoConsulta").addEventListener("click", function () {
+enviarRequisicaoBuscarIndicadores();
 
+document.getElementById("butaoConsulta").addEventListener("click", function () {
+    enviarRequisicaoBuscarIndicadores();
+});
+
+function enviarRequisicaoBuscarIndicadores() {
     const func_assinc = new XMLHttpRequest();
     func_assinc.open("GET", "./dashboard/buscar", true);
     func_assinc.onload = function () {
@@ -13,10 +18,12 @@ document.getElementById("butaoConsulta").addEventListener("click", function () {
     
                     const conteudo = dadosResposta.data;
     
-                    if (!conteudo) {
-                        console.log("Nenhum registro encontrado");
-                    } else {
+                    if (conteudo) {
                         carregarGraficos(conteudo.indicadores);
+                        exibirMediasNotasPorPergunta(conteudo.indicadores.mediasNotasPorPergunta);
+                    } else {
+                        exibirMensagemRetorno('Nenhum registro encontrado.', 0);
+                        console.log("Nenhum registro encontrado");
                     }
                 } else {
                     exibirMensagemRetorno('Erro com os dados da requisição.', 0);
@@ -42,7 +49,59 @@ document.getElementById("butaoConsulta").addEventListener("click", function () {
     };
     
     func_assinc.send();
-});
+}
+
+function exibirMediasNotasPorPergunta(dados) {
+    const divIndicador = document.getElementById('mediasNotasPorPergunta');
+    divIndicador.innerHTML = '<h2>Média das Avaliações por Pergunta</h2>';
+    const tabelaIndicador = criarTabela(['Pergunta', 'Média']);
+    const tbody = tabelaIndicador.querySelector('tbody');
+    
+    dados.forEach( pergunta => {
+        let media = pergunta.media ? parseFloat(pergunta.media).toFixed(2) : '-';
+        adicionarLinha(tbody, [
+            pergunta.texto_pergunta,
+            media
+        ]);
+    });
+    
+    divIndicador.appendChild(tabelaIndicador);
+}
+
+function criarTabela(cabecalho) {
+    const tabela = document.createElement('table');
+    const thead = document.createElement('thead');
+    const tbody = document.createElement('tbody');
+    
+    tabela.appendChild(thead);
+    tabela.appendChild(tbody);
+    
+    const linhaCabecalho = thead.insertRow();
+    cabecalho.forEach(valor => {
+        linhaCabecalho.innerHTML += `<th>${valor}</th>`;
+    })
+    
+    thead.appendChild(linhaCabecalho);
+    
+    return tabela;
+};
+
+function adicionarLinha(tabela, valores) {
+    const novaLinha = tabela.insertRow();
+    //Para quando não for encontrado nenhum registo
+    if (valores.length === 1) {
+        const celula = novaLinha.insertCell();
+        celula.innerHTML = valores[0];
+        celula.colSpan = 2;
+        celula.style.cssText = 'text-align: center;';
+        return;
+    }
+    
+    valores.forEach((valor) => {
+        const celula = novaLinha.insertCell();
+        celula.innerHTML = valor;
+    });
+};
 
 function exibirMensagemRetorno(mensagem, situacao) {
     const mensagemStatus = document.createElement('div');
@@ -72,3 +131,4 @@ function exibirMensagemRetorno(mensagem, situacao) {
         mensagemStatus.remove();
     }, 8000);
 }
+

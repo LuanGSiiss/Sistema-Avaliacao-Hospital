@@ -17,12 +17,17 @@
     <!-- Menu -->
     <?php require_once __DIR__ .  '/../layout/menu.php'; ?>
 
-    <button id="butaoConsulta">Consultar</button>
+    <button id="butaoConsulta" class="butao-consulta">Consultar</button>
 
     <!-- Média das notas por setor -->
-    <div style="width: 800px;"><canvas id="mediasNotasUltimosMeses"></canvas></div>
-    <div style="width: 800px;"><canvas id="mediasNotasPorSetor"></canvas></div>
-    <div style="width: 500px;"><canvas id="proporcaoAvaliacoesPorSetor"></canvas></div>
+    <div class="estrutura">
+        <div class="mediasNotasUltimosMeses"><canvas id="mediasNotasUltimosMeses"></canvas></div>
+        <div class="proporcaoAvaliacoesPorSetor"><canvas id="proporcaoAvaliacoesPorSetor"></canvas></div>
+        <div class="mediasNotasPorSetor"><canvas id="mediasNotasPorSetor"></canvas></div>
+        <div class="mediasNotasPorPergunta" id="mediasNotasPorPergunta">
+            <h2>Média das Avaliações por Pergunta</h2>
+        </div>
+    </div>
 
 </body>
 </html>

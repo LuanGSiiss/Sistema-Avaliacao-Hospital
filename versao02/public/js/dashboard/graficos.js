@@ -5,10 +5,9 @@ var graficoMediasNotasUltimosMeses = null;
 
 export async function carregarGraficos(indicadores) {
 
+  carregarGraficoMediasNotasUltimosMeses(indicadores.mediasNotasUltimosMeses)
   carregarGraficoMediasNotasPorSetor(indicadores.mediasNotasPorSetor);
   carregarGraficoProporcaoAvaliacoesPorSetor(indicadores.proporcaoAvaliacoesPorSetor);
-  carregarGraficoMediasNotasUltimosMeses(indicadores.mediasNotasUltimosMeses)
-
 };
 
 //funções "filhas"
@@ -33,7 +32,7 @@ async function carregarGraficoMediasNotasUltimosMeses(dados) {
         labels: dados.map(x => x.mes),
         datasets: [
           {
-            label: 'Média das Notas dos últimos 12 meses',
+            label: 'Média das Avaliações dos últimos 12 meses',
             data: dados.map(row => row.media)
           }
         ]
@@ -63,7 +62,7 @@ async function carregarGraficoMediasNotasPorSetor(dados) {
         labels: dados.map(x => x.setor),
         datasets: [
           {
-            label: 'Média das Notas por Setor',
+            label: 'Média das Avaliações por Setor',
             data: dados.map(row => row.media)
           }
         ]
@@ -98,7 +97,7 @@ async function carregarGraficoProporcaoAvaliacoesPorSetor(dados) {
         datasets: [
           {
             label: 'Quantidade de avaliações',
-            data: dados.map(row => row.totalAvaliacoes)
+            data: dados.map(row => row.total)
           }
         ]
       }
