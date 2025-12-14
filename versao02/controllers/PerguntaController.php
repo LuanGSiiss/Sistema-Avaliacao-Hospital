@@ -1,21 +1,18 @@
 <?php
 
-class PerguntaController extends RenderView
+class PerguntaController extends BaseController
 {
-    public function exibirConsulta()
+    
+    public function exibirConsulta(): void
     {
         $this->loadView('pergunta.consultaPerguntas', []);
     }
 
-    public function buscarPerguntas()
+    public function buscarPerguntas(): void
     {
         try {
-            if(!class_exists('PerguntaModel')) {
-                throw new Exception("Classe 'PerguntaModel' não existe.");
-            }
-            
             $perguntaModel = new PerguntaModel();
-            $perguntasBase = $perguntaModel->BuscarTodas();
+            $perguntasBase = $perguntaModel->buscarTodas();
             
             $arrayPerguntas = array_map(function ($registro) {
                 return [
@@ -25,41 +22,32 @@ class PerguntaController extends RenderView
                     'status'         => $registro['status']
                 ];
             }, $perguntasBase);
-            
-            header('Content-Type: application/json; charset=utf-8');
-            http_response_code(200);
-            echo json_encode([
-                'status' => 'sucesso',
-                'data' => [
-                    'perguntas' => $arrayPerguntas
-                ] 
-            ], JSON_UNESCAPED_UNICODE);
+
+            $this->tratarSucessoRetornoJson([
+                'perguntas' => $arrayPerguntas
+            ]);
         }  catch (Throwable $e) {
             $this->tratarErroRetornoJson($e);
         }
     }
 
-    public function formularioIncluir(array $mensagens = [], array $perguntaPreenchida = [])
+    public function formularioIncluir(array $mensagens = [], array $perguntaPreenchida = []): void
     {
         try {
-            if(!class_exists('SetorModel')) {
-                throw new Exception("Classe 'SetorModel' não existe.");
-            }
-
             $setorModel = new SetorModel();
-            $setoresAtivos = $setorModel->BuscarSetoresAtivos();
+            $setoresAtivos = $setorModel->buscarSetoresAtivos();
 
             $this->loadView('pergunta.incluirPergunta', [
-                'setoresAtivos' => $setoresAtivos,
+                'setoresAtivos'      => $setoresAtivos,
                 'perguntaPreenchida' => $perguntaPreenchida,
-                'mensagens' => $mensagens
+                'mensagens'          => $mensagens
             ]);
         } catch (Throwable $e) {
             $this->tratarErroRetornoJson($e);
         }
     }
 
-    public function registrarPergunta()
+    public function registrarPergunta(): void
     {
         try {
             $dados = [
@@ -68,12 +56,9 @@ class PerguntaController extends RenderView
                 'setores'       => $_POST['setores'] ?? []
             ];
             
-            if(!class_exists('PerguntaModel')) {
-                throw new Exception("Classe 'PerguntaModel' não existe.");
-            }
-            
             $perguntaModel = new PerguntaModel();
-            $perguntaModel->validarCampos($dados);
+            $perguntaValidador = new PerguntaValidador($perguntaModel);
+            $perguntaValidador->validarCampos($dados);
 
             $pergunta = new Pergunta(
                 null, 
@@ -81,7 +66,7 @@ class PerguntaController extends RenderView
                 $dados['todosSetores']
             );
 
-            $perguntaModel->validarDuplicidade($pergunta);
+            $perguntaValidador->validarDuplicidade($pergunta);
 
             $sucesso = $perguntaModel->registrar($pergunta, $dados['setores']);
 
@@ -90,22 +75,15 @@ class PerguntaController extends RenderView
             }
 
         } catch (Throwable $e) {
-            $mensagemErro = "Erro: " . $e->getMessage();
-            $this->formularioIncluir(['erroRegistro' => $mensagemErro], $dados); 
+            $this->formularioIncluir(['erroRegistro' => "Erro: " . $e->getMessage()], $dados); 
         } 
     }
 
-    public function formularioAlterar(int $idPergunta, array $mensagens = [], array $perguntaPreenchida = [])
+    public function formularioAlterar(int $idPergunta, array $mensagens = [], array $perguntaPreenchida = []): void
     {
         try {
-            if(!class_exists('SetorModel')) {
-                throw new Exception("Classe 'SetorModel' não existe.");
-            } elseif(!class_exists('PerguntaModel')) {
-                throw new Exception("Classe 'PerguntaModel' não existe.");
-            }
-
             $setorModel = new SetorModel();
-            $setoresAtivos = $setorModel->BuscarSetoresAtivos();
+            $setoresAtivos = $setorModel->buscarSetoresAtivos();
     
             $perguntaModel = new PerguntaModel();
             $pergunta = $perguntaModel->buscarPorId($idPergunta);
@@ -116,34 +94,30 @@ class PerguntaController extends RenderView
             }, $perguntaSetores);
     
             $this->loadView('pergunta.alterarPergunta', [
-                'setoresAtivos' => $setoresAtivos,
-                'pergunta' => $pergunta,
-                'perguntaSetores' => $perguntaSetoresArray,
+                'setoresAtivos'      => $setoresAtivos,
+                'pergunta'           => $pergunta,
+                'perguntaSetores'    => $perguntaSetoresArray,
                 'perguntaPreenchida' => $perguntaPreenchida,
-                'mensagens' => $mensagens
+                'mensagens'          => $mensagens
             ]);
         } catch (Throwable $e) {
             $this->tratarErroRetornoJson($e);
         }
     }
 
-    public function alterarPergunta(int $idPergunta)
+    public function alterarPergunta(int $idPergunta): void
     {
         try {
-
             $dados = [
-                'idPergunta' => $idPergunta,
+                'idPergunta'    => $idPergunta,
                 'textoPergunta' => trim($_POST['texto_pergunta']) ?? '',
                 'todosSetores'  => !empty($_POST['todos_setores']),
                 'setores'       => $_POST['setores'] ?? []
             ];
             
-            if(!class_exists('PerguntaModel')) {
-                throw new Exception("Classe 'PerguntaModel' não existe.");
-            }
-            
             $perguntaModel = new PerguntaModel();
-            $perguntaModel->validarCampos($dados, true);
+            $perguntaValidador = new PerguntaValidador($perguntaModel);
+            $perguntaValidador->validarCampos($dados);
 
             $pergunta = new Pergunta(
                 $dados['idPergunta'], 
@@ -151,7 +125,7 @@ class PerguntaController extends RenderView
                 $dados['todosSetores'],
             );
 
-            $perguntaModel->validarDuplicidade($pergunta, true);
+            $perguntaValidador->validarDuplicidade($pergunta, true);
 
             $sucesso = $perguntaModel->alterar($pergunta, $dados['setores']);
 
@@ -160,22 +134,15 @@ class PerguntaController extends RenderView
             } 
 
         } catch (Throwable $e) {
-            $mensagemErro = "Erro: " . $e->getMessage();
-            $this->formularioAlterar($idPergunta, ['erroRegistro' => $mensagemErro], $dados); 
+            $this->formularioAlterar($idPergunta, ['erroRegistro' => "Erro: " . $e->getMessage()], $dados); 
         }
     }
 
-    public function visualizarPergunta(int $idPergunta)
+    public function visualizarPergunta(int $idPergunta): void
     {
         try {
-            if(!class_exists('SetorModel')) {
-                throw new Exception("Classe 'SetorModel' não existe.");
-            } elseif(!class_exists('PerguntaModel')) {
-                throw new Exception("Classe 'PerguntaModel' não existe.");
-            }
-
             $setorModel = new SetorModel();
-            $setoresAtivos = $setorModel->BuscarSetoresAtivos();
+            $setoresAtivos = $setorModel->buscarSetoresAtivos();
     
             $perguntaModel = new PerguntaModel();
             $pergunta = $perguntaModel->buscarPorId($idPergunta);
@@ -186,8 +153,8 @@ class PerguntaController extends RenderView
             }, $perguntaSetores);
     
             $this->loadView('pergunta.visualizarPergunta', [
-                'setoresAtivos' => $setoresAtivos,
-                'pergunta' => $pergunta,
+                'setoresAtivos'   => $setoresAtivos,
+                'pergunta'        => $pergunta,
                 'perguntaSetores' => $perguntaSetoresArray
             ]);
         } catch (Throwable $e) {
@@ -195,13 +162,9 @@ class PerguntaController extends RenderView
         }
     }
 
-    public function excluirPergunta(int $idPerguntaParametro)
+    public function excluirPergunta(int $idPerguntaParametro): void
     {
         try {
-            if(!class_exists('PerguntaModel')) {
-                throw new Exception("Classe 'PerguntaModel' não existe.");
-            }
-
             $perguntaModel = new PerguntaModel();
             $idPergunta = (int) $idPerguntaParametro;
 
@@ -213,41 +176,11 @@ class PerguntaController extends RenderView
 
             $mensagemSucesso = 'Pergunta com id ' . $idPergunta. ' excluída com sucesso';
 
-            header('Content-Type: application/json; charset=utf-8');
-            http_response_code(200);
-            echo json_encode([
-                'status' => 'sucesso',
-                'data' => [
-                    'message' => $mensagemSucesso
-                ] 
-            ], JSON_UNESCAPED_UNICODE);
+            $this->tratarSucessoRetornoJson([
+                'message' => $mensagemSucesso
+            ]);
         } catch (Throwable $e) {
             $this->tratarErroRetornoJson($e);
         }
-    }
-
-    private function tratarErroRetornoJson(Throwable $e) {
-        $httpCode = 500;
-        $mensagem = "Erro inesperado ao tratar a requisição";
-        
-        if ($e instanceof PDOException) {
-            $mensagem = "Erro de banco de dados: " . $e->getMessage();
-        } elseif($e instanceof Exception) {
-            $httpCode = 400;
-            $mensagem = "Ocorreu um erro inesperado: " . $e->getMessage();
-        } elseif($e instanceof Error) {
-            $mensagem = "Erro fatal: " . $e->getMessage();
-        }
-
-        if (!mb_check_encoding($mensagem, 'UTF-8')) {
-            $mensagem = mb_convert_encoding($mensagem, 'UTF-8', 'auto');
-        }
-
-        header('Content-Type: application/json; charset=utf-8');
-        http_response_code($httpCode);
-        echo json_encode([
-            'status' => 'erro',
-            'message' => $mensagem
-        ], JSON_UNESCAPED_UNICODE);
     }
 }

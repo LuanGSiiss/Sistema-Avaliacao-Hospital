@@ -13,7 +13,7 @@ class SetorModel extends Database
         }
     }
 
-    public function BuscarSetoresAtivos(): array
+    public function buscarSetoresAtivos(): array
     {
         $sqlBusca = "SELECT id_setor, descricao
                         FROM setores 

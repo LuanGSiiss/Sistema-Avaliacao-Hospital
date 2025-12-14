@@ -22,7 +22,6 @@ class Core
 
                     [$currentController, $action, $withSession] = explode('@', $controller);
                     
-                    //Vericar se é necessário estar logado para acessar a página
                     if ($withSession === "comSessao") {
                         Sessao::validarSessao();
                     }
@@ -34,17 +33,17 @@ class Core
                     }
 
                     require_once $controllerFilePath;
-                    $newController = new $currentController();
-
-                    if (!method_exists($newController, $action)) {
-                        $this->tratarNotFound("Método não encontrado: $action");
-                        return;
-                    }
-
+                    
                     try {
+                        $newController = new $currentController();
+    
+                        if (!method_exists($newController, $action)) {
+                            $this->tratarNotFound("Método não encontrado: $action");
+                            return;
+                        }
                         call_user_func_array([$newController, $action], $matches);
                     } catch(Exception $e) {
-                        $this->tratarErroMetodoClasse( $e->getMessage() );
+                        $this->tratarErroGeral($e->getMessage());
                     }
 
                     return;
@@ -57,15 +56,15 @@ class Core
         }
     }
 
-    private function tratarNotFound(string $mensagemErro = '') 
+    private function tratarNotFound(string $mensagemErro = '')
     {
         require_once __DIR__."/../controllers/NotFoundController.php";
         $controller = new NotFoundController();
         $controller->index($mensagemErro);
     }
 
-    private function tratarErroMetodoClasse(string $mensagemErro = '') 
+    private function tratarErroGeral(string $mensagemErro = '') 
     {
-        echo "Erro inesperado na chamado do método: " . $mensagemErro;
+        echo "Erro inesperado: " . $mensagemErro;
     }
 }

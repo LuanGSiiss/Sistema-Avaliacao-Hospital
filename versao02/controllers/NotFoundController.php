@@ -7,7 +7,7 @@ class NotFoundController
         if ($mensagemErro) {
             echo $mensagemErro;
         } else {
-            echo "Not Found";
+            echo "Não encontrado";
         }
     }
 }

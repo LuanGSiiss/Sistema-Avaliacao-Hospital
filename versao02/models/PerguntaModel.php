@@ -16,13 +16,13 @@ class PerguntaModel extends Database
     public function buscarPerguntaAleatoriaPorSetor(int $idSetor): ?array
     {
         $sqlBusca = "SELECT p.id_pergunta, p.texto_pergunta 
-                    FROM perguntas p
-                    LEFT JOIN pergunta_setor ps USING(id_pergunta)
-                    LEFT JOIN setores s USING(id_setor)
-                    WHERE p.status = 1 
-                    AND ( p.todos_setores = true OR ps.id_setor = :idSetor AND s.status = 1)
-                    ORDER BY RANDOM()
-                    LIMIT 1;";
+                        FROM perguntas p
+                        LEFT JOIN pergunta_setor ps USING(id_pergunta)
+                        LEFT JOIN setores s USING(id_setor)
+                        WHERE p.status = 1 
+                        AND ( p.todos_setores = true OR ps.id_setor = :idSetor AND s.status = 1)
+                        ORDER BY RANDOM()
+                        LIMIT 1;";
         $stmt = $this->pdo->prepare($sqlBusca);
         $stmt->execute([
             'idSetor' => $idSetor
@@ -50,7 +50,7 @@ class PerguntaModel extends Database
         return $resultado;
     }
 
-    public function BuscarTodas(): array
+    public function buscarTodas(): array
     {
         $sqlBusca = "SELECT id_pergunta, texto_pergunta, todos_setores, status 
                         FROM perguntas 
@@ -93,31 +93,21 @@ class PerguntaModel extends Database
             $idPerguntaRegistrada = $this->pdo->lastInsertId();
 
             // Cadastrar a relação de Setor e Pergunta
-            if(!$pergunta->getTodosSetores()) {
+            if (!$pergunta->getTodosSetores()) {
                 if (empty($setores)) {
                     throw new Exception("Setores não informados.");
                 }
 
-                foreach ($setores as $setor) {
-                    $sqlInsertPerguntaSetores = "INSERT INTO pergunta_setor(id_pergunta, id_setor)
-                                                    VALUES(:idPergunta, :idSetor);";
-
-                    $stmt2 = $this->pdo->prepare($sqlInsertPerguntaSetores);
-                    $stmt2->execute([
-                        'idPergunta' => $idPerguntaRegistrada,
-                        'idSetor'  => $setor
-                    ]);
-                }
+                $this->relacionarSetores($idPerguntaRegistrada, $setores);
             }
 
             $this->pdo->commit();
             return true;
             
         } catch (Throwable $e) {
-            if($this->pdo->inTransaction()) {
+            if ($this->pdo->inTransaction()) {
                 $this->pdo->rollBack();
             }
-
             throw $e;
         }
     }
@@ -139,41 +129,23 @@ class PerguntaModel extends Database
             $stmt1->bindValue(':idPergunta', $pergunta->getIdPergunta(), PDO::PARAM_INT);
             $stmt1->execute();
 
-            //Excluir as relações entre Pergunta e Setor
-            $sqlDelete = "DELETE FROM pergunta_setor
-                            WHERE id_pergunta = :idPergunta;";
+            $this->excluirRelacionamentoSetores($pergunta->getIdPergunta());
 
-            $stmt2 = $this->pdo->prepare($sqlDelete);
-            $stmt2->execute([
-                'idPergunta' => $pergunta->getIdPergunta(),
-            ]);
-
-            // Cadastrar as relações de Pergunta e Setor
-            if(!$pergunta->getTodosSetores()) {
+            if (!$pergunta->getTodosSetores()) {
                 if (empty($setores)) {
                     throw new Exception("Setores não informados.");
                 }
 
-                foreach ($setores as $setor) {
-                    $sqlInsertPerguntaSetores = "INSERT INTO pergunta_setor(id_pergunta, id_setor)
-                                                    VALUES(:idPergunta, :idSetor);";
-
-                    $stmt3 = $this->pdo->prepare($sqlInsertPerguntaSetores);
-                    $stmt3->execute([
-                        'idPergunta' => $pergunta->getIdPergunta(),
-                        'idSetor'  => $setor
-                    ]);
-                }
+                $this->relacionarSetores($pergunta->getIdPergunta(), $setores);
             }
 
             $this->pdo->commit();
             return true;
             
         } catch (Throwable $e) {
-            if($this->pdo->inTransaction()) {
+            if ($this->pdo->inTransaction()) {
                 $this->pdo->rollBack();
             }
-            
             throw $e;
         }
     }
@@ -181,43 +153,27 @@ class PerguntaModel extends Database
     public function excluir(int $idPergunta): int
     {
         try {
-            $sqlPerguntaEmAvaliacoes = "SELECT count(*) as total
-                                            FROM avaliacoes
-                                            WHERE id_pergunta = :idPergunta;";
-            $stmt1 = $this->pdo->prepare($sqlPerguntaEmAvaliacoes);
-            $stmt1->execute([
-                'idPergunta' => $idPergunta
-            ]);
-            
-            $resultadoPerguntaEmAvaliacoes = $stmt1->fetch();
-
-            if($resultadoPerguntaEmAvaliacoes['total'] > 0) {
+            if($this->perguntaEmAvaliacoes($idPergunta)) {
                 throw new Exception("A pergunta possui relacionamento com avaliações, não será possível realizar a exclusão.");
             }
+
             $this->pdo->beginTransaction();
 
+            $this->excluirRelacionamentoSetores($idPergunta);
 
-            //Deletar os relacionamentos de Pergunta e Setor
-            $sqlDeletePerguntaSetor = "DELETE FROM pergunta_setor
-                                        WHERE id_pergunta = :idPergunta;";
-            $stmt2 = $this->pdo->prepare($sqlDeletePerguntaSetor);
-            $stmt2->execute([
-                'idPergunta' => $idPergunta,
-            ]);
-
-            //Deletar Pergunta
             $sqlDeletePergunta = "DELETE FROM perguntas
                                     WHERE id_pergunta = :idPergunta;";
-            $stmt3 = $this->pdo->prepare($sqlDeletePergunta);
-            $stmt3->execute([
+            $stmt = $this->pdo->prepare($sqlDeletePergunta);
+            $stmt->execute([
                 'idPergunta' => $idPergunta,
             ]);
 
             $this->pdo->commit();
-            return $stmt3->rowCount();
             
+            return $stmt->rowCount();
+
         } catch (Throwable $e) {
-            if($this->pdo->inTransaction()) {
+            if ($this->pdo->inTransaction()) {
                 $this->pdo->rollBack();
             }
 
@@ -225,64 +181,60 @@ class PerguntaModel extends Database
         }
     }
 
-    public function validarDuplicidade(Pergunta $pergunta, bool $alteracao = false) {
+    public function relacionarSetores(int $idPergunta, array $setores):void 
+    {
+        foreach ($setores as $setor) {
+            $sqlInsertPerguntaSetores = "INSERT INTO pergunta_setor(id_pergunta, id_setor)
+                                            VALUES(:idPergunta, :idSetor);";
+
+            $stmt = $this->pdo->prepare($sqlInsertPerguntaSetores);
+            $stmt->execute([
+                'idPergunta' => $idPergunta,
+                'idSetor'    => $setor
+            ]);
+        }
+    }
+
+    public function excluirRelacionamentoSetores(int $idPergunta):void 
+    {
+        $sqlDelete = "DELETE FROM pergunta_setor
+                        WHERE id_pergunta = :idPergunta;";
+
+        $stmt = $this->pdo->prepare($sqlDelete);
+        $stmt->execute([
+            'idPergunta' => $idPergunta,
+        ]);
+    }
+
+    public function perguntaEmAvaliacoes(int $idPergunta):bool 
+    {
+        $sqlPerguntaEmAvaliacoes = "SELECT count(*) as total
+                                        FROM avaliacoes
+                                        WHERE id_pergunta = :idPergunta;";
+        $stmt = $this->pdo->prepare($sqlPerguntaEmAvaliacoes);
+        $stmt->execute([
+            'idPergunta' => $idPergunta
+        ]);
+        $resultado = $stmt->fetch();
+
+        return $resultado ? true : false;
+    }
+
+    public function existePerguntaComTexto(Pergunta $pergunta):mixed
+    {
         try {
             $sqlBuscaRegistro = "SELECT id_pergunta FROM perguntas
                                     WHERE texto_pergunta = :textoPergunta;";
 
-            $stmt1 = $this->pdo->prepare($sqlBuscaRegistro);
-            $stmt1->bindValue(':textoPergunta', $pergunta->getTextoPergunta(), PDO::PARAM_STR);
-            $stmt1->execute();
+            $stmt = $this->pdo->prepare($sqlBuscaRegistro);
+            $stmt->bindValue(':textoPergunta', $pergunta->getTextoPergunta(), PDO::PARAM_STR);
+            $stmt->execute();
 
-            $resultado = $stmt1->fetch();
-            $duplicado = $resultado ? true : false; 
+            $resultado = $stmt->fetch();
 
-            if ($alteracao && $duplicado && $resultado['id_pergunta'] === $pergunta->getIdPergunta()) {
-                $duplicado = false;
-            }
-
-            if ($duplicado) {
-                throw new Exception("Já existe uma Pergunta cadastra com esse Texto.");
-            }
-
-            return false;
-            
+            return $resultado;
         } catch (Throwable $e) {
             throw $e;
         }
-    }
-
-    public function validarCampos(array $dados, bool $alteracao = false) 
-    {
-        // ID
-        if($alteracao) {
-            if (empty($dados['idPergunta']) || !is_int($dados['idPergunta']) || $dados['idPergunta'] <= 0) {
-                throw new Exception("ID da pergunta inválido.");
-            }
-        }
-
-        // Texto da Pergunta
-        if (!is_string($dados['textoPergunta']) || trim($dados['textoPergunta']) === '' || mb_strlen(trim($dados['textoPergunta'])) > 350) {
-            throw new Exception("Texto da pergunta inválido ou excede 350 caracteres.");
-        }
-
-        // todosSetores
-        if (!isset($dados['todosSetores']) || !is_bool($dados['todosSetores'])) {
-            throw new Exception("'todosSetores' deve ser booleano.");
-        }
-
-        // setores
-        if (!$dados['todosSetores']) {
-            if (empty($dados['setores']) || !is_array($dados['setores'])) {
-                throw new Exception("Setores obrigatórios quando 'todosSetores' é falso.");
-            }
-        }
-
-        // status
-        if (isset($dados['status']) && (!is_int($dados['status']) || !in_array($dados['status'], [0, 1], true))) {
-            throw new Exception("Status deve ser 0 ou 1.");
-        }
-
-        return true;
     }
 }
