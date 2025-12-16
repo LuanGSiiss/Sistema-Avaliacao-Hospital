@@ -1,95 +1,23 @@
 <?php
 
-class AvaliacaoController extends RenderView
+class AvaliacaoController extends BaseController
 {
-    public function formularioAvaliacao(array $mensagens = [])
-    {
-        try {
-            if(!class_exists('PerguntaModel')) {
-                throw new Exception("Classe 'PerguntaModel' não existe.");
-            }
-
-            $setor = (int) $_GET['setor'] ?? null;
-            $dispositivo = (int) $_GET['dispositivo'] ?? null;
-            $perguntaModel = new PerguntaModel();
-            $pergunta = $perguntaModel->buscarPerguntaAleatoriaPorSetor($setor);
-    
-            $this->loadView('avaliacao.incluirAvaliacao', [
-                'pergunta' => $pergunta,
-                'setor' => $setor,
-                'dispositivo' => $dispositivo,
-                'mensagens' => $mensagens
-            ]); 
-        } catch(Exception $e) {
-            $this->tratarErroRetornoJson($e); 
-        }
-    }
-
-    public function registrarAvaliacao()
-    {
-        try {
-            $dados = [
-                'idSetor'       => (int) $_GET['setor'] ?? null,
-                'idDispositivo' => (int) $_GET['dispositivo'] ?? null,
-                'idPergunta'    => (int) $_POST['id_pergunta'] ?? null,
-                'nota'          => (int) $_POST['nota'] ?? null,
-                'feedback'      => trim($_POST['feedback']) ?? ''
-            ];
-
-            if(!class_exists('AvaliacaoModel')) {
-                throw new Exception("Classe 'AvaliacaoModel' não existe.");
-            }
-
-            $avaliacaoModel = new AvaliacaoModel();
-            $avaliacaoModel->validarCampos($dados);
-
-            $avaliacao = new Avaliacao(
-                null,
-                $dados['idSetor'],
-                $dados['idPergunta'],
-                $dados['idDispositivo'],
-                $dados['nota'],
-                $dados['feedback'],
-            );
-
-            $sucesso = $avaliacaoModel->registrar($avaliacao);
-            
-            if($sucesso) {
-                $this->loadView('avaliacao.agradecimento', []); 
-            }
-            
-        } catch(Exception $e) {
-            $mensagemErro = "Erro: " . $e->getMessage();
-            $this->formularioAvaliacao(['erroRegistro' => $mensagemErro]); 
-        }
-    }
-    
-    public function exibirConsulta()
+    public function exibirConsulta():void
     {
         $this->loadView('avaliacao.consultaAvaliacoes', []); 
     }
 
-    public function BuscarAvaliacoes()
+    public function buscarAvaliacoes():void
     {
         try {
-            if(!class_exists('AvaliacaoModel')) {
-                throw new Exception("Classe 'AvaliacaoModel' não existe.");
-            }
-            if(!class_exists('SetorModel')) {
-                throw new Exception("Classe 'SetorModel' não existe.");
-            }
-            if(!class_exists('DispositivoModel')) {
-                throw new Exception("Classe 'DispositivoModel' não existe.");
-            }
-
             $avaliacaoModel = new AvaliacaoModel();
-            $avaliacoesBase = $avaliacaoModel->BuscarTodas();
+            $avaliacoesBase = $avaliacaoModel->buscarTodas();
 
             $setorModel = new SetorModel();
-            $setores = $setorModel->BuscarTodas();
+            $setores = $setorModel->buscarTodas();
 
             $dispositivoModel = new DispositivoModel();
-            $dispositivos = $dispositivoModel->BuscarTodas();
+            $dispositivos = $dispositivoModel->buscarTodas();
 
             $arrayAvaliacoes = array_map(function ($registro) {
                 return [
@@ -103,43 +31,67 @@ class AvaliacaoController extends RenderView
                 ];
             }, $avaliacoesBase);
             
-            header('Content-Type: application/json; charset=utf-8');
-            http_response_code(200);
-            echo json_encode([
-                'status' => 'sucesso',
-                'data' => [
-                    'avaliacoes'   => $arrayAvaliacoes,
-                    'setores'      => $setores,
-                    'dispositivos' => $dispositivos
-                ] 
+            $this->tratarSucessoRetornoJson([
+                'avaliacoes'   => $arrayAvaliacoes,
+                'setores'      => $setores,
+                'dispositivos' => $dispositivos
             ]);
         } catch (Exception $e) {
             $this->tratarErroRetornoJson($e);
         }
     }
 
-    private function tratarErroRetornoJson(Throwable $e) {
-        $httpCode = 500;
-        $mensagem = "Erro inesperado ao tratar a requisição";
-        
-        if ($e instanceof PDOException) {
-            $mensagem = "Erro de banco de dados: " . $e->getMessage();
-        } elseif($e instanceof Exception) {
-            $httpCode = 400;
-            $mensagem = "Ocorreu um erro inesperado: " . $e->getMessage();
-        } elseif($e instanceof Error) {
-            $mensagem = "Erro fatal: " . $e->getMessage();
+    // Exibe a página de avaliação
+    public function formularioAvaliacao(array $mensagens = []):void
+    {
+        try {
+            $setor = (int) $_GET['setor'] ?? null;
+            $dispositivo = (int) $_GET['dispositivo'] ?? null;
+            $perguntaModel = new PerguntaModel();
+            $pergunta = $perguntaModel->buscarPerguntaAleatoriaPorSetor($setor);
+    
+            $this->loadView('avaliacao.incluirAvaliacao', [
+                'pergunta'    => $pergunta,
+                'setor'       => $setor,
+                'dispositivo' => $dispositivo,
+                'mensagens'   => $mensagens
+            ]); 
+        } catch(Exception $e) {
+            $this->tratarErroRetornoJson($e); 
         }
+    }
 
-        if (!mb_check_encoding($mensagem, 'UTF-8')) {
-            $mensagem = mb_convert_encoding($mensagem, 'UTF-8', 'auto');
+    public function registrarAvaliacao():void
+    {
+        try {
+            $dados = [
+                'idSetor'       => (int) $_GET['setor'] ?? null,
+                'idDispositivo' => (int) $_GET['dispositivo'] ?? null,
+                'idPergunta'    => (int) $_POST['id_pergunta'] ?? null,
+                'nota'          => (int) $_POST['nota'] ?? null,
+                'feedback'      => trim($_POST['feedback']) ?? ''
+            ];
+
+            $avaliacaoModel = new AvaliacaoModel();
+            $avaliacaoValidador = new AvaliacaoValidador($avaliacaoModel);
+            $avaliacaoValidador->validarCampos($dados);
+
+            $avaliacao = new Avaliacao(
+                null,
+                $dados['idSetor'],
+                $dados['idPergunta'],
+                $dados['idDispositivo'],
+                $dados['nota'],
+                $dados['feedback'],
+            );
+
+            $sucesso = $avaliacaoModel->registrar($avaliacao);
+            
+            if($sucesso) {
+                $this->loadView('avaliacao.agradecimento', []);
+            }
+        } catch(Exception $e) {
+            $this->formularioAvaliacao(['erroRegistro' => "Erro: " . $e->getMessage()]); 
         }
-
-        header('Content-Type: application/json; charset=utf-8');
-        http_response_code($httpCode);
-        echo json_encode([
-            'status' => 'erro',
-            'message' => $mensagem
-        ], JSON_UNESCAPED_UNICODE);
     }
 }

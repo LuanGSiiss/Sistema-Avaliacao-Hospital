@@ -1,6 +1,7 @@
 <?php
 
-class PerguntaValidador {
+class PerguntaValidador 
+{
     private PerguntaModel $perguntaModel;
 
     public function __construct(PerguntaModel $perguntaModel) 

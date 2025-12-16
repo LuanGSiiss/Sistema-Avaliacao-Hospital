@@ -13,6 +13,8 @@ spl_autoload_register(function($file) {
         require_once __DIR__."/models/entidades/$file.php";
     } else if (file_exists(__DIR__."/service/$file.php")) {
         require_once __DIR__."/service/$file.php";
+    } else if (file_exists(__DIR__."/controllers/$file.php")) {
+        require_once __DIR__."/controllers/$file.php";
     }
 });
 

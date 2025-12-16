@@ -7,13 +7,9 @@ class DispositivoModel extends Database
     public function __construct()
     {
         $this->pdo = $this->getConnection();
-        
-        if (!$this->pdo) {
-            throw new Exception("Erro ao conectar com o banco de dados.");
-        }
     }
 
-    public function buscarPorId(int $idDispositivo): array
+    public function buscarPorId(int $idDispositivo):array
     {
         $sqlBusca = "SELECT id_dispositivo, id_setor, codigo_identificador, nome, status 
                         FROM dispositivos
@@ -31,7 +27,7 @@ class DispositivoModel extends Database
         return $resultado;
     }
 
-    public function BuscarTodas(): array
+    public function buscarTodas():array
     {
         $sqlBusca = "SELECT id_dispositivo, id_setor, codigo_identificador, nome, status 
                         FROM dispositivos 
@@ -43,140 +39,113 @@ class DispositivoModel extends Database
         return $resultado;
     }
 
-    public function registrar(Dispositivo $dispositivo): int
+    public function registrar(Dispositivo $dispositivo):bool
     {
         try {
             $sqlInsertDispositivo = "INSERT INTO dispositivos(id_setor, codigo_identificador, nome, status)
                                     VALUES(:idSetor, :codigoIdentificador, :nome, :status);";
-
-            $stmt1 = $this->pdo->prepare($sqlInsertDispositivo);
-            $stmt1->bindValue(':idSetor', $dispositivo->getIdSetor(), PDO::PARAM_INT);
-            $stmt1->bindValue(':codigoIdentificador', $dispositivo->getCodigoIdentificador(), PDO::PARAM_STR);
-            $stmt1->bindValue(':nome', $dispositivo->getNome(), PDO::PARAM_STR);
-            $stmt1->bindValue(':status', $dispositivo->getStatus(), PDO::PARAM_INT);
-            $stmt1->execute();
+            $stmt = $this->pdo->prepare($sqlInsertDispositivo);
+            $stmt->bindValue(':idSetor', $dispositivo->getIdSetor(), PDO::PARAM_INT);
+            $stmt->bindValue(':codigoIdentificador', $dispositivo->getCodigoIdentificador(), PDO::PARAM_STR);
+            $stmt->bindValue(':nome', $dispositivo->getNome(), PDO::PARAM_STR);
+            $stmt->bindValue(':status', $dispositivo->getStatus(), PDO::PARAM_INT);
+            $stmt->execute();
 
             return true;
-            
         } catch (Throwable $e) {
             throw $e;
         }
     }
 
-    public function alterar(Dispositivo $dispositivo): int
+    public function alterar(Dispositivo $dispositivo):bool
     {
         try {
             $sqlUpdateDispositivo = "UPDATE dispositivos
-                                    SET id_setor = :idSetor,
-                                    codigo_identificador = :codigoIdentificador,
-                                    nome = :nome
-                                    WHERE id_dispositivo = :idDispositivo;";
-
-            $stmt1 = $this->pdo->prepare($sqlUpdateDispositivo);
-            
-            $stmt1->bindValue(':idDispositivo', $dispositivo->getIdDispositivo(), PDO::PARAM_INT);
-            $stmt1->bindValue(':idSetor', $dispositivo->getIdSetor(), PDO::PARAM_INT);
-            $stmt1->bindValue(':codigoIdentificador', $dispositivo->getCodigoIdentificador(), PDO::PARAM_STR);
-            $stmt1->bindValue(':nome', $dispositivo->getNome(), PDO::PARAM_STR);
-            $stmt1->execute();
+                                        SET id_setor = :idSetor,
+                                            codigo_identificador = :codigoIdentificador,
+                                            nome = :nome
+                                        WHERE id_dispositivo = :idDispositivo;";
+            $stmt = $this->pdo->prepare($sqlUpdateDispositivo);
+            $stmt->bindValue(':idDispositivo', $dispositivo->getIdDispositivo(), PDO::PARAM_INT);
+            $stmt->bindValue(':idSetor', $dispositivo->getIdSetor(), PDO::PARAM_INT);
+            $stmt->bindValue(':codigoIdentificador', $dispositivo->getCodigoIdentificador(), PDO::PARAM_STR);
+            $stmt->bindValue(':nome', $dispositivo->getNome(), PDO::PARAM_STR);
+            $stmt->execute();
 
             return true;
-            
         } catch (Throwable $e) {
             throw $e;
         }
     }
 
-    public function excluir(int $idDispositivo): int
+    // Não é permitido excluir Dispositivos que possuem vinculo com Avaliações
+    public function excluir(int $idDispositivo):int
     {
         try {
-            $sqlDispositivoEmAvaliacoes = "SELECT count(*) as total
-                                            FROM avaliacoes
-                                            WHERE id_dispositivo = :idDispositivo;";
-            $stmt1 = $this->pdo->prepare($sqlDispositivoEmAvaliacoes);
-            $stmt1->execute([
-                'idDispositivo' => $idDispositivo
-            ]);
-            
-            $resultadoDispositivoEmAvaliacoes = $stmt1->fetch();
-
-            if($resultadoDispositivoEmAvaliacoes['total'] > 0) {
+            if($this->dispositivoEmAvaliacoes($idDispositivo)) {
                 throw new Exception("O Dispositivo possui relacionamento com avaliações, não será possível realizar a exclusão.");
             }
 
-            //Deletar Dispositivo
             $sqlDeleteDispositivo = "DELETE FROM dispositivos
-                                    WHERE id_dispositivo = :idDispositivo;";
-            $stmt2 = $this->pdo->prepare($sqlDeleteDispositivo);
-            $stmt2->execute([
+                                        WHERE id_dispositivo = :idDispositivo;";
+            $stmt = $this->pdo->prepare($sqlDeleteDispositivo);
+            $stmt->execute([
                 'idDispositivo' => $idDispositivo,
             ]);
 
-            return $stmt2->rowCount();
-            
+            return $stmt->rowCount();
         } catch (Throwable $e) {
             throw $e;
         }
     }
 
-    public function validarDuplicidade(Dispositivo $dispositivo, bool $alteracao = false) {
-        try {
-            $sqlBuscaRegistro = "SELECT id_dispositivo FROM dispositivos
-                                    WHERE codigo_identificador = :codigoIdentificador
-                                    OR nome = :nome;";
-
-            $stmt1 = $this->pdo->prepare($sqlBuscaRegistro);
-            $stmt1->bindValue(':codigoIdentificador', $dispositivo->getCodigoIdentificador(), PDO::PARAM_STR);
-            $stmt1->bindValue(':nome', $dispositivo->getNome(), PDO::PARAM_STR);
-            $stmt1->execute();
-
-            $resultado = $stmt1->fetch();
-            $duplicado = $resultado ? true : false; 
-
-            if ($alteracao && $duplicado && $resultado['id_dispositivo'] === $dispositivo->getIdDispositivo()) {
-                $duplicado = false;
-            }
-
-            if ($duplicado) {
-                throw new Exception("Já existe um Dispositivo cadastro com esse Código ou Nome.");
-            }
-
-            return false;
-            
-        } catch (Throwable $e) {
-            throw $e;
-        }
-    }
-
-    public function validarCampos(array $dados, bool $alteracao = false) 
+    private function dispositivoEmAvaliacoes(int $idDispositivo):bool 
     {
-        // ID Dispositivo
-        if($alteracao) {
-            if (empty($dados['idDispositivo']) || !is_int($dados['idDispositivo']) || $dados['idDispositivo'] <= 0) {
-                throw new Exception("ID do Dispositivo inválido.");
-            }
+        $sqlBusca = "SELECT 1 as total
+                        FROM avaliacoes
+                        WHERE id_dispositivo = :idDispositivo;";
+        $stmt = $this->pdo->prepare($sqlBusca);
+        $stmt->execute([
+            'idDispositivo' => $idDispositivo
+        ]);
+        $resultado = $stmt->fetch();
+
+        return $resultado ? true : false;
+    }
+
+    // Verifica se existe um Dispositivo cadastrado com o nome informado. Usado para validação de duplicidade no cadastro e alteração
+    public function existeDispositivoComNome(Dispositivo $dispositivo):mixed
+    {
+        try {
+            $sqlBusca = "SELECT id_dispositivo 
+                            FROM dispositivos
+                            WHERE nome = :nome;";
+            $stmt = $this->pdo->prepare($sqlBusca);
+            $stmt->bindValue(':nome', $dispositivo->getNome(), PDO::PARAM_STR);
+            $stmt->execute();
+            $resultado = $stmt->fetch();
+
+            return $resultado;
+        } catch (Throwable $e) {
+            throw $e;
         }
+    }
 
-        // ID Setor
-        if (empty($dados['idSetor']) || !is_int($dados['idSetor']) || $dados['idSetor'] <= 0) {
-                throw new Exception("ID do Setor inválido.".$dados['idSetor']);
-            }
+    // Verifica se existe um Dispositivo cadastrado com o código identificador informado. Usado para validação de duplicidade no cadastro e alteração
+    public function existeDispositivoComIdentificador(Dispositivo $dispositivo):mixed
+    {
+        try {
+            $sqlBusca = "SELECT id_dispositivo 
+                            FROM dispositivos
+                            WHERE codigo_identificador = :codigoIdentificador;";
+            $stmt = $this->pdo->prepare($sqlBusca);
+            $stmt->bindValue(':codigoIdentificador', $dispositivo->getCodigoIdentificador(), PDO::PARAM_STR);
+            $stmt->execute();
+            $resultado = $stmt->fetch();
 
-        // Codigo Identificador
-        if (!is_string($dados['codigoIdentificador']) || trim($dados['codigoIdentificador']) === '' || mb_strlen(trim($dados['codigoIdentificador'])) > 7) {
-            throw new Exception("Código Identificador do Dispositivo inválido ou excede 7 caracteres.");
+            return $resultado;
+        } catch (Throwable $e) {
+            throw $e;
         }
-
-        // nome
-        if (!is_string($dados['nome']) || trim($dados['nome']) === '' || mb_strlen(trim($dados['nome'])) > 50) {
-            throw new Exception("Nome do Dispositivo inválido ou excede 50 caracteres.");
-        }
-
-        // status
-        if (isset($dados['status']) && (!is_int($dados['status']) || !in_array($dados['status'], [0, 1], true))) {
-            throw new Exception("Status deve ser 0 ou 1.");
-        }
-
-        return true;
     }
 }

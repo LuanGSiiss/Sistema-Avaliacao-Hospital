@@ -1,8 +1,8 @@
 <?php
 
-class LoginController extends RenderView
+class LoginController extends BaseController
 {
-    public function formularioLogin(array $mensagens = [])
+    public function formularioLogin(array $mensagens = []):void
     {
         if (isset($_GET['msg']) && $_GET['msg'] === 'login_required') {
             $mensagens['erroLogin'] = "É necessário estar logado para acessar o sistema.";
@@ -12,27 +12,18 @@ class LoginController extends RenderView
         ]);
     }
 
-    public function validarLogin()
+    public function validarLogin():void
     {
         try {
             $dados = [
                 'email' => $_POST['email'] ?? '',
-                'senha'  => $_POST['senha'] ?? ''
+                'senha' => $_POST['senha'] ?? ''
             ];
 
-            if(!class_exists('LoginModel')) {
-                throw new Exception("Classe 'LoginModel' não existe.");
-            }
-            
-            //Valida Parametros
-            if (!is_string($dados['email']) || trim($dados['email']) === '' || mb_strlen(trim($dados['email'])) > 50) {
-                throw new Exception("Email inválido ou excede 50 caracteres.");
-            } elseif (!is_string($dados['senha']) || trim($dados['senha']) === '' || mb_strlen(trim($dados['senha'])) > 50) {
-                throw new Exception("Senha inválida ou excede 50 caracteres.");
-            }
-
             $loginModel = new LoginModel();
-            $usuario = $loginModel->buscaUsuario($dados);
+            $loginValidador = new LoginValidador($loginModel);
+            $loginValidador->validarCampos($dados);
+            $usuario = $loginModel->buscarUsuario($dados);
 
             if ($usuario) {
                 Sessao::criarSessao($usuario);

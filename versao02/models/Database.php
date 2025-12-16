@@ -12,6 +12,10 @@ class Database
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
         ]);
 
+        if (!$pdo) {
+            throw new Exception("Erro ao conectar com o banco de dados.");
+        }
+
         return $pdo;
     }
 }

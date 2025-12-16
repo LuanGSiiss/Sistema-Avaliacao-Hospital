@@ -9,10 +9,10 @@ class BaseController extends RenderView
         
         if ($e instanceof PDOException) {
             $mensagem = "Erro de banco de dados: " . $e->getMessage();
-        } elseif($e instanceof Exception) {
+        } else if($e instanceof Exception) {
             $httpCode = 400;
             $mensagem = "Ocorreu um erro inesperado: " . $e->getMessage();
-        } elseif($e instanceof Error) {
+        } else if($e instanceof Error) {
             $mensagem = "Erro fatal: " . $e->getMessage();
         }
 
@@ -23,7 +23,7 @@ class BaseController extends RenderView
         header('Content-Type: application/json; charset=utf-8');
         http_response_code($httpCode);
         echo json_encode([
-            'status' => 'erro',
+            'status'  => 'erro',
             'message' => $mensagem
         ], JSON_UNESCAPED_UNICODE);
     }
@@ -34,7 +34,7 @@ class BaseController extends RenderView
         http_response_code($httpCode);
         echo json_encode([
             'status' => 'sucesso',
-            'data' => $conteudo 
+            'data'   => $conteudo 
         ], JSON_UNESCAPED_UNICODE);
     }
 }

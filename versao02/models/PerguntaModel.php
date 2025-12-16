@@ -7,13 +7,9 @@ class PerguntaModel extends Database
     public function __construct()
     {
         $this->pdo = $this->getConnection();
-        
-        if (!$this->pdo) {
-            throw new Exception("Erro ao conectar com o banco de dados.");
-        }
     }
 
-    public function buscarPerguntaAleatoriaPorSetor(int $idSetor): ?array
+    public function buscarPerguntaAleatoriaPorSetor(int $idSetor):?array
     {
         $sqlBusca = "SELECT p.id_pergunta, p.texto_pergunta 
                         FROM perguntas p
@@ -32,7 +28,7 @@ class PerguntaModel extends Database
         return $resultado ?: null;
     }
 
-    public function buscarPorId(int $idPergunta): array
+    public function buscarPorId(int $idPergunta):array
     {
         $sqlBusca = "SELECT id_pergunta, texto_pergunta, todos_setores, status 
                         FROM perguntas
@@ -62,7 +58,7 @@ class PerguntaModel extends Database
         return $resultado;
     }
 
-    public function buscarSetoresPorPergunta(int $idPergunta): array
+    public function buscarSetoresPorPergunta(int $idPergunta):array
     {
         $sqlBusca = "SELECT id_setor 
                         FROM pergunta_setor
@@ -76,19 +72,18 @@ class PerguntaModel extends Database
         return $resultado;
     }
 
-    public function registrar(Pergunta $pergunta, array $setores): int
+    public function registrar(Pergunta $pergunta, array $setores):bool
     {
         try {
             $this->pdo->beginTransaction();
 
             $sqlInsertPergunta = "INSERT INTO perguntas(texto_pergunta, todos_setores, status)
                                     VALUES(:textoPergunta, :todosSetores, :status);";
-
-            $stmt1 = $this->pdo->prepare($sqlInsertPergunta);
-            $stmt1->bindValue(':textoPergunta', $pergunta->getTextoPergunta(), PDO::PARAM_STR);
-            $stmt1->bindValue(':todosSetores', $pergunta->getTodosSetores(), PDO::PARAM_BOOL);
-            $stmt1->bindValue(':status', $pergunta->getStatus(), PDO::PARAM_INT);
-            $stmt1->execute();
+            $stmt = $this->pdo->prepare($sqlInsertPergunta);
+            $stmt->bindValue(':textoPergunta', $pergunta->getTextoPergunta(), PDO::PARAM_STR);
+            $stmt->bindValue(':todosSetores', $pergunta->getTodosSetores(), PDO::PARAM_BOOL);
+            $stmt->bindValue(':status', $pergunta->getStatus(), PDO::PARAM_INT);
+            $stmt->execute();
 
             $idPerguntaRegistrada = $this->pdo->lastInsertId();
 
@@ -103,7 +98,6 @@ class PerguntaModel extends Database
 
             $this->pdo->commit();
             return true;
-            
         } catch (Throwable $e) {
             if ($this->pdo->inTransaction()) {
                 $this->pdo->rollBack();
@@ -112,18 +106,16 @@ class PerguntaModel extends Database
         }
     }
 
-    public function alterar(Pergunta $pergunta, array $setores): int
+    public function alterar(Pergunta $pergunta, array $setores):bool
     {
         try {
             $this->pdo->beginTransaction();
 
             $sqlUpdatePergunta = "UPDATE perguntas
                                     SET texto_pergunta = :textoPergunta,
-                                    todos_setores = :todosSetores
+                                        todos_setores = :todosSetores
                                     WHERE id_pergunta = :idPergunta;";
-
             $stmt1 = $this->pdo->prepare($sqlUpdatePergunta);
-            
             $stmt1->bindValue(':textoPergunta', $pergunta->getTextoPergunta(), PDO::PARAM_STR);
             $stmt1->bindValue(':todosSetores', $pergunta->getTodosSetores(), PDO::PARAM_BOOL);
             $stmt1->bindValue(':idPergunta', $pergunta->getIdPergunta(), PDO::PARAM_INT);
@@ -141,7 +133,6 @@ class PerguntaModel extends Database
 
             $this->pdo->commit();
             return true;
-            
         } catch (Throwable $e) {
             if ($this->pdo->inTransaction()) {
                 $this->pdo->rollBack();
@@ -150,7 +141,8 @@ class PerguntaModel extends Database
         }
     }
 
-    public function excluir(int $idPergunta): int
+    // Não é permitido excluir Perguntas que possuem vinculo com Avaliações
+    public function excluir(int $idPergunta):int
     {
         try {
             if($this->perguntaEmAvaliacoes($idPergunta)) {
@@ -171,7 +163,6 @@ class PerguntaModel extends Database
             $this->pdo->commit();
             
             return $stmt->rowCount();
-
         } catch (Throwable $e) {
             if ($this->pdo->inTransaction()) {
                 $this->pdo->rollBack();
@@ -181,12 +172,11 @@ class PerguntaModel extends Database
         }
     }
 
-    public function relacionarSetores(int $idPergunta, array $setores):void 
+    private function relacionarSetores(int $idPergunta, array $setores):void 
     {
         foreach ($setores as $setor) {
             $sqlInsertPerguntaSetores = "INSERT INTO pergunta_setor(id_pergunta, id_setor)
                                             VALUES(:idPergunta, :idSetor);";
-
             $stmt = $this->pdo->prepare($sqlInsertPerguntaSetores);
             $stmt->execute([
                 'idPergunta' => $idPergunta,
@@ -195,23 +185,22 @@ class PerguntaModel extends Database
         }
     }
 
-    public function excluirRelacionamentoSetores(int $idPergunta):void 
+    private function excluirRelacionamentoSetores(int $idPergunta):void 
     {
         $sqlDelete = "DELETE FROM pergunta_setor
                         WHERE id_pergunta = :idPergunta;";
-
         $stmt = $this->pdo->prepare($sqlDelete);
         $stmt->execute([
             'idPergunta' => $idPergunta,
         ]);
     }
 
-    public function perguntaEmAvaliacoes(int $idPergunta):bool 
+    private function perguntaEmAvaliacoes(int $idPergunta):bool 
     {
-        $sqlPerguntaEmAvaliacoes = "SELECT count(*) as total
-                                        FROM avaliacoes
-                                        WHERE id_pergunta = :idPergunta;";
-        $stmt = $this->pdo->prepare($sqlPerguntaEmAvaliacoes);
+        $sqlBusca = "SELECT 1 as total
+                        FROM avaliacoes
+                        WHERE id_pergunta = :idPergunta;";
+        $stmt = $this->pdo->prepare($sqlBusca);
         $stmt->execute([
             'idPergunta' => $idPergunta
         ]);
@@ -220,16 +209,16 @@ class PerguntaModel extends Database
         return $resultado ? true : false;
     }
 
+    // Verifica se existe uma Pergunta cadastrada com o texto informado. Usado para validação de duplicidade no cadastro e alteração
     public function existePerguntaComTexto(Pergunta $pergunta):mixed
     {
         try {
-            $sqlBuscaRegistro = "SELECT id_pergunta FROM perguntas
-                                    WHERE texto_pergunta = :textoPergunta;";
-
-            $stmt = $this->pdo->prepare($sqlBuscaRegistro);
+            $sqlBusca = "SELECT id_pergunta 
+                            FROM perguntas
+                            WHERE texto_pergunta = :textoPergunta;";
+            $stmt = $this->pdo->prepare($sqlBusca);
             $stmt->bindValue(':textoPergunta', $pergunta->getTextoPergunta(), PDO::PARAM_STR);
             $stmt->execute();
-
             $resultado = $stmt->fetch();
 
             return $resultado;

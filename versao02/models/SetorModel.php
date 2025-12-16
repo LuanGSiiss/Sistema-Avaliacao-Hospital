@@ -7,13 +7,9 @@ class SetorModel extends Database
     public function __construct()
     {
         $this->pdo = $this->getConnection();
-
-        if (!$this->pdo) {
-            throw new Exception("Erro ao conectar com o banco de dados.");
-        }
     }
 
-    public function buscarSetoresAtivos(): array
+    public function buscarSetoresAtivos():array
     {
         $sqlBusca = "SELECT id_setor, descricao
                         FROM setores 
@@ -26,7 +22,7 @@ class SetorModel extends Database
         return $resultado;
     }
 
-    public function buscarPorId(int $idSetor): array
+    public function buscarPorId(int $idSetor):array
     {
         $sqlBusca = "SELECT id_setor, descricao, status 
                         FROM setores
@@ -38,13 +34,13 @@ class SetorModel extends Database
         $resultado = $stmt->fetch();
 
         if($resultado === false) {
-            throw new Exception("Setor não encontrada.");
+            throw new Exception("Setor não encontrado.");
         }
 
         return $resultado;
     }
 
-    public function BuscarTodas(): array
+    public function buscarTodas():array
     {
         $sqlBusca = "SELECT id_setor, descricao, status 
                         FROM setores 
@@ -56,132 +52,122 @@ class SetorModel extends Database
         return $resultado;
     }
 
-    public function registrar(Setor $setor): int
+    public function registrar(Setor $setor):bool
     {
         try {
             $sqlInsertSetor = "INSERT INTO setores(descricao, status)
                                     VALUES(:descricao, :status);";
-
-            $stmt1 = $this->pdo->prepare($sqlInsertSetor);
-            $stmt1->bindValue(':descricao', $setor->getDescricao(), PDO::PARAM_STR);
-            $stmt1->bindValue(':status', $setor->getStatus(), PDO::PARAM_INT);
-            $stmt1->execute();
+            $stmt = $this->pdo->prepare($sqlInsertSetor);
+            $stmt->bindValue(':descricao', $setor->getDescricao(), PDO::PARAM_STR);
+            $stmt->bindValue(':status', $setor->getStatus(), PDO::PARAM_INT);
+            $stmt->execute();
 
             return true;
-            
         } catch (Throwable $e) {
             throw $e;
         }
     }
 
-    public function alterar(Setor $setor): int
+    public function alterar(Setor $setor):bool
     {
         try {
             $sqlUpdateSetor = "UPDATE setores
                                     SET descricao = :descricao
                                     WHERE id_setor = :idSetor;";
-
-            $stmt1 = $this->pdo->prepare($sqlUpdateSetor);
-            
-            $stmt1->bindValue(':descricao', $setor->getDescricao(), PDO::PARAM_STR);
-            $stmt1->bindValue(':idSetor', $setor->getIdSetor(), PDO::PARAM_INT);
-            $stmt1->execute();
+            $stmt = $this->pdo->prepare($sqlUpdateSetor);
+            $stmt->bindValue(':descricao', $setor->getDescricao(), PDO::PARAM_STR);
+            $stmt->bindValue(':idSetor', $setor->getIdSetor(), PDO::PARAM_INT);
+            $stmt->execute();
 
             return true;
-            
         } catch (Throwable $e) {
             throw $e;
         }
     }
 
-    public function excluir(int $idSetor): int
+    // Não é permitido excluir Setores que possuem vinculo com Perguntas, Avaliações ou Dispositivos
+    public function excluir(int $idSetor):int
     {
         try {
-            $sqlSetorEmPerguntas = "SELECT 1 as total
-                                            FROM pergunta_setor
-                                            WHERE id_setor = :idSetor;";
-            $stmt1 = $this->pdo->prepare($sqlSetorEmPerguntas);
-            $stmt1->execute([
-                'idSetor' => $idSetor
-            ]);
-            $resultadoSetorEmPerguntas = $stmt1->fetch();
-
-            $sqlSetorEmAvaliacoes = "SELECT 1 as total
-                                            FROM avaliacoes
-                                            WHERE id_setor = :idSetor;";
-            $stmt2 = $this->pdo->prepare($sqlSetorEmAvaliacoes);
-            $stmt2->execute([
-                'idSetor' => $idSetor
-            ]);
-            $resultadoSetorEmAvaliacoes = $stmt2->fetch();
-
-            if(isset($resultadoSetorEmPerguntas['total'])) {
+            if($this->setorEmPerguntas($idSetor)) {
                 throw new Exception("O Setor possui relacionamento com Perguntas, não será possível realizar a exclusão.");
-            } elseif(isset($resultadoSetorEmAvaliacoes['total'])) {
+            } else if($this->setorEmAvaliacoes($idSetor)) {
                 throw new Exception("O Setor possui relacionamento com Avaliações, não será possível realizar a exclusão.");
+            } else if($this->setorEmDispositivos($idSetor)) {
+                throw new Exception("O Setor possui relacionamento com Dispositivos, não será possível realizar a exclusão.");
             }
 
             //Deletar Setor
             $sqlDeleteSetor = "DELETE FROM setores
                                     WHERE id_setor = :idSetor;";
-            $stmt3 = $this->pdo->prepare($sqlDeleteSetor);
-            $stmt3->execute([
+            $stmt = $this->pdo->prepare($sqlDeleteSetor);
+            $stmt->execute([
                 'idSetor' => $idSetor,
             ]);
 
-            return $stmt3->rowCount();
-            
+            return $stmt->rowCount();
         } catch (Throwable $e) {
             throw $e;
         }
     }
 
-    public function validarDuplicidade(Setor $setor, bool $alteracao = false) {
-        try {
-            $sqlBuscaRegistro = "SELECT id_setor FROM setores
-                                    WHERE descricao = :descricao;";
-
-            $stmt1 = $this->pdo->prepare($sqlBuscaRegistro);
-            $stmt1->bindValue(':descricao', $setor->getDescricao(), PDO::PARAM_STR);
-            $stmt1->execute();
-
-            $resultado = $stmt1->fetch();
-            $duplicado = $resultado ? true : false; 
-
-            if ($alteracao && $duplicado && $resultado['id_setor'] === $setor->getIdSetor()) {
-                $duplicado = false;
-            }
-
-            if ($duplicado) {
-                throw new Exception("Já existe um Setor cadastro com essa Descrição.");
-            }
-
-            return false;
-            
-        } catch (Throwable $e) {
-            throw $e;
-        }
-    }
-
-    public function validarCampos(array $dados, bool $alteracao = false) 
+    private function setorEmPerguntas(int $idSetor):bool 
     {
-        // ID
-        if($alteracao) {
-            if (empty($dados['idSetor']) || !is_int($dados['idSetor']) || $dados['idSetor'] <= 0) {
-                throw new Exception("ID do Setor inválido.");
-            }
-        }
+        $sqlBusca = "SELECT 1 as total
+                        FROM pergunta_setor
+                        WHERE id_setor = :idSetor;";
+        $stmt = $this->pdo->prepare($sqlBusca);
+        $stmt->execute([
+            'idSetor' => $idSetor
+        ]);
+        $resultado = $stmt->fetch();
 
-        // Descrição
-        if (!is_string($dados['descricao']) || trim($dados['descricao']) === '' || mb_strlen(trim($dados['descricao'])) > 50) {
-            throw new Exception("Descrição do Setor inválido ou excede 50 caracteres.");
-        }
+        return $resultado ? true : false;
+    }
 
-        // status
-        if (isset($dados['status']) && (!is_int($dados['status']) || !in_array($dados['status'], [0, 1], true))) {
-            throw new Exception("Status deve ser 0 ou 1.");
-        }
+    private function setorEmAvaliacoes(int $idSetor):bool 
+    {
+        $sqlBusca = "SELECT 1 as total
+                        FROM avaliacoes
+                        WHERE id_setor = :idSetor;";
+        $stmt = $this->pdo->prepare($sqlBusca);
+        $stmt->execute([
+            'idSetor' => $idSetor
+        ]);
+        $resultado = $stmt->fetch();
+        
+        return $resultado ? true : false;
+    }
 
-        return true;
+    private function setorEmDispositivos(int $idSetor):bool 
+    {
+        $sqlBusca = "SELECT 1 as total
+                        FROM dispositivos
+                        WHERE id_setor = :idSetor;";
+        $stmt = $this->pdo->prepare($sqlBusca);
+        $stmt->execute([
+            'idSetor' => $idSetor
+        ]);
+        $resultado = $stmt->fetch();
+        
+        return $resultado ? true : false;
+    }
+
+    // Verifica se existe um Setor cadastrado com a descrição informada. Usado para validação de duplicidade no cadastro e alteração
+    public function existeSetorComDescricao(Setor $setor):mixed
+    {
+        try {
+            $sqlBusca = "SELECT id_setor 
+                            FROM setores
+                            WHERE descricao = :descricao;";
+            $stmt = $this->pdo->prepare($sqlBusca);
+            $stmt->bindValue(':descricao', $setor->getDescricao(), PDO::PARAM_STR);
+            $stmt->execute();
+            $resultado = $stmt->fetch();
+
+            return $resultado;
+        } catch (Throwable $e) {
+            throw $e;
+        }
     }
 }
