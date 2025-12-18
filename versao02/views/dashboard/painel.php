@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <!-- links do menu -->
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/layout/menu-styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/layout/menu-styles.css"> <!-- link do menu -->
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/global/global-styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/global/consulta-padrao-styles.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>public/css/dashboard/painel.css">
-    
     <script type="module" src="<?= BASE_URL ?>public/js/dashboard/graficos.js"></script>
     <script type="module" src="<?= BASE_URL ?>public/js/dashboard/comportamento_painel.js" defer></script>
     
@@ -16,17 +16,15 @@
 </head>
 <body>
     <!-- Menu -->
-    <?php require_once __DIR__ .  '/../layout/menu.php'; ?>
+    <?php require_once BASE_PATH . '/views/layout/menu.php'; ?>
 
-    <main class="dashboard-container">
+    <div class="dashboard-container">
         <div class="dashboard-header">
             <div>
                 <h1>Visão Geral</h1>
                 <p>Acompanhamento de métricas e indicadores</p>
             </div>
-            <button id="butaoConsulta" class="botao-consulta">
-                ↻ Atualizar Dados
-            </button>
+            <button id="butaoConsulta" class="botao-consulta">↻ Atualizar Dados</button>
         </div>
 
         <div class="dashboard-grid">
@@ -68,12 +66,11 @@
                     <h3>Detalhamento por Pergunta</h3>
                 </div>
                 <div class="card-conteudo">
-                    <div id="mediasNotasPorPergunta">
-                        </div>
+                    <div class="consulta" id="mediasNotasPorPergunta">
+                    </div>
                 </div>
             </div>
         </div>
-    </main>
-
+    </div>
 </body>
 </html>

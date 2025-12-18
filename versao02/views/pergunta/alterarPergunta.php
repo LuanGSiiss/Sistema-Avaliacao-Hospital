@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alterar Pergunta</title>
-    <!-- links do menu -->
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/layout/menu-styles.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/pergunta/manutencao-pergunta-styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/layout/menu-styles.css"> <!-- link do menu -->
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/global/global-styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/global/manutencao-padrao-styles.css">
     <script src="<?= BASE_URL ?>public/js/pergunta/comportamento_manutencaoPergunta.js" defer></script>
+    <script src="<?= BASE_URL ?>public/js/pergunta/select2-setores.js" defer></script>
     <!-- CSS e JS do Select2 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -15,18 +16,18 @@
 </head>
 <body>
     <!-- Menu -->
-    <?php require_once __DIR__ .  '/../layout/menu.php'; ?>
+    <?php require_once BASE_PATH . '/views/layout/menu.php'; ?>
 
     <div class="estrutura">
         <div>
             <a href="<?= BASE_URL ?>consultaPerguntas">Voltar</a>
-            <form class="formulario-pergunta" method="post" action="<?= BASE_URL ?>pergunta/alterar/<?= $pergunta['id_pergunta'] ?>">
+            <form class="formulario" method="post" action="<?= BASE_URL ?>pergunta/alterar/<?= $pergunta['id_pergunta'] ?>">
                 <div class="inputs">
                     <p>
                         <label for="codigo" >Código</label>
                         <input type="number" name="codigo" id="codigo" disabled value="<?= htmlspecialchars($pergunta['id_pergunta']) ?>">
                     </p>
-                    <div>
+                    <div class="checkbox-container">
                         <label for="todos_setores">Todos os Setores?</label>
                         <input type="checkbox" value="1" name="todos_setores" id="todos_setores" <?= isset($perguntaPreenchida['todosSetores']) 
                         ? ($perguntaPreenchida['todosSetores'] ? 'checked' : '') 
@@ -53,7 +54,7 @@
                 <button id="enviar" type="submit">Enviar</button>
                 <button id="limpar" type="reset">Limpar</button>
             </form>
-            <!-- mensagem -->
+            <!-- mensagens -->
             <?php if (isset($mensagens['erroRegistro'])): ?>
                 <p class="mensagem erro"><?= htmlspecialchars($mensagens['erroRegistro']) ?></p>
             <?php elseif (isset($mensagens['sucessoMensagem'])): ?>
@@ -62,19 +63,4 @@
         </div>
     </div>
 </body>
-<script>
-    $(document).ready(function() {
-        $('#setores').select2({
-            placeholder: "Selecione os setores",
-            allowClear: true,
-            width: '80%'
-        });
-    });
-</script>
 </html>
-<!-- Exibir erro no console -->
-<?php if (isset($mensagens['erroRegistro'])): ?>
-    <script>
-        console.error("Erro ao registrar a Pergunta: <?= addslashes($mensagens['erroRegistro']) ?>");
-    </script>
-<?php endif; ?>

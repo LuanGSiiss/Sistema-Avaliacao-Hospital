@@ -1,23 +1,21 @@
-
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visualizar Dispositivo</title>
-    <!-- links do menu -->
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/layout/menu-styles.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/dispositivo/manutencao-dispositivo-styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/layout/menu-styles.css"> <!-- link do menu -->
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/global/global-styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/global/manutencao-padrao-styles.css">
 </head>
 <body>
     <!-- Menu -->
-    <?php require_once __DIR__ .  '/../layout/menu.php'; ?>
+    <?php require_once BASE_PATH . '/views/layout/menu.php'; ?>
 
     <div class="estrutura">
         <div>
             <a href="<?= BASE_URL ?>consultaDispositivos">Voltar</a>
-            <div class="formulario-dispositivo">
+            <div class="formulario">
                 <div class="inputs">
                     <p>
                         <label for="codigo" >Código</label>
@@ -45,7 +43,7 @@
                     <p>
                         <label for="url-avaliacao" >URL para Avaliação</label>
                         <!-- usado localhost por ser em desenvolvimento -->
-                        <input type="text" name="url-avaliacao" id="url-avaliacao" disabled value="<?= 'localhost'.BASE_URL.'cadastroAvaliacao?setor='.$dispositivo['id_setor'].'&dispositivo='.$dispositivo['id_dispositivo'] ?>">
+                        <input type="text" name="url-avaliacao" id="url-avaliacao" disabled value="<?= 'localhost'. BASE_URL .'cadastroAvaliacao?setor='.$dispositivo['id_setor'].'&dispositivo='.$dispositivo['id_dispositivo'] ?>">
                     </p>
                 </div>
             </div>

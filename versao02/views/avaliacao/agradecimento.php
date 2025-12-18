@@ -3,25 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/avaliacao/agradecimento-styles.css">
     <title>Agradecimento</title>
-    <script>
-        let countdown = 5;
-
-        function updateCountdown() {
-            const contador = document.getElementById('contador');
-            contador.textContent = countdown;
-
-            if (countdown === 0) {
-                window.location.href = document.referrer;
-            } else {
-                countdown--;
-                setTimeout(updateCountdown, 1000);
-            }
-        }
-
-        window.onload = updateCountdown;
-    </script>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/global/global-styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/avaliacao/agradecimento-styles.css">
+    <script src="<?= BASE_URL ?>public/js/avaliacao/comportamento_agradecimento.js"></script>
 </head>
 <body>
     <div class="estrutura">

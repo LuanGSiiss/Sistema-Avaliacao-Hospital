@@ -1,22 +1,5 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-html {
-    font-size: 62.5%; /* 1rem = 10px */
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 1.6rem;
-    background-color: #f3f4f6;
-    color: #333;
-}
-
 .estrutura {
-    max-width: 1600px;
+    max-width: 160rem;
     margin: 3rem auto;
     padding: 2rem;
     background-color: white;
@@ -71,7 +54,6 @@ body {
 }
 
 /* consulta */
-
 .consulta {
     overflow-x: auto;
 }
@@ -118,6 +100,11 @@ body {
     word-break: break-word;
 }
 
+tr:hover td {
+    background-color: #f9fafb;
+    transition: background-color 0.15s ease;
+}
+
 .consulta .efeitoCarragamento{
     text-align: center;
     font-style: italic;
@@ -125,7 +112,7 @@ body {
     padding: 2rem 0;
 }
 
-/* Butoes de acoes nos registros da consulta */
+/* Botões de ações nos registros da consulta */
 .colunaAcoes {
     display: flex;
     gap: 0.6rem;
@@ -242,7 +229,7 @@ body {
 }
 
 .buttonNao:hover {
-    background-color: #d1d5db;
+    background-color: #b9bbbe;
     transform: scale(1.05);
 }
 
@@ -254,7 +241,6 @@ body {
     border-radius: 0.5rem;
     box-shadow: 0 0.4rem 0.6rem rgba(0,0,0,0.1);
 }
-
 
 .mensagem-texto {
     font-size: 1.4rem;
@@ -313,10 +299,5 @@ body {
         padding: 0.8rem;
     }
 }
-
-
-
-
-
 
 

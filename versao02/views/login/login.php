@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/global/global-styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/global/manutencao-padrao-styles.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>public/css/login/login-styles.css">
 </head>
 <body>
     <div class="estrutura">
         <div>
-            <form class="formulario-login" method="post" action="<?= BASE_URL ?>login">
+            <form class="formulario" method="post" action="<?= BASE_URL ?>login">
                 <div class="inputs">
                     <p>
                         <label for="email">E-mail</label>
@@ -23,7 +25,7 @@
                 <button id="enviar" type="submit">Entrar</button>
                 <button id="limpar" type="reset">Limpar</button>
             </form>
-            <!-- mensagem -->
+            <!-- mensagens -->
             <?php if (isset($mensagens['erroLogin'])): ?>
                 <p class="mensagem erro"><?= htmlspecialchars($mensagens['erroLogin']) ?></p>
             <?php endif; ?>
@@ -31,9 +33,3 @@
     </div>
 </body>
 </html>
-<!-- Exibir erro no console -->
-<?php if (isset($mensagens['erroLogin'])): ?>
-    <script>
-        console.error("Erro ao Logar: <?= addslashes($mensagens['erroLogin']) ?>");
-    </script>
-<?php endif; ?>

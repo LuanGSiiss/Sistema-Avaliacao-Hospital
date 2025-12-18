@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Avaliação do Hospital Regional do Alto Vale</title>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/global/global-styles.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>public/css/avaliacao/manutencao-avaliacao-styles.css">
     <script src="<?= BASE_URL ?>public/js/avaliacao/comportamento_manutencaoAvaliacao.js" defer></script>
 </head>
@@ -44,7 +45,7 @@
             
             <p class="aviso">Sua avaliação espontânea é anônima, nenhuma informação pessoal é solicitada ou armazenada.</p>
         </form>
-        <!-- mensagem -->
+        <!-- mensagens -->
         <?php if (isset($mensagens['erroRegistro'])): ?>
             <p class="mensagem erro"><?= htmlspecialchars($mensagens['erroRegistro']) ?></p>
         <?php elseif (isset($mensagens['sucessoMensagem'])): ?>
@@ -53,8 +54,3 @@
     </div>
 </body>
 </html>
-<?php if (isset($mensagens['erroRegistro'])): ?>
-    <script>
-        console.error("Erro ao registrar a Avaliação: <?= addslashes($mensagens['erroRegistro']) ?>");
-    </script>
-<?php endif; ?>

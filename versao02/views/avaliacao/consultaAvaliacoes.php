@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consulta Avaliações</title>
-    <!-- links do menu -->
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/layout/menu-styles.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/avaliacao/consulta-avaliacoes-styles.css">
+    <title>Consulta de Avaliações</title>
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/layout/menu-styles.css"> <!-- link do menu -->
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/global/global-styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/global/consulta-padrao-styles.css">
     <script src="<?= BASE_URL ?>public/js/avaliacao/comportamento_consultaAvaliacoes.js" defer></script>
 </head>
 <body>
     <!-- Menu -->
-    <?php require_once __DIR__ .  '/../layout/menu.php'; ?>
+    <?php require_once BASE_PATH . '/views/layout/menu.php'; ?>
 
     <section class="estrutura">
         <div class="cabecalho-consulta">

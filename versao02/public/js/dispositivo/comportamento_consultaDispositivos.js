@@ -119,7 +119,7 @@ function mensagemExcluir(idDispositivo) {
         <p>Tem certeza que deseja excluir o registro?</p>
         <div class="botoesConfirmacao">
             <button class="buttonSim">Sim</button>
-            <button id="buttonNao">Não</button>
+            <button class="buttonNao" id="buttonNao" >Não</button>
         </div>
     `;
 

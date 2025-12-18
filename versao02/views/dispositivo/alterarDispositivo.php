@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alterar Dispositivo</title>
-    <!-- links do menu -->
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/layout/menu-styles.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/dispositivo/manutencao-dispositivo-styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/layout/menu-styles.css"> <!-- link do menu -->
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/global/global-styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/global/manutencao-padrao-styles.css">
 </head>
 <body>
     <!-- Menu -->
-    <?php require_once __DIR__ .  '/../layout/menu.php'; ?>
+    <?php require_once BASE_PATH . '/views/layout/menu.php'; ?>
 
     <div class="estrutura">
         <div>
             <a href="<?= BASE_URL ?>consultaDispositivos">Voltar</a>
-            <form class="formulario-dispositivo" method="post" action="<?= BASE_URL ?>dispositivo/alterar/<?= $dispositivo['id_dispositivo'] ?>">
+            <form class="formulario" method="post" action="<?= BASE_URL ?>dispositivo/alterar/<?= $dispositivo['id_dispositivo'] ?>">
                 <div class="inputs">
                     <p>
                         <label for="codigo" >Código</label>
@@ -46,7 +46,7 @@
                 <button id="enviar" type="submit">Enviar</button>
                 <button id="limpar" type="reset">Limpar</button>
             </form>
-            <!-- mensagem -->
+            <!-- mensagens -->
             <?php if (isset($mensagens['erroRegistro'])): ?>
                 <p class="mensagem erro"><?= htmlspecialchars($mensagens['erroRegistro']) ?></p>
             <?php elseif (isset($mensagens['sucessoMensagem'])): ?>
@@ -56,9 +56,3 @@
     </div>
 </body>
 </html>
-<!-- Exibir erro no console -->
-<?php if (isset($mensagens['erroRegistro'])): ?>
-    <script>
-        console.error("Erro ao alterar Dispositivo: <?= addslashes($mensagens['erroRegistro']) ?>");
-    </script>
-<?php endif; ?>

@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alterar Pergunta</title>
-    <!-- link do menu -->
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/layout/menu-styles.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/setor/manutencao-setor-styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/layout/menu-styles.css"> <!-- link do menu -->
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/global/global-styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/global/manutencao-padrao-styles.css">
 </head>
 <body>
     <!-- Menu -->
@@ -15,7 +15,7 @@
     <div class="estrutura">
         <div>
             <a href="<?= BASE_URL ?>consultaSetores">Voltar</a>
-            <form class="formulario-setor" method="post" action="<?= BASE_URL ?>setor/alterar/<?= $setor['id_setor'] ?>">
+            <form class="formulario" method="post" action="<?= BASE_URL ?>setor/alterar/<?= $setor['id_setor'] ?>">
                 <div class="inputs">
                     <p>
                         <label for="codigo" >Código</label>
@@ -29,7 +29,7 @@
                 <button id="enviar" type="submit">Enviar</button>
                 <button id="limpar" type="reset">Limpar</button>
             </form>
-            <!-- mensagem -->
+            <!-- mensagens -->
             <?php if (isset($mensagens['erroRegistro'])): ?>
                 <p class="mensagem erro"><?= htmlspecialchars($mensagens['erroRegistro']) ?></p>
             <?php elseif (isset($mensagens['sucessoMensagem'])): ?>
@@ -39,9 +39,3 @@
     </div>
 </body>
 </html>
-<!-- Exibir erro no console -->
-<?php if (isset($mensagens['erroRegistro'])): ?>
-    <script>
-        console.error("Erro ao registrar o Setor: <?= addslashes($mensagens['erroRegistro']) ?>");
-    </script>
-<?php endif; ?>
