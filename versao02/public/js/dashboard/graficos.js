@@ -7,7 +7,7 @@ const cores = {
     secundaria: '#4f46e5'
 };
 
-export async function carregarGraficos(indicadores) {
+async function carregarGraficos(indicadores) {
   Chart.defaults.font.family = "'Segoe UI', sans-serif";
 
   carregarGraficoMediasNotasUltimosMeses(indicadores.mediasNotasUltimosMeses)

@@ -1,5 +1,3 @@
-import { carregarGraficos } from './graficos.js';
-
 enviarRequisicaoBuscarIndicadores();
 
 document.getElementById("butaoConsulta").addEventListener("click", function () {
@@ -88,6 +86,7 @@ function criarTabela(cabecalho) {
     return tabela;
 };
 
+// Sobreescrevendo função padrão
 function adicionarLinha(tabela, valores) {
     const novaLinha = tabela.insertRow();
     //Para quando não for encontrado nenhum registo
@@ -112,33 +111,3 @@ function adicionarLinha(tabela, valores) {
         }
     });
 };
-
-function exibirMensagemRetorno(mensagem, situacao) {
-    const mensagemStatus = document.createElement('div');
-    const conteudoMensagem = document.createElement('p');
-    conteudoMensagem.className = "mensagem-texto";
-    conteudoMensagem.textContent  = mensagem;
-
-    const slideTempo = document.createElement('div');
-    slideTempo.className = "slide-tempo";
-
-    const barraSlideTempo = document.createElement('div');
-    barraSlideTempo.className = "barra";
-
-    document.body.appendChild(mensagemStatus);
-    mensagemStatus.appendChild(conteudoMensagem);
-    mensagemStatus.appendChild(slideTempo);
-    slideTempo.appendChild(barraSlideTempo);
-    
-    // 1 = sucesso, 0 = erro
-    if (situacao == 1) {
-        mensagemStatus.className = "mensagem sucesso";
-    } else {
-        mensagemStatus.className = "mensagem erro";
-    }
-    
-    setTimeout(() => {
-        mensagemStatus.remove();
-    }, 8000);
-}
-

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="<?= BASE_URL ?>public/css/layout/menu-styles.css"> <!-- link do menu -->
     <link rel="stylesheet" href="<?= BASE_URL ?>public/css/global/global-styles.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>public/css/global/consulta-padrao-styles.css">
+    <script src="<?= BASE_URL ?>public/js/global/comportamento_consultaPadrao.js" defer></script>
     <script src="<?= BASE_URL ?>public/js/setor/comportamento_consultaSetores.js" defer></script>
 </head>
 <body>

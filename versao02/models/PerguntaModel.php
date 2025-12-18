@@ -49,7 +49,7 @@ class PerguntaModel extends Database
     public function buscarTodas(): array
     {
         $sqlBusca = "SELECT id_pergunta, texto_pergunta, todos_setores, status 
-                        FROM perguntas 
+                        FROM perguntas
                         ORDER BY id_pergunta;";
         $stmt = $this->pdo->prepare($sqlBusca);
         $stmt->execute([]);
