@@ -1,52 +1,20 @@
-enviarRequisicaoBuscarIndicadores();
-
-document.getElementById("butaoConsulta").addEventListener("click", function () {
-    enviarRequisicaoBuscarIndicadores();
+enviarRequisicaoBuscarRegistros('./dashboard/buscar', function (conteudo) {
+    exibirConteudoIndicadores(conteudo);
 });
 
-function enviarRequisicaoBuscarIndicadores() {
-    const func_assinc = new XMLHttpRequest();
-    func_assinc.open("GET", "./dashboard/buscar", true);
-    func_assinc.onload = function () {
-        if (func_assinc.status === 200) {
-            try {
-                const dadosResposta = JSON.parse(func_assinc.responseText);
-                
-                if (dadosResposta.status === 'sucesso') {
-    
-                    const conteudo = dadosResposta.data;
-    
-                    if (conteudo) {
-                        carregarGraficos(conteudo.indicadores);
-                        exibirMediasNotasPorPergunta(conteudo.indicadores.mediasNotasPorPergunta);
-                    } else {
-                        exibirMensagemRetorno('Nenhum registro encontrado.', 0);
-                        console.log("Nenhum registro encontrado");
-                    }
-                } else {
-                    exibirMensagemRetorno('Erro com os dados da requisição.', 0);
-                    console.log(dadosResposta.message);
-                }
-            } catch (erro) {
-                exibirMensagemRetorno('Erro ao tratar os dados da requisição.', 0);
-                console.error("Erro ao tratar os dados da requisição: ", erro.message);
-            }
-        } else if(func_assinc.status === 400 || func_assinc.status === 500) {
-            var dadosResposta;
-            try {
-                dadosResposta = JSON.parse(func_assinc.responseText).message;
-                
-            } catch {
-                dadosResposta = func_assinc.responseText;
-            }
-            exibirMensagemRetorno(dadosResposta, 0);
-            console.error(dadosResposta);
-        } else {
-            alert("requisição invalida");
-        }
-    };
-    
-    func_assinc.send();
+document.getElementById("butaoConsulta").addEventListener("click", function () {
+    enviarRequisicaoBuscarRegistros('./dashboard/buscar', function (conteudo) {
+        exibirConteudoIndicadores(conteudo);
+    });
+});
+
+function exibirConteudoIndicadores(conteudo) {
+    if (conteudo) {
+        carregarGraficos(conteudo.indicadores);
+        exibirMediasNotasPorPergunta(conteudo.indicadores.mediasNotasPorPergunta);
+    } else {
+        exibirMensagemRetorno('Nenhum registro encontrado.', 0);
+    }
 }
 
 function exibirMediasNotasPorPergunta(dados) {
@@ -102,7 +70,7 @@ function adicionarLinha(tabela, valores) {
         const celula = novaLinha.insertCell();
         celula.innerHTML = valor;
 
-        //estilo adicional para a média
+        // altera o estilo dependendo da nota
         if (index === valores.length - 1) {
             let corNota = parseFloat(valor) >= 8 ? '#065f46' : (parseFloat(valor) < 5 ? '#991b1b' : '#333');
             

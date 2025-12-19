@@ -1,3 +1,44 @@
+// Espera uma função callback que será executada em caso de sucesso no tratamento do retorno ajax
+function enviarRequisicaoBuscarRegistros(rotaConsulta, funcaoSucesso) {
+    const func_assinc = new XMLHttpRequest();
+    func_assinc.open("GET", rotaConsulta, true);
+    func_assinc.onload = function () {
+        tratarRetornoRequisicaoAjax(func_assinc, funcaoSucesso);
+    };
+    
+    func_assinc.send();
+}
+
+function tratarRetornoRequisicaoAjax(func_assinc, funcaoSucesso) {
+    if (func_assinc.status === 200) {
+        try {
+            const dadosResposta = JSON.parse(func_assinc.responseText);
+            
+            if (dadosResposta.status === 'sucesso') {
+                funcaoSucesso(dadosResposta.data);
+            } else {
+                exibirMensagemRetorno('Erro com os dados da requisição.', 0);
+                console.log(dadosResposta.message);
+            }
+        } catch (erro) {
+            exibirMensagemRetorno('Erro ao tratar os dados da requisição.', 0);
+            console.error("Erro ao tratar os dados da requisição: ", erro.message);
+        }
+    } else if(func_assinc.status === 400 || func_assinc.status === 500) {
+        var dadosResposta;
+        try {
+            dadosResposta = JSON.parse(func_assinc.responseText).message;
+            
+        } catch {
+            dadosResposta = func_assinc.responseText;
+        }
+        exibirMensagemRetorno(dadosResposta, 0);
+        console.error(dadosResposta);
+    } else {
+        alert("requisição invalida");
+    }
+}
+
 function adicionarLinha(tabela, valores) {
     const novaLinha = tabela.insertRow();
     //Para quando não for encontrado nenhum registo

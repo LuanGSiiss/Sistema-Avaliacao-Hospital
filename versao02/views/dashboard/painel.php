@@ -8,12 +8,11 @@
     <link rel="stylesheet" href="<?= BASE_URL ?>public/css/global/global-styles.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>public/css/global/consulta-padrao-styles.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>public/css/dashboard/painel.css">
+    <!-- charjs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="<?= BASE_URL ?>public/js/global/comportamento_consultaPadrao.js" defer></script>
     <script src="<?= BASE_URL ?>public/js/dashboard/graficos.js" defer></script>
     <script src="<?= BASE_URL ?>public/js/dashboard/comportamento_painel.js" defer></script>
-    
-    <!-- charjs -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <!-- Menu -->
