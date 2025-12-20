@@ -2,18 +2,18 @@
 
 class RenderView
 {
-    public function loadView($caminhoview, $args) 
+    public function loadView($caminhoview, $args):void
     {
         try {
             if (strpos($caminhoview, '.') === false) {
-                throw new InvalidArgumentException("Formato de caminho de view inválido. Use 'pasta.view'.");
+                throw new Exception("Formato de caminho de view inválido. Use 'pasta.view'.");
             }
 
             [$pasta, $view] = explode('.', $caminhoview);
             $caminhoCompleto = __DIR__ . "/../views/$pasta/$view.php";
 
             if (!file_exists($caminhoCompleto)) {
-                throw new RuntimeException("Arquivo da view não encontrado: $caminhoCompleto");
+                throw new Exception("Arquivo da view não encontrado: $caminhoCompleto");
             }
 
             extract($args);

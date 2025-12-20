@@ -2,7 +2,7 @@
 
 class Core 
 {
-    public function run($routes) 
+    public function run($routes):void
     {
         $url = '/';
         $method = $_SERVER['REQUEST_METHOD'];
