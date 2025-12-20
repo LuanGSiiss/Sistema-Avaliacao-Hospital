@@ -27,7 +27,7 @@ class LoginController extends BaseController
 
             if ($usuario) {
                 Sessao::criarSessao($usuario);
-                header("Location: " . BASE_URL . "consultaPerguntas");
+                header("Location: " . BASE_URL);
             } else {
                 throw new Exception("Falha ao logar! E-mail ou Senha incorretos.");
             }

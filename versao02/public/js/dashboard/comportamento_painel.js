@@ -21,13 +21,14 @@ function exibirMediasNotasPorPergunta(dados) {
     const divIndicador = document.getElementById('mediasNotasPorPergunta');
     divIndicador.innerHTML = '';
 
-    const tabelaIndicador = criarTabela(['Pergunta', 'Média']);
+    const tabelaIndicador = criarTabela(['Código', 'Pergunta', 'Média']);
     const tbody = tabelaIndicador.querySelector('tbody');
     
     dados.forEach( pergunta => {
         let media = pergunta.media ? parseFloat(pergunta.media).toFixed(2) : '-';
 
         adicionarLinha(tbody, [
+            pergunta.id_pergunta,
             pergunta.texto_pergunta,
             media
         ]);

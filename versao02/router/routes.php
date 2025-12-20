@@ -2,6 +2,8 @@
 
 $routes = [
     'GET' => [
+        '/' => 'HomeController@index@comSessao',
+        
         '/login' => 'LoginController@formularioLogin@semSessao',
 
         '/consultaAvaliacoes' => 'AvaliacaoController@exibirConsulta@comSessao',

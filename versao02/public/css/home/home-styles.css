@@ -1,0 +1,30 @@
+body {
+    min-height: 100vh;
+}
+
+.estrutura {
+    height: calc(100vh - 6rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.home-container {
+    width: 100%;
+    padding: 3rem;
+    text-align: center;
+}
+
+.home-container h1 {
+    font-size: 6rem;
+    font-weight: 900; 
+    color: #d32f2f;
+    margin-bottom: 1rem;
+}
+
+.descricao {
+    color: #555;
+    margin-bottom: 3rem;
+    font-size: 2rem;
+}
+

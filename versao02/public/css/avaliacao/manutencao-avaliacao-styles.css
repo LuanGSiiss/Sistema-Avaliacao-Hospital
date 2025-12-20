@@ -1,5 +1,5 @@
 body {
-    height: 100vh;
+    min-height: 100vh;
     width: 100vw;
     background: linear-gradient(135deg, #a2dfa2, #74b974);
     display: flex;
@@ -19,7 +19,7 @@ body {
 
 .avaliacao {
     background-color: #fff;
-    padding: 4rem;
+    padding: 3rem 4rem;
     border-radius: 1.2rem;
     width: 100%;
     box-shadow: 0 1rem 2.5rem rgba(0,0,0,0.1);
@@ -28,7 +28,7 @@ body {
 .avaliacao h1 {
     text-align: center;
     color: #d32f2f;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 .avaliacao .pergunta {
@@ -56,7 +56,7 @@ textarea {
 .avaliacao .paremetro_nota {
     display: flex;
     justify-content: space-between;
-    margin-top: 1.5rem;
+    margin-top: 1rem;
     color: #555;
     font-size: 0.95em;
 }
@@ -65,12 +65,12 @@ textarea {
     display: flex;
     flex-wrap: wrap;
     gap: 0.8rem;
-    margin: 1rem 0 2rem;
+    margin: 0.5rem 0 1rem;
     justify-content: center; 
 }
 
 .avaliacao .aviso {
-    padding: 1.5rem 0;
+    padding: 0.5rem 0;
     font-size: 0.9em;
     color: #555;
     text-align: center;
@@ -86,8 +86,8 @@ button:hover:enabled {
     box-shadow: 0 0 1rem rgba(0,0,0,0.2);
 }
 
-.button_normal {
-    flex: 1 1 6rem;
+.botao_normal {
+    flex: 1 1 3rem;
     padding: 1.2rem;
     text-align: center;
     color: white;
@@ -98,11 +98,11 @@ button:hover:enabled {
     min-width: 4.5rem;
 }
 
-.button_selected {
+.botao_selected {
     outline: 0.3rem solid #000;
 }
 
-.button_enviar {
+.botao_enviar {
     width: 100%;
     padding: 1.2rem;
     margin-top: 1rem;
@@ -114,11 +114,11 @@ button:hover:enabled {
     transition: background-color 0.3s;
 }
 
-.button_enviar:hover:enabled {
+.botao_enviar:hover:enabled {
     background-color: #005f2c;
 }
 
-.button_enviar:disabled {
+.botao_enviar:disabled {
     background-color: #ebebeb;
     color: #333;
 }
@@ -156,3 +156,44 @@ button:hover:enabled {
 .avaliacao_nota #nota8 { background-color: #32CD32; } 
 .avaliacao_nota #nota9 { background-color: #228B22; }  
 .avaliacao_nota #nota10 { background-color: #008000; }  
+
+
+@media (max-width: 768px) {
+    body {
+        padding: 0.5rem;
+    }
+    .avaliacao {
+        padding: 1.5rem;
+    }
+    
+    .avaliacao h1 {
+        font-size: 24px;
+        margin-bottom: 0.5rem;
+    }
+    
+    .avaliacao .pergunta {
+        font-size: 1em;
+        margin: 0.5rem 0 1rem 0;
+    }
+
+    textarea {
+        padding: 0.5rem;
+        height: 7rem;
+        font-size: 0.9em;
+    }
+
+    .botao_normal {
+        padding: 1.2rem;
+        min-width: 3rem;
+    }
+
+    .avaliacao .avaliacao_nota {
+        gap: 0.3rem;
+        margin: 0.3rem 0 0.3rem;
+    }
+
+    .avaliacao .aviso {
+        padding: 0.5rem 0;
+        font-size: 0.7em;
+    }
+}

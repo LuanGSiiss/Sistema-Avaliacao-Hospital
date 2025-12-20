@@ -4,11 +4,9 @@ class Core
 {
     public function run($routes):void
     {
-        $url = '/';
         $method = $_SERVER['REQUEST_METHOD'];
 
-        $url .= isset($_GET['url']) ? $_GET['url'] : '';
-        $url = rtrim($url, '/');
+        $url = isset($_GET['url']) ? '/' . trim($_GET['url'], '/') : '/';
 
         $routerFound = false;
 

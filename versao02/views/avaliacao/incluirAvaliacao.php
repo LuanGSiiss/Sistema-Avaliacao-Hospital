@@ -28,20 +28,20 @@
                 <p style="margin-bottom: 0%;">Muito Provável</p>
             </div>
             <div class="avaliacao_nota">
-                <button class="button_normal" type="button" data-value="1" id="nota1" onclick="selecionarNota(this)">1</button>
-                <button class="button_normal" type="button" data-value="2" id="nota2" onclick="selecionarNota(this)">2</button>
-                <button class="button_normal" type="button" data-value="3" id="nota3" onclick="selecionarNota(this)">3</button>
-                <button class="button_normal" type="button" data-value="4" id="nota4" onclick="selecionarNota(this)">4</button>
-                <button class="button_normal" type="button" data-value="5" id="nota5" onclick="selecionarNota(this)">5</button>
-                <button class="button_normal" type="button" data-value="6" id="nota6" onclick="selecionarNota(this)">6</button>
-                <button class="button_normal" type="button" data-value="7" id="nota7" onclick="selecionarNota(this)">7</button>
-                <button class="button_normal" type="button" data-value="8" id="nota8" onclick="selecionarNota(this)">8</button>
-                <button class="button_normal" type="button" data-value="9" id="nota9" onclick="selecionarNota(this)">9</button>
-                <button class="button_normal" type="button" data-value="10" id="nota10" onclick="selecionarNota(this)">10</button>
+                <button class="botao_normal" type="button" data-value="1" id="nota1" onclick="selecionarNota(this)">1</button>
+                <button class="botao_normal" type="button" data-value="2" id="nota2" onclick="selecionarNota(this)">2</button>
+                <button class="botao_normal" type="button" data-value="3" id="nota3" onclick="selecionarNota(this)">3</button>
+                <button class="botao_normal" type="button" data-value="4" id="nota4" onclick="selecionarNota(this)">4</button>
+                <button class="botao_normal" type="button" data-value="5" id="nota5" onclick="selecionarNota(this)">5</button>
+                <button class="botao_normal" type="button" data-value="6" id="nota6" onclick="selecionarNota(this)">6</button>
+                <button class="botao_normal" type="button" data-value="7" id="nota7" onclick="selecionarNota(this)">7</button>
+                <button class="botao_normal" type="button" data-value="8" id="nota8" onclick="selecionarNota(this)">8</button>
+                <button class="botao_normal" type="button" data-value="9" id="nota9" onclick="selecionarNota(this)">9</button>
+                <button class="botao_normal" type="button" data-value="10" id="nota10" onclick="selecionarNota(this)">10</button>
             </div>
             <input type="hidden" name="nota" id="nota_selecionada">
             
-            <button class="button_enviar" type="submit" disabled title="Selecione uma nota para habilitar">Enviar</button>
+            <button class="botao_enviar" type="submit" disabled title="Selecione uma nota para habilitar">Enviar</button>
             
             <p class="aviso">Sua avaliação espontânea é anônima, nenhuma informação pessoal é solicitada ou armazenada.</p>
         </form>
