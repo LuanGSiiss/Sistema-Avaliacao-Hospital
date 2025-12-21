@@ -65,10 +65,10 @@ class AvaliacaoController extends BaseController
     {
         try {
             $dados = [
-                'idSetor'       => (int) $_GET['setor'] ?? null,
-                'idDispositivo' => (int) $_GET['dispositivo'] ?? null,
-                'idPergunta'    => (int) $_POST['id_pergunta'] ?? null,
-                'nota'          => (int) $_POST['nota'] ?? null,
+                'idSetor'       => isset($_GET['setor']) ? (int) $_GET['setor'] : null,
+                'idDispositivo' => isset($_GET['dispositivo']) ? (int) $_GET['dispositivo'] : null,
+                'idPergunta'    => isset($_POST['id_pergunta']) ? (int) $_POST['id_pergunta'] : null,
+                'nota'          => isset($_POST['nota']) ? (int) $_POST['nota'] : null,
                 'feedback'      => trim($_POST['feedback']) ?? ''
             ];
 

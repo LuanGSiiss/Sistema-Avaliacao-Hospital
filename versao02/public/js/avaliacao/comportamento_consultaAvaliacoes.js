@@ -40,7 +40,7 @@ function adicionarLinha(tabela, valores) {
     if (valores.length === 1) {
         const celula = novaLinha.insertCell();
         celula.innerHTML = valores[0];
-        celula.colSpan = numeroColunas;
+        celula.colSpan = 999;
         celula.style.cssText = 'text-align: center;';
         return;
     }

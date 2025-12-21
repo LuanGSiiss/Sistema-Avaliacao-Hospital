@@ -24,15 +24,19 @@ function exibirMediasNotasPorPergunta(dados) {
     const tabelaIndicador = criarTabela(['Código', 'Pergunta', 'Média']);
     const tbody = tabelaIndicador.querySelector('tbody');
     
-    dados.forEach( pergunta => {
-        let media = pergunta.media ? parseFloat(pergunta.media).toFixed(2) : '-';
-
-        adicionarLinha(tbody, [
-            pergunta.id_pergunta,
-            pergunta.texto_pergunta,
-            media
-        ]);
-    });
+    if (!dados || dados.length === 0) {
+        adicionarLinha(tbody, ["Nenhum registro encontrado"]);
+    } else {
+        dados.forEach( pergunta => {
+            let media = pergunta.media ? parseFloat(pergunta.media).toFixed(2) : '-';
+    
+            adicionarLinha(tbody, [
+                pergunta.id_pergunta,
+                pergunta.texto_pergunta,
+                media
+            ]);
+        });
+    }
     
     divIndicador.appendChild(tabelaIndicador);
 }
@@ -62,7 +66,7 @@ function adicionarLinha(tabela, valores) {
     if (valores.length === 1) {
         const celula = novaLinha.insertCell();
         celula.innerHTML = valores[0];
-        celula.colSpan = 2;
+        celula.colSpan = 999;
         celula.style.cssText = 'text-align: center;';
         return;
     }
