@@ -43,7 +43,7 @@ Um ponto importante do projeto é a implementação de um sistema de roteamento 
 - **Linguagens**: PHP, JavaScript, HTML e CSS;
 - **Banco de Dados**: PostgreSQL;
 - **Servidor Web**: Apache (XAMPP);
-- **Bibliotecas**: Char.js;
+- **Bibliotecas**: Char.js, select2;
 
 
 ## Conceitos
